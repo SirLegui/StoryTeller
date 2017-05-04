@@ -11,7 +11,7 @@ public class Main {
 		//Inicio el programa
 		//------------------
 		
-		//Comentario EDGERIK 5:44
+		//Comentario EDGERIK 6:00
 		
 		//-------------------		
 		//Termino el programa
