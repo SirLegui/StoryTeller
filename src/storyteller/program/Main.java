@@ -10,9 +10,9 @@ public class Main {
 		//------------------
 		//Inicio el programa
 		//------------------
-		
-		//Comentario EDGERIK 6:00
-		
+
+                // Comentatio EDGERIK LEGUIZAMON
+                
 		//-------------------		
 		//Termino el programa
 		//-------------------
