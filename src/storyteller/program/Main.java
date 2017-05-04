@@ -11,8 +11,15 @@ public class Main {
 		//Inicio el programa
 		//------------------
 
-                // Comentatio EDGERIK LEGUIZAMON
-                
+        /*
+        *
+        *
+        *
+        */
+
+
+
+
 		//-------------------		
 		//Termino el programa
 		//-------------------
