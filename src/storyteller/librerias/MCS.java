@@ -1,6 +1,8 @@
 package storyteller.librerias;
 
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
+import javax.imageio.ImageIO;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -48,12 +51,20 @@ public class MCS
 
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
-
             if (entity != null) 
             {
-                System.out.println("Se ha obtenido una respuesta valida");
+                if (response.getStatusLine().getStatusCode() != 200){
+                    rets = funcionJsonError(EntityUtils.toString(entity), "Response: "+Integer.toString(response.getStatusLine().getStatusCode()));
+                }else{
+                    rets = funcionJson(EntityUtils.toString(entity));
+                }
             }
-            rets = funcionJson(EntityUtils.toString(entity));
+            
+            
+            
+
+            
+            
         }
         catch (URISyntaxException | IOException | org.apache.http.ParseException | ParseException e)
         {
@@ -65,10 +76,11 @@ public class MCS
 
 
 
-    public void getImage(String urli) throws MalformedURLException, FileNotFoundException, IOException{
+    public void getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException{
         // Url con la foto
         try{
             URL url = new URL(urli);
+            //File dir = new File(dire);
 
             // establecemos conexion
             URLConnection urlCon = url.openConnection();
@@ -79,7 +91,8 @@ public class MCS
             // Se obtiene el inputStream de la foto web y se abre el fichero
             // local.
             InputStream is = urlCon.getInputStream();
-            FileOutputStream fos = new FileOutputStream("/home/edgerik/foto1.jpg");
+            
+            FileOutputStream fos = new FileOutputStream(dire);
 
             // Lectura de la foto de la web y escritura en fichero local
             byte[] array = new byte[1000]; // buffer temporal de lectura.
@@ -92,8 +105,11 @@ public class MCS
             // cierre de conexion y fichero.
             is.close();
             fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            
+            //ImageIO.write(imagen, "jpg", dir);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("No se ha podido cargar la imagen");
         }
     }
 
@@ -104,6 +120,7 @@ public class MCS
     public String[] funcionJson(String json) throws ParseException
     {
         String[] rets = {"","","",""};
+        System.out.println(json);
 
         JSONParser parser = new JSONParser();
 
@@ -114,29 +131,55 @@ public class MCS
         JSONObject descripcion = (JSONObject) jsonObject.get("description");
 
         // loop array
-        JSONArray tags = (JSONArray) descripcion.get("tags");
-        Iterator<String> iterator = tags.iterator();
+        try{
+            JSONArray tags = (JSONArray) descripcion.get("tags");
+            Iterator<String> iterator = tags.iterator();
 
-        JSONArray caption = (JSONArray) descripcion.get("captions");
-        Iterator<JSONObject> iter = caption.iterator();
-        JSONObject text = iter.next();
-        String texto = (String) text.get("text");
-        rets[0] = texto;
-        for(int i = 1; i<4;i++)
-        {
-            if(iterator.hasNext()){
-                rets[i]= iterator.next();
+            JSONArray caption = (JSONArray) descripcion.get("captions");
+            Iterator<JSONObject> iter = caption.iterator();
+            JSONObject text = iter.next();
+            String texto = (String) text.get("text");
+            rets[0] = texto;
+            for(int i = 1; i<4;i++)
+            {
+                if(iterator.hasNext()){
+                    rets[i]= iterator.next();
+                }
             }
+        }catch(NullPointerException e)
+        {
+            rets[0]= "El url no es accesible, intente con otra imagen";
         }
         
-        
-        System.out.println(texto);
+        //System.out.println(texto);
         
         
     //manejo de error
         return rets;
     }
     
+public String[] funcionJsonError(String json, String response) throws ParseException
+    {
+        String[] rets = {"","","",""};
+        //System.out.println(json);
 
+        JSONParser parser = new JSONParser();
+
+        Object obj = parser.parse(json);
+
+        JSONObject jsonObject = (JSONObject) obj;
+
+        String code = (String) jsonObject.get("code");
+
+        // loop array
+        String mensaje = (String) jsonObject.get("message");
+        
+        rets[0] = response;
+        rets[1] = code;
+        rets[2] = mensaje;
+        
+    //manejo de error
+        return rets;
+    }
 
 }
