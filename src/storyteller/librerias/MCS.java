@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -80,37 +81,41 @@ public class MCS
 		//Empieza la lectura de la foto, proceso del cognitive services 
 		HttpClient httpclient = HttpClients.createDefault();
 		
-		//Procemiento del album
-		while(true)
+
+		try
 		{
 			//
-			try
+			URIBuilder builder = new URIBuilder("https://westus.api.cognitive.microsoft.com/vision/v1.0/describe");
+            builder.setParameter("maxCandidates", "1");
+           
+            URI uri = builder.build();
+            HttpPost request = new HttpPost(uri);
+            //HttpPut request = new HttpPut("westus.api.cognitive.microsoft.com");
+            
+           
+		    request.setHeader("Content-Type", "application/json");
+		    request.setHeader("Ocp-Apim-Subscription-Key", "65bafc9674c94c4aa62815cce7552de8");
+		    //request body
+		    StringEntity reqEntity = new StringEntity("{\"url\":\"http://www.infotigres.com/Imagenes/caracteristicas-del-cuerpo-del-tigre.jpg\"}");   
+		    request.setEntity(reqEntity);
+		    
+		    HttpResponse response = httpclient.execute(request);
+		    HttpEntity entity = response.getEntity();
+		    //
+			if (entity != null) 
 			{
-				//
-				URIBuilder builder = new URIBuilder("https://westus.api.cognitive.microsoft.com/vision/v1.0/tag");
-			    URI uri = builder.build();
-			    HttpPost request = new HttpPost(uri);
-			    request.setHeader("Content-Type", "application/json");
-			    request.setHeader("Ocp-Apim-Subscription-Key", "{subscription key}");
-			    //request body
-			    StringEntity reqEntity = new StringEntity("{body}");   
-			    request.setEntity(reqEntity);
-			    HttpResponse response = httpclient.execute(request);
-			    HttpEntity entity = response.getEntity();
-			    //
-				if (entity != null) 
-				{
-					//JSON
-					System.out.println(EntityUtils.toString(entity));
-				}  
+				//JSON
+				System.out.println(EntityUtils.toString(entity));
+				
+			}  
+		//
+		}catch (Exception e)
+	    {
 			//
-			}catch (Exception e)
-		    {
-				//
-				System.out.println(e.getMessage());
-		    }
-		}
-	
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+	    }
+			
 	}
 	
 	 
