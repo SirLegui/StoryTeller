@@ -68,6 +68,7 @@ public class MCS
     public void getImage(String urli) throws MalformedURLException, FileNotFoundException, IOException{
         // Url con la foto
         try{
+            //
             URL url = new URL(urli);
 
             // establecemos conexion
@@ -82,9 +83,9 @@ public class MCS
             FileOutputStream fos = new FileOutputStream("/home/edgerik/foto1.jpg");
 
             // Lectura de la foto de la web y escritura en fichero local
-            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            byte[] array = new byte[1000];        // buffer temporal de lectura.
             int leido = is.read(array);
-            while (leido > 0) {
+            while (leido > 0) {                   // imprime la foto
                     fos.write(array, 0, leido);
                     leido = is.read(array);
             }
@@ -98,45 +99,39 @@ public class MCS
     }
 
     /*
-     *
-     *
      */
     public String[] funcionJson(String json) throws ParseException
     {
-        String[] rets = {"","","",""};
-
+        // creo string de datos
+        String[] rets = {"","","",""};      // descripcion, 3 tags
+        // creo el JSON y entro a la etiqueta principal
         JSONParser parser = new JSONParser();
-
         Object obj = parser.parse(json);
-
         JSONObject jsonObject = (JSONObject) obj;
-
         JSONObject descripcion = (JSONObject) jsonObject.get("description");
-
-        // loop array
+        // entro a los tags 
         JSONArray tags = (JSONArray) descripcion.get("tags");
         Iterator<String> iterator = tags.iterator();
-
+        // entro a la descripcion y hagarra la descripcion con mas puntaje
         JSONArray caption = (JSONArray) descripcion.get("captions");
         Iterator<JSONObject> iter = caption.iterator();
         JSONObject text = iter.next();
         String texto = (String) text.get("text");
         rets[0] = texto;
+        // hagarra los primeros 3
         for(int i = 1; i<4;i++)
         {
             if(iterator.hasNext()){
                 rets[i]= iterator.next();
             }
         }
-        
-        
-        System.out.println(texto);
-        
-        
-    //manejo de error
+        //System.out.println(texto);      
+        //manejo de error
         return rets;
     }
-    
+    /*
+    ----------------------------------------------------------------------------
+    */
 
 
 }
