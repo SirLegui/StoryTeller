@@ -31,6 +31,52 @@ public class MCS
 	 * 
 	 * 
 	 */
+	public static void main(String[] args) 
+	{
+		//Empieza la lectura de la foto, proceso del cognitive services 
+		HttpClient httpclient = HttpClients.createDefault();
+		
+
+		try
+		{
+			//
+			URIBuilder builder = new URIBuilder("https://westus.api.cognitive.microsoft.com/vision/v1.0/describe");
+            builder.setParameter("maxCandidates", "1");
+           
+            URI uri = builder.build();
+            HttpPost request = new HttpPost(uri);
+            //HttpPut request = new HttpPut("westus.api.cognitive.microsoft.com");
+            
+           
+		    request.setHeader("Content-Type", "application/json");
+		    request.setHeader("Ocp-Apim-Subscription-Key", "65bafc9674c94c4aa62815cce7552de8");
+		    
+		    //request body
+		    StringEntity reqEntity = new StringEntity("{\"url\":\"http://www.infotigres.com/Imagenes/caracteristicas-del-cuerpo-del-tigre.jpg\"}");   
+		    request.setEntity(reqEntity);
+		    
+		    HttpResponse response = httpclient.execute(request);
+		    HttpEntity entity = response.getEntity();
+		    //
+			if (entity != null) 
+			{
+				//JSON
+				System.out.println(EntityUtils.toString(entity));
+				
+			}  
+		//
+		}catch (Exception e)
+	    {
+			//
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+	    }
+			
+	}
+	/*
+	 * 
+	 * 
+	 */
 	public void funcionJson() 
 	{
 		  
@@ -68,60 +114,12 @@ public class MCS
 		} catch (ParseException e) {
 			//manejo de error
 		}
-
-		
-
-	}
-	/*
-	 * 
-	 * 
-	 */
-	public static void main(String[] args) 
-	{
-		//Empieza la lectura de la foto, proceso del cognitive services 
-		HttpClient httpclient = HttpClients.createDefault();
-		
-
-		try
-		{
-			//
-			URIBuilder builder = new URIBuilder("https://westus.api.cognitive.microsoft.com/vision/v1.0/describe");
-            builder.setParameter("maxCandidates", "1");
-           
-            URI uri = builder.build();
-            HttpPost request = new HttpPost(uri);
-            //HttpPut request = new HttpPut("westus.api.cognitive.microsoft.com");
-            
-           
-		    request.setHeader("Content-Type", "application/json");
-		    request.setHeader("Ocp-Apim-Subscription-Key", "65bafc9674c94c4aa62815cce7552de8");
-		    //request body
-		    StringEntity reqEntity = new StringEntity("{\"url\":\"http://www.infotigres.com/Imagenes/caracteristicas-del-cuerpo-del-tigre.jpg\"}");   
-		    request.setEntity(reqEntity);
-		    
-		    HttpResponse response = httpclient.execute(request);
-		    HttpEntity entity = response.getEntity();
-		    //
-			if (entity != null) 
-			{
-				//JSON
-				System.out.println(EntityUtils.toString(entity));
-				
-			}  
-		//
-		}catch (Exception e)
-	    {
-			//
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-	    }
-			
-	}
-	
+	}	
 	 
+//Termina el program StoryTeller----------------------------------------
 }	
 
-/*
+/*CODIGO DE PRUEBA-------------------------------------------------------
 
 @Override
 	 public int sendPut(String data, String url) 
