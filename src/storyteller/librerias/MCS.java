@@ -41,6 +41,7 @@ import org.json.simple.parser.ParseException;
 public class MCS
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	/*
 	 * 
 	 * 
@@ -100,6 +101,8 @@ public class MCS
 
 			Object obj = parser.parse(new FileReader("c:\\FileTests\\prueba.json"));
 =======
+=======
+>>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
     /**
      * 
      *@param url: Link de la imagen a procesar
@@ -138,6 +141,9 @@ public class MCS
         }
         return rets;
     }
+<<<<<<< HEAD
+>>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
+=======
 >>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
 
     /**
@@ -179,6 +185,7 @@ public class MCS
             return rets;
         }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 			String temas = (String) jsonObject.get("Temas");
 			System.out.println(temas);
@@ -242,11 +249,75 @@ public class MCS
             // cierre de conexion y fichero.
             is.close();
             fos.close();
+=======
+    /**
+     * 
+     * @param urli Link de la imagen a descargar
+     * @param dire Direccion de guardado de la imagen
+     * @throws MalformedURLException
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public void getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException{
+        // Url con la foto
+        try{
+            URL url = new URL(urli);
+            //File dir = new File(dire);
+            // establecemos conexion
+            URLConnection urlCon = url.openConnection();
+            // Sacamos por pantalla el tipo de fichero
+            System.out.println(urlCon.getContentType());
+            // Se obtiene el inputStream de la foto web y se abre el fichero
+            // local.
+            //System.out.println(dire);
+            InputStream is = urlCon.getInputStream();
+            FileOutputStream fos = new FileOutputStream(dire);
+            // Lectura de la foto de la web y escritura en fichero local
+            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            int leido = is.read(array);
+            while (leido > 0) {
+                    fos.write(array, 0, leido);
+                    leido = is.read(array);
+            }
+            // cierre de conexion y fichero.
+            is.close();
+            fos.close();
             //ImageIO.write(imagen, "jpg", dir);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("No se ha podido cargar la imagen");
         }
+    }
+
+    /**
+     * 
+     * @param dire ruta de la imagen
+     * @return byte[] de la imagen solicitada
+     * @throws MalformedURLException
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public byte[] getImageBYTES(String dire) throws MalformedURLException, FileNotFoundException, IOException{
+        // Url con la foto
+        byte[] datos = new byte[2000];
+        try{
+            // open image
+            File imgPath = new File(dire);
+            BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+            // get DataBufferBytes from Raster
+            WritableRaster raster = bufferedImage .getRaster();
+            DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+
+            datos = data.getData();
+            
+>>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
+            //ImageIO.write(imagen, "jpg", dir);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("No se ha podido cargar la imagen");
+        }
+<<<<<<< HEAD
     }
 
     /**
@@ -308,6 +379,39 @@ public class MCS
             
 >>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
 
+=======
+        return datos;
+    }
+    
+    /**
+     * Recibe el json y retorna una lista de Strings. 
+     *@param json: Contiene el json (sin errores) de la respuesta del api
+     *@return String[0]: Descripcion ("text") de la imagen , String[1-3]: Las etiquetas ("tags") de la imagen
+     *@throws org.json.simple.parser.ParseException cuando no se pudo leer el json correctamente
+     */
+    public String[] funcionJson(String json) throws ParseException
+    {
+        // creo el string de datos, (descrpcion y 3 tags)
+        String[] rets = {"","","",""};
+        //System.out.println(json);
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(json);
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONObject descripcion = (JSONObject) jsonObject.get("description");
+        // loop array
+        try
+        {
+            //
+            JSONArray tags = (JSONArray) descripcion.get("tags");
+            Iterator<String> iterator = tags.iterator();
+            //
+            JSONArray caption = (JSONArray) descripcion.get("captions");
+            Iterator<JSONObject> iter = caption.iterator();
+            JSONObject text = iter.next();
+            String texto = (String) text.get("text");
+            
+
+>>>>>>> 3242aef182fb3d791b50f29d2378ddb73504e4fc
             rets[0] = texto;
             for(int i = 1; i<4;i++)
             {
