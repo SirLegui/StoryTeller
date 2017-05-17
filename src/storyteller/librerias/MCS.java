@@ -232,7 +232,7 @@ public class MCS
      * 
      * @param json : Contiene un json solo con mensajes de error
      * @param response : Contiene el codigo de error
-     * @return Strin[0]: Nombre del error, String[1]: Descripcion del error
+     * @return Strin[0]: Nombre del error, String[1]: Descripcion del error, String[2]: Mensaje de error
      * @throws ParseException 
      */
     public String[] funcionJsonError(String json, String response) throws ParseException
