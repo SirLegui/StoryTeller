@@ -6,8 +6,9 @@ package storyteller.Estructura;
  */
 public class Nodo<T> {
     /*Variables Globales*/
-    int key, height;
-    Nodo<T> left, right;
+    private T Value;
+    private Nodo<T> left, right;
+    private int key, height;
     /*Constructores*/
     public Nodo()
     {
@@ -18,6 +19,46 @@ public class Nodo<T> {
         key = d;
         height = 1;
     }
+    //Gets y Sets
+    public T getValue() {
+        return Value;
+    }
+
+    public void setValue(T Value) {
+        this.Value = Value;
+    }
+
+    public Nodo<T> getLeft() {
+        return left;
+    }
+
+    public void setLeft(Nodo<T> left) {
+        this.left = left;
+    }
+
+    public Nodo<T> getRight() {
+        return right;
+    }
+
+    public void setRight(Nodo<T> right) {
+        this.right = right;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
     
-    //Fin..
+    //
 }
