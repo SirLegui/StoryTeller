@@ -8,6 +8,7 @@ public class ArbolAVL<T>
 {
     /*Variables Globales*/
     private Nodo<T> raiz;
+    
     /*Constructor*/
     public ArbolAVL()
     {
@@ -73,62 +74,62 @@ public class ArbolAVL<T>
     }
  
     //Inserto nodo en el avl, con sus debidos casos a efectuar
-    public Nodo<T> insert(Nodo<T> node, int key) 
+    public Nodo<T> insert(Nodo<T> nodo, int llave) 
     {
         //Caso de que el avl este vacio
-        if (node == null)
-            return (new Nodo(key));
+        if (nodo == null)
+            return (new Nodo(llave));
         //Caso si es menor
-        if (key < node.getKey())
-            node.setLeft(insert(node.getLeft(), key));
+        if (llave < nodo.getKey())
+            nodo.setLeft(insert(nodo.getLeft(), llave));
         //Caso si es mayor
-        else if (key > node.getKey())
-            node.setRight(insert(node.getRight(), key));
+        else if (llave > nodo.getKey())
+            nodo.setRight(insert(nodo.getRight(), llave));
         //No se permiten claves duplicadas
         else
-            return node;
+            return nodo;
  
         //Actualizo la altura del nodo actual
-        node.setHeight(1 + getMax(getHeight(node.getLeft()),
-                              getHeight(node.getRight())));
+        nodo.setHeight(1 + getMax(getHeight(nodo.getLeft()),
+                              getHeight(nodo.getRight())));
 
         //Obtengo el factor balanceado del nodo actul 
         //para comprobar si este nodo se desequilibrado
-        int balance = getBalance(node);
+        int balance = getBalance(nodo);
  
         //Si el nodo esta desbalanceado, se efectua los siguientes casos.
         //Left Left Case
-        if (balance > 1 && key < node.getLeft().getKey())
-            return rotacionDerecha(node);
+        if (balance > 1 && llave < nodo.getLeft().getKey())
+            return rotacionDerecha(nodo);
  
         //Right Right Case
-        if (balance < -1 && key > node.getRight().getKey())
-            return rotacionIzquierda(node);
+        if (balance < -1 && llave > nodo.getRight().getKey())
+            return rotacionIzquierda(nodo);
  
         //Left Right Case
-        if (balance > 1 && key > node.getLeft().getKey()) {
-            node.setLeft(rotacionIzquierda(node.getLeft()));
-            return rotacionDerecha(node);
+        if (balance > 1 && llave > nodo.getLeft().getKey()) {
+            nodo.setLeft(rotacionIzquierda(nodo.getLeft()));
+            return rotacionDerecha(nodo);
         }
  
         // Right Left Case
-        if (balance < -1 && key < node.getRight().getKey()) {
-            node.setRight(rotacionDerecha(node.getRight()));
-            return rotacionIzquierda(node);
+        if (balance < -1 && llave < nodo.getRight().getKey()) {
+            nodo.setRight(rotacionDerecha(nodo.getRight()));
+            return rotacionIzquierda(nodo);
         }
         
         //Devuelve el puntero del nodo sin cambios 
-        return node;
+        return nodo;
     }
  
     //Preorden
-    public void preOrder(Nodo<T> nodo) 
+    public void preOrden(Nodo<T> nodo) 
     {
         if (nodo != null) 
         {
             System.out.print(nodo.getKey() + " ");
-            preOrder(nodo.getLeft());
-            preOrder(nodo.getRight());
+            preOrden(nodo.getLeft());
+            preOrden(nodo.getRight());
         }
     }
     
@@ -176,7 +177,7 @@ public class ArbolAVL<T>
         //10   25    50
 
         //
-        tree.preOrder(tree.raiz);
+        tree.preOrden(tree.raiz);
         System.out.println("\n");
         tree.inOrden(tree.raiz);
         System.out.println("\n");
