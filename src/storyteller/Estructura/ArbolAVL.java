@@ -12,7 +12,7 @@ public class ArbolAVL<T>
     public ArbolAVL()
     {
         //Inicializo variables globales
-        this.raiz = new Nodo<T>();
+        this.raiz = null;
     }
     
     //Retorna el ancho del avl
@@ -21,7 +21,7 @@ public class ArbolAVL<T>
         if (Nodo == null)
             return 0;
  
-        return Nodo.height;
+        return Nodo.getHeight();
     }
  
     //Obtiene el maximo entre dos valores
@@ -34,14 +34,14 @@ public class ArbolAVL<T>
     public Nodo<T> rotacionDerecha(Nodo<T> y) 
     {
         //Inicializo nodos izq y der.
-        Nodo<T> x = y.left;
-        Nodo<T> T2 = x.right;
+        Nodo<T> x = y.getLeft();
+        Nodo<T> T2 = x.getRight();
         //Realiza rotaciones
-        x.right = y;
-        y.left = T2;
+        x.setRight(y);
+        y.setLeft(T2);
         //Actualiza las alturas
-        y.height = getMax(getHeight(y.left), getHeight(y.right)) + 1;
-        x.height = getMax(getHeight(x.left), getHeight(x.right)) + 1;
+        y.setHeight(getMax(getHeight(y.getLeft()), getHeight(y.getRight())) + 1);
+        x.setHeight(getMax(getHeight(x.getLeft()), getHeight(x.getRight())) + 1);
         //Retorno nueva raiz
         return x;
     }
@@ -50,14 +50,14 @@ public class ArbolAVL<T>
     public Nodo<T> rotacionIzquierda(Nodo<T> x) 
     {
         //Inicializo nodos izq y der.
-        Nodo<T> y = x.right;
-        Nodo<T> T2 = y.left;
+        Nodo<T> y = x.getRight();
+        Nodo<T> T2 = y.getLeft();
         //Realiza rotaciones
-        y.left = x;
-        x.right = T2;
+        y.setLeft(x);
+        x.setRight(T2);
         //Actualiza las alturas
-        x.height = getMax(getHeight(x.left), getHeight(x.right)) + 1;
-        y.height = getMax(getHeight(y.left), getHeight(y.right)) + 1;
+        x.setHeight(getMax(getHeight(x.getLeft()), getHeight(x.getRight())) + 1);
+        y.setHeight(getMax(getHeight(y.getLeft()), getHeight(y.getRight())) + 1);
         //Retorno nueva raiz
         return y;
     }
@@ -69,7 +69,7 @@ public class ArbolAVL<T>
         if (Nodo == null)
             return 0;
         //Obtengo la altura del nodo deseado
-        return getHeight(Nodo.left) - getHeight(Nodo.right);
+        return getHeight(Nodo.getLeft()) - getHeight(Nodo.getRight());
     }
  
     //Inserto nodo en el avl, con sus debidos casos a efectuar
@@ -79,18 +79,18 @@ public class ArbolAVL<T>
         if (node == null)
             return (new Nodo(key));
         //Caso si es menor
-        if (key < node.key)
-            node.left = insert(node.left, key);
+        if (key < node.getKey())
+            node.setLeft(insert(node.getLeft(), key));
         //Caso si es mayor
-        else if (key > node.key)
-            node.right = insert(node.right, key);
+        else if (key > node.getKey())
+            node.setRight(insert(node.getRight(), key));
         //No se permiten claves duplicadas
         else
             return node;
  
         //Actualizo la altura del nodo actual
-        node.height = 1 + getMax(getHeight(node.left),
-                              getHeight(node.right));
+        node.setHeight(1 + getMax(getHeight(node.getLeft()),
+                              getHeight(node.getRight())));
 
         //Obtengo el factor balanceado del nodo actul 
         //para comprobar si este nodo se desequilibrado
@@ -98,22 +98,22 @@ public class ArbolAVL<T>
  
         //Si el nodo esta desbalanceado, se efectua los siguientes casos.
         //Left Left Case
-        if (balance > 1 && key < node.left.key)
+        if (balance > 1 && key < node.getLeft().getKey())
             return rotacionDerecha(node);
  
         //Right Right Case
-        if (balance < -1 && key > node.right.key)
+        if (balance < -1 && key > node.getRight().getKey())
             return rotacionIzquierda(node);
  
         //Left Right Case
-        if (balance > 1 && key > node.left.key) {
-            node.left = rotacionIzquierda(node.left);
+        if (balance > 1 && key > node.getLeft().getKey()) {
+            node.setLeft(rotacionIzquierda(node.getLeft()));
             return rotacionDerecha(node);
         }
  
         // Right Left Case
-        if (balance < -1 && key < node.right.key) {
-            node.right = rotacionDerecha(node.right);
+        if (balance < -1 && key < node.getRight().getKey()) {
+            node.setRight(rotacionDerecha(node.getRight()));
             return rotacionIzquierda(node);
         }
         
@@ -126,9 +126,9 @@ public class ArbolAVL<T>
     {
         if (nodo != null) 
         {
-            System.out.print(nodo.key + " ");
-            preOrder(nodo.left);
-            preOrder(nodo.right);
+            System.out.print(nodo.getKey() + " ");
+            preOrder(nodo.getLeft());
+            preOrder(nodo.getRight());
         }
     }
     
@@ -137,37 +137,51 @@ public class ArbolAVL<T>
     {
         if(nodo != null)
         {
-            preOrder(nodo.left);
-            System.out.print(nodo.key + " ");
-            preOrder(nodo.right);
+            inOrden(nodo.getLeft());
+            System.out.print(nodo.getKey() + " ");
+            inOrden(nodo.getRight());
+        }
+    }
+    
+    //PostOrden
+    public void postOrden(Nodo<T> nodo)
+    {
+        if(nodo != null)
+        {
+            postOrden(nodo.getLeft());
+            postOrden(nodo.getRight());
+            System.out.print(nodo.getKey() + " ");
         }
     }
     
     //Main
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
+        //
         ArbolAVL tree = new ArbolAVL();
  
-        //Constructing tree given in the above figure 
+        //
         tree.raiz = tree.insert(tree.raiz, 10);
         tree.raiz = tree.insert(tree.raiz, 20);
         tree.raiz = tree.insert(tree.raiz, 30);
         tree.raiz = tree.insert(tree.raiz, 40);
         tree.raiz = tree.insert(tree.raiz, 50);
         tree.raiz = tree.insert(tree.raiz, 25);
-        tree.raiz = tree.insert(tree.raiz, 49);
- 
+
         //The constructed AVL Tree would be
         //     30
         //    /  \
         //  20   40
         // /  \     \
-        //10  25    50
-        
-        System.out.println("Preorder traversal" +
-                        " of constructed tree is : ");
+        //10   25    50
+
+        //
         tree.preOrder(tree.raiz);
         System.out.println("\n");
         tree.inOrden(tree.raiz);
+        System.out.println("\n");
+        tree.postOrden(tree.raiz);
+
     }
 
     //Fin..
