@@ -14,7 +14,8 @@ public class Nodo<T> {
     /*Constructores*/
     public Nodo()
     {
-        
+        left = null;
+		right = null;
     }
     public Nodo(int d) 
     {
