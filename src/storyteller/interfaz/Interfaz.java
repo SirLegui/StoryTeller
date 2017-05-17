@@ -19,7 +19,7 @@ public class Interfaz extends javax.swing.JFrame
         //Inicializa la interfaz
         initComponents();
         //Inicializo lugar donde se guardan las fotos
-        direccion_guardado = "/home/edgerik/Desktop/";
+        direccion_guardado = "C:\\Users\\Usuario1\\Desktop";
         //Clases a usar;
         
         //
