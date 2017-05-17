@@ -7,8 +7,10 @@ package storyteller.Estructura;
 public class Nodo<T> {
     /*Variables Globales*/
     private T Value;
-    private Nodo<T> left, right;
-    private int key, height;
+    private Nodo<T> left;
+    private Nodo<T> right;
+    private int key;
+    private int height;
     /*Constructores*/
     public Nodo()
     {
