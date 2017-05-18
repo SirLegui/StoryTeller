@@ -1,7 +1,12 @@
 package storyteller.interfaz;
 //Librerias a importar
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import org.json.simple.parser.ParseException;
 import storyteller.program.Logica;
 /**
  * @author jeremy
@@ -19,42 +24,48 @@ public class Interfaz extends javax.swing.JFrame
         //Inicializa la interfaz
         initComponents();
         //Inicializo lugar donde se guardan las fotos
-        direccion_guardado = "C:\\Users\\Usuario1\\Desktop";
-        //Clases a usar;
         
         //
     }
 
-    public void setControlador(Logica controlador) {
+    public void setControlador(Logica controlador) 
+    {
         this.controlador = controlador;
     }
     
     //Gets y Sets
-    public JTextField getDireccion_imagen() {
+    public JTextField getDireccion_imagen() 
+    {
         return direccion_imagen;
     }
 
-    public int aumentarFoto() {
+    public int aumentarFoto() 
+    {
         return foto++;
     }
 
-    public JLabel getLblDescripcion() {
+    public JLabel getLblDescripcion() 
+    {
         return lblDescripcion;
     }
 
-    public JLabel getLblFoto() {
+    public JLabel getLblFoto() 
+    {
         return lblFoto;
     }
 
-    public JLabel getLblTag1() {
+    public JLabel getLblTag1() 
+    {
         return lblTag1;
     }
 
-    public JLabel getLblTag2() {
+    public JLabel getLblTag2() 
+    {
         return lblTag2;
     }
 
-    public JLabel getLblTag3() {
+    public JLabel getLblTag3() 
+    {
         return lblTag3;
     }
 
@@ -67,6 +78,7 @@ public class Interfaz extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        save_path = new javax.swing.JFileChooser();
         lblFoto = new javax.swing.JLabel();
         direccion_imagen = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
@@ -75,6 +87,11 @@ public class Interfaz extends javax.swing.JFrame
         lblTag3 = new javax.swing.JLabel();
         Cargar = new javax.swing.JButton();
         Procesar = new javax.swing.JButton();
+
+        save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        save_path.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+        save_path.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        save_path.setBorder(new javax.swing.border.MatteBorder(null));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,11 +173,18 @@ public class Interfaz extends javax.swing.JFrame
     */
 
     public String getDireccion_guardado() {
+        save_path.showSaveDialog(this);
+        
+        direccion_guardado = ((File) save_path.getSelectedFile()).getAbsolutePath();
         return direccion_guardado;
     }
 
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
-        controlador.botonCargar();
+        try {
+            controlador.botonCargar();
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_CargarActionPerformed
  
     /**
@@ -209,5 +233,6 @@ public class Interfaz extends javax.swing.JFrame
     private javax.swing.JLabel lblTag1;
     private javax.swing.JLabel lblTag2;
     private javax.swing.JLabel lblTag3;
+    private javax.swing.JFileChooser save_path;
     // End of variables declaration//GEN-END:variables
 }

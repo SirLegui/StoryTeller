@@ -1,13 +1,20 @@
 //Progra 02 - StoryTeller
 package storyteller.program;
 
+
 import java.awt.Image;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import storyteller.interfaz.Interfaz;
 import storyteller.librerias.MCS;
 
@@ -37,28 +44,35 @@ public class Logica {
     
     //Funciones StoryTeller-----------------------------------------------------
     //Boton Cargar.
-    public void botonCargar()
+    public void botonCargar() throws IOException, ParseException
     {
         MCS api = new MCS();
-        String[] rets = null;
-        //FileChooser fc = new FileChooser();
-        //fc.showOpenDialog(null);
-        ImageIcon icon = new ImageIcon(interfaz.getDireccion_imagen().getText());
-        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
-        interfaz.getLblFoto().setIcon( icono );
-        try {
-            rets = api.getDescriptionBYTES(api.getImageBYTES(interfaz.getDireccion_imagen().getText()));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        interfaz.getLblFoto().setText(null);
-        interfaz.getLblDescripcion().setText(rets[0]);
-        interfaz.getLblTag1().setText(rets[1]);
-        interfaz.getLblTag2().setText(rets[2]);
-        interfaz.getLblTag3().setText(rets[3]);
-        interfaz.aumentarFoto();
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader("Prueba.json"));
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray urls = (JSONArray) jsonObject.get("urls");
+        Iterator<JSONObject> iter = urls.iterator();
+        do{
+            String[] rets = null;
+            //FileChooser fc = new FileChooser();
+            //fc.showOpenDialog(null);
+            ImageIcon icon = new ImageIcon(interfaz.getDireccion_imagen().getText());
+            Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
+            interfaz.getLblFoto().setIcon( icono );
+            try {
+                rets = api.getDescriptionBYTES(api.getImageBYTES(interfaz.getDireccion_imagen().getText()));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            interfaz.getLblFoto().setText(null);
+            interfaz.getLblDescripcion().setText(rets[0]);
+            interfaz.getLblTag1().setText(rets[1]);
+            interfaz.getLblTag2().setText(rets[2]);
+            interfaz.getLblTag3().setText(rets[3]);
+            interfaz.aumentarFoto();
+        }while(iter.hasNext());
     }
     
     //Boton Procesar.

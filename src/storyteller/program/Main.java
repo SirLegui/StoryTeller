@@ -14,14 +14,14 @@ public class Main {
 	EventQueue.invokeLater(() -> {
             try {
                 //String prueba = "{\"description\":{\"tags\":[\"cat\",\"laying\",\"animal\",\"indoor\",\"mammal\",\"lying\",\"top\",\"bed\",\"sitting\",\"sleeping\",\"orange\",\"blanket\",\"white\",\"grey\",\"blue\",\"red\",\"playing\"],\"captions\":[{\"text\":\"a cat lying on a bed\",\"confidence\":0.9485613629872266}]},\"requestId\":\"d682908f-ad5d-434f-9fb8-f948784e141c\",\"metadata\":{\"width\":460,\"height\":260,\"format\":\"Jpeg\"}}";
-
+                
                 Interfaz v1 = new Interfaz();
                 Logica c = new Logica();
                 v1.setControlador(c);
                 c.setInterfaz(v1);
                 v1.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("ERROR FATAL");
             }
         }); 
 		//-------------------		
