@@ -29,11 +29,11 @@ public class Logica {
     private Object obj;
     private JSONObject jsonObject;
     private JSONArray urls;
-    private Iterator<JSONObject> iter;
+    private Iterator<String> iter;
     private String[] rets;
     private ImageIcon icon;
     private Icon icono; 
-    private String local;
+    private String local, actual;
     //Clases a usar
     private Interfaz interfaz;
 	private MCS api;
@@ -56,10 +56,10 @@ public class Logica {
         this.icono = null;
         this.local = null;
         this.numbers = null;
-        this.number = null;
-        this.i = null;
-        this.j = null;
-        this.pivot = null;
+        this.number = 0;
+        this.i = 0;
+        this.j = 0;
+        this.pivot = 0;
     }
     // Inicializo Interfaz
     public void setInterfaz(Interfaz interfaz) {
@@ -76,30 +76,43 @@ public class Logica {
     {
         api = new MCS();
         parser = new JSONParser();
-        obj = parser.parse(new FileReader("Prueba.json"));
+        obj = parser.parse(new FileReader("/home/edgerik/StoryTeller/src/storyteller/program/Prueba.json"));
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
         do{
+            actual = iter.next();
+            System.out.println(actual);
             rets = null;
             //FileChooser fc = new FileChooser();
             //fc.showOpenDialog(null);
-            icon = new ImageIcon(interfaz.getDireccion_imagen().getText());
-            icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
-            interfaz.getLblFoto().setIcon( icono );
+            local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
+            System.out.println(local);
             try {
-                rets = api.getDescriptionBYTES(api.getImageBYTES(interfaz.getDireccion_imagen().getText()));
+                api.getImage(actual, local);
+                rets = api.getDescription(actual);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             }
+            System.out.println(rets);
+            icon = new ImageIcon(local);
+            icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
+            interfaz.getLblFoto().setIcon( icono );
+            
             interfaz.getLblFoto().setText(null);
             interfaz.getLblDescripcion().setText(rets[0]);
             interfaz.getLblTag1().setText(rets[1]);
             interfaz.getLblTag2().setText(rets[2]);
             interfaz.getLblTag3().setText(rets[3]);
             interfaz.aumentarFoto();
+            interfaz.repaint();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }while(iter.hasNext());
     }
     
