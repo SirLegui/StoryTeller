@@ -29,11 +29,31 @@ public class Logica {
     
     //Clases a usar
     Interfaz interfaz;
+    MCS api;
+    JSONParser parser;
+    Object obj;
+    JSONObject jsonObject;
+    JSONArray urls;
+    Iterator<JSONObject> iter;
+    String[] rets;
+    ImageIcon icon;
+    Icon icono;
     
     //Constructor---------------------------------------------------------------
-    public Logica()
-    {
-    }        
+
+    public Logica() {
+        this.interfaz = null;
+        this.api = null;
+        this.parser = null;
+        this.obj = null;
+        this.jsonObject = null;
+        this.urls = null;
+        this.iter = null;
+        this.rets = null;
+        this.icon = null;
+        this.icono = null;
+    }
+     
 
     public void setInterfaz(Interfaz interfaz) {
         this.interfaz = interfaz;
@@ -46,18 +66,18 @@ public class Logica {
     //Boton Cargar.
     public void botonCargar() throws IOException, ParseException
     {
-        MCS api = new MCS();
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader("Prueba.json"));
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONArray urls = (JSONArray) jsonObject.get("urls");
-        Iterator<JSONObject> iter = urls.iterator();
+        api = new MCS();
+        parser = new JSONParser();
+        obj = parser.parse(new FileReader("Prueba.json"));
+        jsonObject = (JSONObject) obj;
+        urls = (JSONArray) jsonObject.get("urls");
+        iter = urls.iterator();
         do{
-            String[] rets = null;
+            rets = null;
             //FileChooser fc = new FileChooser();
             //fc.showOpenDialog(null);
-            ImageIcon icon = new ImageIcon(interfaz.getDireccion_imagen().getText());
-            Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
+            icon = new ImageIcon(interfaz.getDireccion_imagen().getText());
+            icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
             interfaz.getLblFoto().setIcon( icono );
             try {
                 rets = api.getDescriptionBYTES(api.getImageBYTES(interfaz.getDireccion_imagen().getText()));
@@ -78,8 +98,8 @@ public class Logica {
     //Boton Procesar.
     public void botonProcesar()
     {
-        MCS api = new MCS();
-        String[] rets = null;
+        api = new MCS();
+        rets = null;
         //FileChooser fc = new FileChooser();
         //fc.showOpenDialog(null);
         String local = interfaz.getDireccion_guardado() + "imagen"+Integer.toString(interfaz.getFoto())+".jpg";
@@ -92,8 +112,8 @@ public class Logica {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        ImageIcon icon = new ImageIcon(local);
-        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
+        icon = new ImageIcon(local);
+        icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
         interfaz.getLblFoto().setIcon( icono );
         
         interfaz.getLblFoto().setText(null);
