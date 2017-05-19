@@ -25,25 +25,27 @@ import storyteller.librerias.MCS;
  */
 public class Logica {
     //Variables globales-------------------------------------------------------
-    
-    
+    private JSONParser parser;
+    private Object obj;
+    private JSONObject jsonObject;
+    private JSONArray urls;
+    private Iterator<JSONObject> iter;
+    private String[] rets;
+    private ImageIcon icon;
+    private Icon icono; 
+    private String local;
     //Clases a usar
-    Interfaz interfaz;
-    MCS api;
-    JSONParser parser;
-    Object obj;
-    JSONObject jsonObject;
-    JSONArray urls;
-    Iterator<JSONObject> iter;
-    String[] rets;
-    ImageIcon icon;
-    Icon icono;
-    
+    private Interfaz interfaz;
+	private MCS api;
+    // Variables del quicksort
+    private int[] numbers;
+    private int number;
+    private int i, j, pivot;
     //Constructor---------------------------------------------------------------
-
-    public Logica() {
+    public Logica() 
+    {
+		this.api = new MCS();
         this.interfaz = null;
-        this.api = null;
         this.parser = null;
         this.obj = null;
         this.jsonObject = null;
@@ -52,17 +54,23 @@ public class Logica {
         this.rets = null;
         this.icon = null;
         this.icono = null;
+        this.local = null;
+        this.numbers = null;
+        this.number = null;
+        this.i = null;
+        this.j = null;
+        this.pivot = null;
     }
-     
-
+    // Inicializo Interfaz
     public void setInterfaz(Interfaz interfaz) {
         this.interfaz = interfaz;
     }
-    
-    
     //Gets y Sets---------------------------------------------------------------
     
+    
+    
     //Funciones StoryTeller-----------------------------------------------------
+    
     //Boton Cargar.
     public void botonCargar() throws IOException, ParseException
     {
@@ -102,7 +110,7 @@ public class Logica {
         rets = null;
         //FileChooser fc = new FileChooser();
         //fc.showOpenDialog(null);
-        String local = interfaz.getDireccion_guardado() + "imagen"+Integer.toString(interfaz.getFoto())+".jpg";
+        local = interfaz.getDireccion_guardado() + "imagen"+Integer.toString(interfaz.getFoto())+".jpg";
         try {
             api.getImage(interfaz.getDireccion_imagen().getText(), local);
             rets = api.getDescription(interfaz.getDireccion_imagen().getText());
@@ -124,4 +132,64 @@ public class Logica {
         interfaz.aumentarFoto();
     }
 
+    /*
+     * Quicksort
+     */
+    // Funcion principal del quicksort
+    public void sort(int[] values) 
+    {
+        // Valida si el array en null
+        if (values ==null || values.length==0){
+            return;
+        }
+        // Inicializo array con que se trabajará y el largo
+        this.numbers = values;
+        number = values.length;
+        // Inicio el quicksort
+        quicksort(0, number - 1);
+    }
+
+    // Funcion que divide a la izquierda los menores y en la derecha los mayores
+    private void quicksort(int low, int high) 
+    {
+        // Inicializo el i y j que se usarán
+        i = low;
+        j = high;
+        // Obtengo el pivote el cual esta a la mitad del array
+        pivot = numbers[low + (high-low)/2];
+
+        // Se divide en dos listas
+        while (i <= j) {
+            // Si el numero es menor al pivote se coloca a la izquierda
+            while (numbers[i] < pivot) {
+                i++;
+            }
+            // Si el numero es mayor al pivote se coloca a la derecha
+            while (numbers[j] > pivot) {
+                j--;
+            }
+
+            // Si encuentri un valor menor en lado derecho y un valor mayor en 
+            // el lado izquierdo al pivote, se realiza el exchange
+            if (i <= j) 
+            {
+                exchange(i, j);
+                i++;
+                j--;
+            }
+        }
+        // Recursion
+        if (low < j)
+            quicksort(low, j);
+        if (i < high)
+            quicksort(i, high);
+    }
+
+    // Cambia el i con el j y viceversa
+    private void exchange(int i, int j) 
+    {
+        int temp = numbers[i];
+        numbers[i] = numbers[j];
+        numbers[j] = temp;
+    }
 }
