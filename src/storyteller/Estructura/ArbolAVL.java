@@ -1,5 +1,6 @@
 package storyteller.Estructura;
 /*Importes de bibliotecas*/
+import java.lang.*;
 import storyteller.Estructura.Nodo;
 /*
  * Clase ArbolAVL generica
@@ -73,16 +74,18 @@ public class ArbolAVL<T>
     }
  
     //Inserto nodo en el avl, con sus debidos casos a efectuar
-    public Nodo<T> insert(Nodo<T> node, int key) 
+    public Nodo<T> insert(Nodo<T> node, String key) 
     {
         //Caso de que el avl este vacio
         if (node == null)
             return (new Nodo(key));
+        
+        int acumodador = key.compareTo(node.getKey());
         //Caso si es menor
-        if (key < node.getKey())
+        if (acumodador < 0)
             node.setLeft(insert(node.getLeft(), key));
         //Caso si es mayor
-        else if (key > node.getKey())
+        else if (acumodador > 0)
             node.setRight(insert(node.getRight(), key));
         //No se permiten claves duplicadas
         else
@@ -98,21 +101,21 @@ public class ArbolAVL<T>
  
         //Si el nodo esta desbalanceado, se efectua los siguientes casos.
         //Left Left Case
-        if (balance > 1 && key < node.getLeft().getKey())
+        if (balance > 1 && acumodador < 0)
             return rotacionDerecha(node);
  
         //Right Right Case
-        if (balance < -1 && key > node.getRight().getKey())
+        if (balance < -1 && acumodador > 0)
             return rotacionIzquierda(node);
  
         //Left Right Case
-        if (balance > 1 && key > node.getLeft().getKey()) {
+        if (balance > 1 && acumodador > 0) {
             node.setLeft(rotacionIzquierda(node.getLeft()));
             return rotacionDerecha(node);
         }
  
         // Right Left Case
-        if (balance < -1 && key < node.getRight().getKey()) {
+        if (balance < -1 && acumodador < 0) {
             node.setRight(rotacionDerecha(node.getRight()));
             return rotacionIzquierda(node);
         }
@@ -153,7 +156,7 @@ public class ArbolAVL<T>
             System.out.print(nodo.getKey() + " ");
         }
     }
-    /*
+    
     //Main
     public static void main(String[] args) 
     {
@@ -161,12 +164,14 @@ public class ArbolAVL<T>
         ArbolAVL tree = new ArbolAVL();
  
         //
-        tree.raiz = tree.insert(tree.raiz, 10);
-        tree.raiz = tree.insert(tree.raiz, 20);
-        tree.raiz = tree.insert(tree.raiz, 30);
-        tree.raiz = tree.insert(tree.raiz, 40);
-        tree.raiz = tree.insert(tree.raiz, 50);
-        tree.raiz = tree.insert(tree.raiz, 25);
+        tree.raiz = tree.insert(tree.raiz, "abc");
+        tree.raiz = tree.insert(tree.raiz, "aaa");
+        tree.raiz = tree.insert(tree.raiz, "z");
+        tree.raiz = tree.insert(tree.raiz, "c");
+        tree.raiz = tree.insert(tree.raiz, "d");
+        tree.raiz = tree.insert(tree.raiz, "h");
+        
+        
 
         //The constructed AVL Tree would be
         //     30
@@ -183,6 +188,6 @@ public class ArbolAVL<T>
         tree.postOrden(tree.raiz);
 
     }
-*/
+
     //Fin..
 }

@@ -8,7 +8,8 @@ public class Nodo<T> {
     /*Variables Globales*/
     private T Value;
     private Nodo<T> left, right;
-    private int key, height;
+    private String key;
+    private int height;
     /*Constructores*/
     public Nodo()
     {
@@ -16,7 +17,7 @@ public class Nodo<T> {
         right = null;
         
     }
-    public Nodo(int d) 
+    public Nodo(String d) 
     {
         key = d;
         height = 1;
@@ -46,11 +47,11 @@ public class Nodo<T> {
         this.right = right;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
