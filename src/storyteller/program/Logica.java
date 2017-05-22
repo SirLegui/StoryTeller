@@ -1,7 +1,6 @@
 //Progra 02 - StoryTeller
 package storyteller.program;
-
-
+/*Librerias a usar*/
 import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,26 +16,25 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import storyteller.interfaz.Interfaz;
 import storyteller.librerias.MCS;
-
 /**
- *
  * @author edgerik
  * @author jeremy
  */
 public class Logica {
     //Variables globales-------------------------------------------------------
+    private Iterator<String> iter;
     private JSONParser parser;
-    private Object obj;
     private JSONObject jsonObject;
     private JSONArray urls;
-    private Iterator<String> iter;
-    private String[] rets;
     private ImageIcon icon;
     private Icon icono; 
-    private String local, actual;
+    private Object obj;
+    private String[] rets;
+    private String local;
+    private String actual;
     //Clases a usar
     private Interfaz interfaz;
-	private MCS api;
+    private MCS api;
     // Variables del quicksort
     private int[] numbers;
     private int number;
@@ -44,9 +42,9 @@ public class Logica {
     //Constructor---------------------------------------------------------------
     public Logica() 
     {
-		this.api = new MCS();
-        this.interfaz = null;
-        this.parser = null;
+        this.interfaz = null;   //No se inicializa porque se hace en el main
+        this.api = new MCS();
+        this.parser = new JSONParser();
         this.obj = null;
         this.jsonObject = null;
         this.urls = null;
@@ -67,52 +65,53 @@ public class Logica {
     }
     //Gets y Sets---------------------------------------------------------------
     
-    
-    
     //Funciones StoryTeller-----------------------------------------------------
-    
     //Boton Cargar.
     public void botonCargar() throws IOException, ParseException
     {
-        api = new MCS();
-        parser = new JSONParser();
-        obj = parser.parse(new FileReader("/home/edgerik/StoryTeller/src/storyteller/program/Prueba.json"));
+        // Direccion donde esta el Json, lo creo
+        obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Desktop\\Prueba.json"));
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
+        // Lectura de ulrs .jpg
         do{
+            // Direccion Url .jpg
             actual = iter.next();
-            System.out.println(actual);
-            rets = null;
-            //FileChooser fc = new FileChooser();
-            //fc.showOpenDialog(null);
+            // Direccion .jpg local 
             local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
-            System.out.println(local);
+            // Logica del API Cognitive services Microsotf
             try {
+                // Guardo bytes de .jpg(actual) a nuestro .jpg(local)
                 api.getImage(actual, local);
+                // Descripcion de la foto
                 rets = api.getDescription(actual);
+            // capta errores
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println(rets);
+            // Imprimo la Imagen en interfaz
             icon = new ImageIcon(local);
             icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
-            interfaz.getLblFoto().setIcon( icono );
-            
+            interfaz.getLblFoto().setIcon(icono);
             interfaz.getLblFoto().setText(null);
+            // Inserto en el arreglo los datos a usar
+            // 1)Descriccion, 2)3)4)tags
             interfaz.getLblDescripcion().setText(rets[0]);
             interfaz.getLblTag1().setText(rets[1]);
             interfaz.getLblTag2().setText(rets[2]);
             interfaz.getLblTag3().setText(rets[3]);
             interfaz.aumentarFoto();
             interfaz.repaint();
+            // Slepp
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
             }
+        // Hasta que se termine las ulrs .jpg del Json
         }while(iter.hasNext());
     }
     
@@ -160,6 +159,9 @@ public class Logica {
         number = values.length;
         // Inicio el quicksort
         quicksort(0, number - 1);
+        for (int k = 0; k < number; k++) {
+            System.out.println(numbers[k]);
+        }
     }
 
     // Funcion que divide a la izquierda los menores y en la derecha los mayores

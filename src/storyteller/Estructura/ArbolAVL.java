@@ -8,14 +8,18 @@ import storyteller.Estructura.Nodo;
 public class ArbolAVL<T>
 {
     /*Variables Globales*/
-    private Nodo<T> raiz;
+    public Nodo<T> raiz;
     /*Constructor*/
     public ArbolAVL()
     {
         //Inicializo variables globales
         this.raiz = null;
     }
-    
+    //Gets and Sets------------------------------------------------------------
+    public Nodo<T> getRaiz()
+    {
+        return raiz;
+    }
     //Retorna el ancho del avl
     public int getHeight(Nodo<T> Nodo) 
     {
@@ -156,38 +160,4 @@ public class ArbolAVL<T>
             System.out.print(nodo.getKey() + " ");
         }
     }
-    
-    //Main
-    public static void main(String[] args) 
-    {
-        //
-        ArbolAVL tree = new ArbolAVL();
- 
-        //
-        tree.raiz = tree.insert(tree.raiz, "abc");
-        tree.raiz = tree.insert(tree.raiz, "aaa");
-        tree.raiz = tree.insert(tree.raiz, "z");
-        tree.raiz = tree.insert(tree.raiz, "c");
-        tree.raiz = tree.insert(tree.raiz, "d");
-        tree.raiz = tree.insert(tree.raiz, "h");
-        
-        
-
-        //The constructed AVL Tree would be
-        //     30
-        //    /  \
-        //  20   40
-        // /  \     \
-        //10   25    50
-
-        //
-        tree.preOrder(tree.raiz);
-        System.out.println("\n");
-        tree.inOrden(tree.raiz);
-        System.out.println("\n");
-        tree.postOrden(tree.raiz);
-
-    }
-
-    //Fin..
 }
