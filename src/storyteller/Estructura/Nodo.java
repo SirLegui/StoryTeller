@@ -11,11 +11,21 @@ public class Nodo<T> implements Serializable{
     private Nodo<T> right;
     private String key;
     private int height;
+    private boolean borrar;
     /*Constructores*/
     public Nodo(){
         this.Value = null;
         this.left = null;
         this.right = null;
+        borrar = false;
+    }
+
+    public boolean isBorrar() {
+        return borrar;
+    }
+
+    public void setBorrar(boolean borrar) {
+        this.borrar = borrar;
     }
     
     public Nodo(String d) {

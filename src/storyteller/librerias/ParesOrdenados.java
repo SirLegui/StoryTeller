@@ -1,22 +1,26 @@
 package storyteller.librerias;
 /*Librerias a usar*/
 import java.io.Serializable;
-import java.util.ArrayList;
-/*
-Clase de Pares ordenados
 
-Implemento Serializacion para serializar el array de strings de pares ordenados
-*/
+/**
+ * 
+ * @author edgerik, jeremy
+ */
 public class ParesOrdenados implements Serializable
 {
     // Variables globales 
     private String[][] indices;
-    // Constructor
+    /**
+     * constructor
+     */
     public ParesOrdenados() 
     {
         this.indices = null;
     }
-    // Gets ands Sets
+    /**
+     * 
+     * @return Tabla de pares ordenados
+     */
     public String[][] getIndices()
     {
         return indices;
@@ -25,9 +29,10 @@ public class ParesOrdenados implements Serializable
     {
         indices = pIndices;
     }
-    // Funciones de PäresOrdenados
-    // Funcion que convierte el String[][] a un byte[][] Serializado
-    public void conviertoBytes()
+    /**
+     * Serializa y guarda la clase en un archivo.pros
+     */
+    public void guardar_pares()
     {
         
     }

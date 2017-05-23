@@ -1,4 +1,4 @@
-package storyteller.program;
+package storyteller.librerias;
 /*Librerias a usar*/
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

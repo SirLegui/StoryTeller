@@ -117,6 +117,8 @@ public class Logica {
                 
                 // Inserto al AVL
                 raiz = avl.getRaiz();
+                Ima.setCheck(true);
+                raiz.getValue().add(Ima);
                 avl.raiz = avl.insert(avl.raiz, rets[1]);
                 arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
                 arrayImagen.add(Ima);
@@ -135,6 +137,8 @@ public class Logica {
             
         // Hasta que se termine las ulrs .jpg del Json
         }while(iter.hasNext());
+        
+        avl.inOrdenDepurar(raiz);
         // Preorden
         recorreAVL();
     }
