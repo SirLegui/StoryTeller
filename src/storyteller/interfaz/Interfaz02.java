@@ -35,6 +35,11 @@ public class Interfaz02 extends javax.swing.JFrame
         Abrir.setText("OPEN");
 
         Save.setText("SAVE");
+        Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveActionPerformed(evt);
+            }
+        });
 
         Continue.setText("CONTINUE");
 
@@ -81,6 +86,10 @@ public class Interfaz02 extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
+        
+    }//GEN-LAST:event_SaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Abrir;
