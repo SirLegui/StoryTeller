@@ -23,6 +23,25 @@ public class Main {
                 c.setInterfaz(v1);  //Inializo clase logica
                 v1.setVisible(true);
                 //Logica del programa
+                String indices[] = {"b","ab","aa"};
+                c.sort(indices);
+                //...
+                    
+            } catch (Exception e) {
+                System.out.println("ERROR FATAL");
+            }
+            }); 
+		//-------------------		
+		//Termino el programa
+		//-------------------
+		//by.Jeremy Live G---
+		//-------------------
+	}
+}
+
+
+
+/*
                 int a[]={1,22,33,14,5};
                 c.sort(a);
                 //
@@ -41,16 +60,5 @@ public class Main {
                 tree.inOrden(tree.raiz);
                 System.out.println("\n");
                 tree.postOrden(tree.raiz);
-                //...
-                    
-            } catch (Exception e) {
-                System.out.println("ERROR FATAL");
-            }
-            }); 
-		//-------------------		
-		//Termino el programa
-		//-------------------
-		//by.Jeremy Live G---
-		//-------------------
-	}
-}
+
+*/

@@ -7,20 +7,24 @@ package storyteller.Estructura;
 public class Nodo<T> {
     /*Variables Globales*/
     private T Value;
-    private Nodo<T> left, right;
+    private Nodo<T> left;
+    private Nodo<T> right;
     private String key;
     private int height;
     /*Constructores*/
-    public Nodo()
-    {
-        left = null;
-        right = null;
+    public Nodo(){
+        this.Value = null;
+        this.left = null;
+        this.right = null;
         
     }
-    public Nodo(String d) 
-    {
-        key = d;
-        height = 1;
+    
+    public Nodo(String d) {
+        this.Value = null;
+        this.left = null;
+        this.right = null;
+        this.key = d;
+        this.height = 1;
     }
     //Gets y Sets
     public T getValue() {

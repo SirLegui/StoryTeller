@@ -14,6 +14,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import storyteller.Estructura.ArbolAVL;
+import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
 import storyteller.librerias.MCS;
 /**
@@ -32,19 +34,24 @@ public class Logica {
     private String[] rets;
     private String local;
     private String actual;
+    private Nodo raiz;
     //Clases a usar
     private Interfaz interfaz;
     private MCS api;
+    private ArbolAVL avl;
     // Variables del quicksort
-    private int[] numbers;
+    private String[] numbers;
     private int number;
-    private int i, j, pivot;
+    private int i, j;
+    private String pivot;
     //Constructor---------------------------------------------------------------
     public Logica() 
     {
         this.interfaz = null;   //No se inicializa porque se hace en el main
         this.api = new MCS();
         this.parser = new JSONParser();
+        this.avl = new ArbolAVL();
+        this.raiz = new Nodo();
         this.obj = null;
         this.jsonObject = null;
         this.urls = null;
@@ -57,7 +64,7 @@ public class Logica {
         this.number = 0;
         this.i = 0;
         this.j = 0;
-        this.pivot = 0;
+        this.pivot = null;
     }
     // Inicializo Interfaz
     public void setInterfaz(Interfaz interfaz) {
@@ -66,6 +73,13 @@ public class Logica {
     //Gets y Sets---------------------------------------------------------------
     
     //Funciones StoryTeller-----------------------------------------------------
+    // Recorro el avl
+    public void recorreAVL()
+    {
+        // Imprimo Arbol
+        avl.preOrder(avl.raiz);
+    }
+
     //Boton Cargar.
     public void botonCargar() throws IOException, ParseException
     {
@@ -103,7 +117,14 @@ public class Logica {
             interfaz.getLblTag1().setText(rets[1]);
             interfaz.getLblTag2().setText(rets[2]);
             interfaz.getLblTag3().setText(rets[3]);
+            // Aumento contador de fotos
             interfaz.aumentarFoto();
+            // Inserto al AVL
+            raiz = avl.getRaiz();
+            avl.raiz = avl.insert(avl.raiz, rets[1]);
+            avl.raiz = avl.insert(avl.raiz, rets[2]);
+            avl.raiz = avl.insert(avl.raiz, rets[3]);
+            // Pinto
             interfaz.repaint();
             // Slepp
             try {
@@ -113,6 +134,8 @@ public class Logica {
             }
         // Hasta que se termine las ulrs .jpg del Json
         }while(iter.hasNext());
+        // Preorden
+        recorreAVL();
     }
     
     //Boton Procesar.
@@ -148,7 +171,7 @@ public class Logica {
      * Quicksort
      */
     // Funcion principal del quicksort
-    public void sort(int[] values) 
+    public void sort(String[] values) 
     {
         // Valida si el array en null
         if (values ==null || values.length==0){
@@ -159,6 +182,7 @@ public class Logica {
         number = values.length;
         // Inicio el quicksort
         quicksort(0, number - 1);
+        // Imprimo indices
         for (int k = 0; k < number; k++) {
             System.out.println(numbers[k]);
         }
@@ -172,15 +196,18 @@ public class Logica {
         j = high;
         // Obtengo el pivote el cual esta a la mitad del array
         pivot = numbers[low + (high-low)/2];
-
+            
+       int acumodador;
         // Se divide en dos listas
         while (i <= j) {
             // Si el numero es menor al pivote se coloca a la izquierda
-            while (numbers[i] < pivot) {
+            acumodador = numbers[i].compareTo(pivot);
+            while (acumodador < 0) {
                 i++;
             }
             // Si el numero es mayor al pivote se coloca a la derecha
-            while (numbers[j] > pivot) {
+            acumodador = numbers[j].compareTo(pivot);
+            while (acumodador > 0) {
                 j--;
             }
 
@@ -203,8 +230,9 @@ public class Logica {
     // Cambia el i con el j y viceversa
     private void exchange(int i, int j) 
     {
-        int temp = numbers[i];
+        String temp = numbers[i];
         numbers[i] = numbers[j];
         numbers[j] = temp;
     }
+
 }

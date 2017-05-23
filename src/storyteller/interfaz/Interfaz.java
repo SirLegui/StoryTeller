@@ -11,64 +11,69 @@ import storyteller.program.Logica;
 /**
  * @author jeremy
  * @author edgerik
+ * 
+ * Clase Interfaz
+ * 
+ * Extiende JFrame
  */
 public class Interfaz extends javax.swing.JFrame 
 {
     //Variables globales
     String direccion_guardado;
-    int foto = 0;
+    int foto;
     //Clases a usar
     Logica controlador;
     //Constructor
-    public Interfaz() {
+    public Interfaz() 
+    {
         //Inicializa la interfaz
         initComponents();
-        //Inicializo lugar donde se guardan las fotos
-        
+        this.foto = 0;
         //
     }
-
+    //Gets y Sets
     public void setControlador(Logica controlador) 
     {
         this.controlador = controlador;
     }
-    
-    //Gets y Sets
+    public int getFoto() {
+        return foto;
+    }
+    public void setDireccion_guardado() {
+        save_path.showSaveDialog(this);
+        direccion_guardado = ((File) save_path.getSelectedFile()).getAbsolutePath();
+    }
+    public String getDireccion_guardado() {
+        return direccion_guardado;
+    }
     public JTextField getDireccion_imagen() 
     {
         return direccion_imagen;
     }
-
     public int aumentarFoto() 
     {
         return foto++;
     }
-
     public JLabel getLblDescripcion() 
     {
         return lblDescripcion;
     }
-
     public JLabel getLblFoto() 
     {
         return lblFoto;
     }
-
     public JLabel getLblTag1() 
     {
         return lblTag1;
     }
-
     public JLabel getLblTag2() 
     {
         return lblTag2;
     }
-
     public JLabel getLblTag3() 
     {
         return lblTag3;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,6 +84,12 @@ public class Interfaz extends javax.swing.JFrame
     private void initComponents() {
 
         save_path = new javax.swing.JFileChooser();
+        Interfaz2 = new javax.swing.JFrame();
+        Save = new javax.swing.JButton();
+        Continue = new javax.swing.JButton();
+        Abrir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         lblFoto = new javax.swing.JLabel();
         direccion_imagen = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
@@ -92,6 +103,67 @@ public class Interfaz extends javax.swing.JFrame
         save_path.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         save_path.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         save_path.setBorder(new javax.swing.border.MatteBorder(null));
+
+        Save.setText("SAVE");
+        Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveActionPerformed(evt);
+            }
+        });
+
+        Continue.setText("CONTINUE");
+        Continue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ContinueActionPerformed(evt);
+            }
+        });
+
+        Abrir.setText("ABRIR OTRO ALBUM DE FOTOS");
+        Abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AbrirActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setText("<---------------MENU--------------->");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("<----------------------------------------->");
+
+        javax.swing.GroupLayout Interfaz2Layout = new javax.swing.GroupLayout(Interfaz2.getContentPane());
+        Interfaz2.getContentPane().setLayout(Interfaz2Layout);
+        Interfaz2Layout.setHorizontalGroup(
+            Interfaz2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Interfaz2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(Interfaz2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Abrir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(Interfaz2Layout.createSequentialGroup()
+                        .addComponent(Save, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Continue, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(56, 56, 56))
+            .addGroup(Interfaz2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        Interfaz2Layout.setVerticalGroup(
+            Interfaz2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Interfaz2Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Interfaz2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Continue, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Save, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(Abrir, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,7 +228,7 @@ public class Interfaz extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     /*
     Funcion del boton procesar.
     */
@@ -164,25 +236,9 @@ public class Interfaz extends javax.swing.JFrame
         setDireccion_guardado();
         controlador.botonProcesar();
     }//GEN-LAST:event_ProcesarActionPerformed
-
-    public int getFoto() {
-        return foto;
-    }
-
     /*
     Funcion del boton cargar
     */
-
-    public void setDireccion_guardado() {
-        save_path.showSaveDialog(this);
-        direccion_guardado = ((File) save_path.getSelectedFile()).getAbsolutePath();
-    }
-
-    public String getDireccion_guardado() {
-        return direccion_guardado;
-    }
-    
-
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         try {
             setDireccion_guardado();
@@ -191,12 +247,36 @@ public class Interfaz extends javax.swing.JFrame
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_CargarActionPerformed
+    /*
+    Funcion del boton Continuar
+    */
+    private void ContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueActionPerformed
+       
+    }//GEN-LAST:event_ContinueActionPerformed
+    /*
+    Funcion del boton Guardar
+    */
+    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
+   
+    }//GEN-LAST:event_SaveActionPerformed
+    /*
+    Funcion del boton Abrir
+    */
+    private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
+
+    }//GEN-LAST:event_AbrirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Abrir;
     private javax.swing.JButton Cargar;
+    private javax.swing.JButton Continue;
+    private javax.swing.JFrame Interfaz2;
     private javax.swing.JButton Procesar;
+    private javax.swing.JButton Save;
     private javax.swing.JTextField direccion_imagen;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblTag1;
