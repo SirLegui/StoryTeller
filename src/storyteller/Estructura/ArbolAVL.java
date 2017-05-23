@@ -13,7 +13,7 @@ public class ArbolAVL<T>
     public ArbolAVL()
     {
         //Inicializo variables globales
-        this.raiz = null;
+        this.raiz = new Nodo();
     }
     //Gets and Sets------------------------------------------------------------
     public Nodo<T> getRaiz()
