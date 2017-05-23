@@ -1,10 +1,10 @@
 package storyteller.Estructura;
 /*Importes de bibliotecas*/
-
+import java.io.Serializable;
 /*
  * Clase Nodo generica
  */
-public class Nodo<T> {
+public class Nodo<T> implements Serializable{
     /*Variables Globales*/
     private T Value;
     private Nodo<T> left;
@@ -16,7 +16,6 @@ public class Nodo<T> {
         this.Value = null;
         this.left = null;
         this.right = null;
-        
     }
     
     public Nodo(String d) {
@@ -27,43 +26,48 @@ public class Nodo<T> {
         this.height = 1;
     }
     //Gets y Sets
-    public T getValue() {
+    public void get()
+    {
+        
+    }
+    public T getValue() 
+    {
         return Value;
     }
-
-    public void setValue(T Value) {
+    public void setValue(T Value) 
+    {
         this.Value = Value;
     }
-
-    public Nodo<T> getLeft() {
+    public Nodo<T> getLeft() 
+    {
         return left;
     }
-
-    public void setLeft(Nodo<T> left) {
+    public void setLeft(Nodo<T> left) 
+    {
         this.left = left;
     }
-
-    public Nodo<T> getRight() {
+    public Nodo<T> getRight() 
+    {
         return right;
     }
-
-    public void setRight(Nodo<T> right) {
+    public void setRight(Nodo<T> right) 
+    {
         this.right = right;
     }
-
-    public String getKey() {
+    public String getKey() 
+    {
         return key;
     }
-
-    public void setKey(String key) {
+    public void setKey(String key) 
+    {
         this.key = key;
     }
-
-    public int getHeight() {
+    public int getHeight() 
+    {
         return height;
     }
-
-    public void setHeight(int height) {
+    public void setHeight(int height) 
+    {
         this.height = height;
     }
     

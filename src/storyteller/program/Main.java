@@ -17,14 +17,16 @@ public class Main {
             try {
                 //Inicializo clases
                 Interfaz v1 = new Interfaz();
-                Logica c = new Logica();
+                Logica c = Logica.getInstance();
                 //Habilito la interfaz
                 v1.setControlador(c);
                 c.setInterfaz(v1);  //Inializo clase logica
                 v1.setVisible(true);
                 //Logica del programa
-                String indices[] = {"b","ab","aa"};
-                c.sort(indices);
+                //String indices[] = {"b","ab","aa"};
+                //c.sort(indices);
+                
+                //c.recorreAVL();
                 //...
                     
             } catch (Exception e) {

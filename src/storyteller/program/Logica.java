@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import org.json.simple.parser.ParseException;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
+import storyteller.librerias.Imagen;
 import storyteller.librerias.MCS;
 /**
  * @author edgerik
@@ -24,6 +26,8 @@ import storyteller.librerias.MCS;
  */
 public class Logica {
     //Variables globales-------------------------------------------------------
+   
+    private static Logica Instance;
     private Iterator<String> iter;
     private JSONParser parser;
     private JSONObject jsonObject;
@@ -34,7 +38,8 @@ public class Logica {
     private String[] rets;
     private String local;
     private String actual;
-    private Nodo raiz;
+    private Nodo<ArrayList<Imagen>> raiz;
+    private ArrayList<Imagen> arrayImagen;
     //Clases a usar
     private Interfaz interfaz;
     private MCS api;
@@ -45,26 +50,34 @@ public class Logica {
     private int i, j;
     private String pivot;
     //Constructor---------------------------------------------------------------
-    public Logica() 
+    public synchronized static Logica getInstance() 
+    {
+        if(Instance == null)
+        {
+            Instance = new Logica();
+        }
+        return Instance;
+    }
+    private Logica()
     {
         this.interfaz = null;   //No se inicializa porque se hace en el main
-        this.api = new MCS();
-        this.parser = new JSONParser();
-        this.avl = new ArbolAVL();
-        this.raiz = new Nodo();
-        this.obj = null;
-        this.jsonObject = null;
-        this.urls = null;
-        this.iter = null;
-        this.rets = null;
-        this.icon = null;
-        this.icono = null;
-        this.local = null;
-        this.numbers = null;
-        this.number = 0;
-        this.i = 0;
-        this.j = 0;
-        this.pivot = null;
+            this.api = new MCS();
+            this.parser = new JSONParser();
+            this.avl = new ArbolAVL();
+            this.raiz = new Nodo<>();
+            this.obj = null;
+            this.jsonObject = null;
+            this.urls = null;
+            this.iter = null;
+            this.rets = null;
+            this.icon = null;
+            this.icono = null;
+            this.local = null;
+            this.numbers = null;
+            this.number = 0;
+            this.i = 0;
+            this.j = 0;
+            this.pivot = null;
     }
     // Inicializo Interfaz
     public void setInterfaz(Interfaz interfaz) {
@@ -78,6 +91,7 @@ public class Logica {
     {
         // Imprimo Arbol
         avl.preOrder(avl.raiz);
+        
     }
 
     //Boton Cargar.
@@ -97,33 +111,51 @@ public class Logica {
             // Logica del API Cognitive services Microsotf
             try {
                 // Guardo bytes de .jpg(actual) a nuestro .jpg(local)
-                api.getImage(actual, local);
+                Imagen Ima = api.getImage(actual, local);
                 // Descripcion de la foto
-                rets = api.getDescription(actual);
+                rets = Ima.getTags();
+                
+                // Inserto al AVL
+                raiz = avl.getRaiz();
+                avl.raiz = avl.insert(avl.raiz, rets[1]);
+                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+                arrayImagen.add(Ima);
+                avl.raiz = avl.insert(avl.raiz, rets[2]);
+                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+                arrayImagen.add(Ima);
+                avl.raiz = avl.insert(avl.raiz, rets[3]);
+                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+                arrayImagen.add(Ima);
             // capta errores
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             }
-            // Imprimo la Imagen en interfaz
-            icon = new ImageIcon(local);
+            
+        // Hasta que se termine las ulrs .jpg del Json
+        }while(iter.hasNext());
+        // Preorden
+        recorreAVL();
+    }
+    
+    public void desplegar_imagen(Imagen foto)
+    {
+        // Imprimo la Imagen en interfaz
+        
+            icon = new ImageIcon(foto.getImagen());
             icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
             interfaz.getLblFoto().setIcon(icono);
             interfaz.getLblFoto().setText(null);
             // Inserto en el arreglo los datos a usar
             // 1)Descriccion, 2)3)4)tags
+            rets= foto.getTags();
             interfaz.getLblDescripcion().setText(rets[0]);
             interfaz.getLblTag1().setText(rets[1]);
             interfaz.getLblTag2().setText(rets[2]);
             interfaz.getLblTag3().setText(rets[3]);
             // Aumento contador de fotos
             interfaz.aumentarFoto();
-            // Inserto al AVL
-            raiz = avl.getRaiz();
-            avl.raiz = avl.insert(avl.raiz, rets[1]);
-            avl.raiz = avl.insert(avl.raiz, rets[2]);
-            avl.raiz = avl.insert(avl.raiz, rets[3]);
             // Pinto
             interfaz.repaint();
             // Slepp
@@ -132,10 +164,6 @@ public class Logica {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
             }
-        // Hasta que se termine las ulrs .jpg del Json
-        }while(iter.hasNext());
-        // Preorden
-        recorreAVL();
     }
     
     //Boton Procesar.

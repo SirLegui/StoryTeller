@@ -1,5 +1,5 @@
 package storyteller.librerias;
-
+/*Librerias a usar*/
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -29,7 +29,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 /**
  * Clase para descarga y procesamiento(mediante Microsoft Cognitive Service) de imagenes mediante el URL con extension .jpg 
  * @author Edgerik Leguizamon
@@ -76,46 +75,6 @@ public class MCS
         }
         return rets;
     }
-
-    /**
-     * 
-     * @param url : cadena de bytes que contienen la imagen
-     * @return String[0]: Descripcion ("text") de la imagen , String[1-3]: Las etiquetas ("tags") de la imagen
-     */
-    public String[] getDescriptionBYTES(byte[] url)
-        {
-            HttpClient httpclient = HttpClients.createDefault();
-            String[] rets = null;
-            try
-            {
-                URIBuilder builder = new URIBuilder("https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/describe");
-                builder.setParameter("maxCandidates", "1");
-                URI uri = builder.build();
-                HttpPost request = new HttpPost(uri);
-                request.setHeader("Content-Type", "application/octet-stream");
-                request.setHeader("Ocp-Apim-Subscription-Key", "b5c253c908914a40b7b6c336c7c298e6");
-                // Request body
-                ByteArrayEntity reqEntity = new ByteArrayEntity(url);
-                request.setEntity(reqEntity);
-                HttpResponse response = httpclient.execute(request);
-                HttpEntity entity = response.getEntity();
-                if (entity != null) 
-                {
-                    if (response.getStatusLine().getStatusCode() != 200){
-                        rets = funcionJsonError(EntityUtils.toString(entity), "Response: "+Integer.toString(response.getStatusLine().getStatusCode()));
-                    }else{
-                        rets = funcionJson(EntityUtils.toString(entity));
-                    }
-                }
-
-            }
-            catch (URISyntaxException | IOException | org.apache.http.ParseException | ParseException e)
-            {
-                System.out.println(e.getMessage());
-            }
-            return rets;
-        }
-
     /**
      * 
      * @param urli Link de la imagen a descargar
@@ -125,42 +84,40 @@ public class MCS
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public Imagen getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException{
+    public Imagen getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException
+    {
         // Url con la foto
         Imagen imagen = null;
-        try{
+        try
+        {
+            System.out.println("");
             URL url = new URL(urli);
-            //File dir = new File(dire);
-            // establecemos conexion
+            // Establecemos conexion
             URLConnection urlCon = url.openConnection();
             // Sacamos por pantalla el tipo de fichero
             System.out.println(urlCon.getContentType());
             FileOutputStream fos;
             InputStream recibida;
-             // Se obtiene el inputStream de la foto web y se abre el fichero
-            // local.
-            //System.out.println(dire);
+            // Se obtiene el inputStream de la foto web y se abre el fichero local.
             recibida = urlCon.getInputStream();
             fos = new FileOutputStream(dire);
             // Lectura de la foto de la web y escritura en fichero local
-            byte[] array = new byte[1000]; // buffer temporal de lectura.
+            byte[] array = new byte[1000];     // buffer temporal de lectura.
             int leido = recibida.read(array);
-            while (leido > 0) {
+            while (leido > 0) 
+            {
                 fos.write(array, 0, leido);
                 leido = recibida.read(array);
             }
-            // cierre de conexion y fichero.
-            fos.close();
-                
-            
+            // Cierre de conexion y fichero.
+            fos.close();       
+            // Inicializo string de descripcion y tags
             String[] rets;
             rets = getDescription(urli);
-            //Obtiene byte[] del la direccion local
-            byte[] ima;
-            
-            //ImageIO.write(imagen, "jpg", dir);
+            // Creo Image y igualo la imagen a retornar
             Image foto = ImageIO.read(recibida);
             imagen = new Imagen(foto, rets, urli);
+        // Capto WARNING
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("No se ha podido cargar la imagen");
