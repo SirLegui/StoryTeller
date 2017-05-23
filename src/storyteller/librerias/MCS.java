@@ -1,5 +1,6 @@
 package storyteller.librerias;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -119,12 +120,14 @@ public class MCS
      * 
      * @param urli Link de la imagen a descargar
      * @param dire Direccion de guardado de la imagen
+     * @return lista de bytes de la imagen
      * @throws MalformedURLException
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public void getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException{
+    public Imagen getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException{
         // Url con la foto
+        Imagen imagen = null;
         try{
             URL url = new URL(urli);
             //File dir = new File(dire);
@@ -132,26 +135,37 @@ public class MCS
             URLConnection urlCon = url.openConnection();
             // Sacamos por pantalla el tipo de fichero
             System.out.println(urlCon.getContentType());
-            // Se obtiene el inputStream de la foto web y se abre el fichero
+            FileOutputStream fos;
+            InputStream recibida;
+             // Se obtiene el inputStream de la foto web y se abre el fichero
             // local.
             //System.out.println(dire);
-            InputStream is = urlCon.getInputStream();
-            FileOutputStream fos = new FileOutputStream(dire);
+            recibida = urlCon.getInputStream();
+            fos = new FileOutputStream(dire);
             // Lectura de la foto de la web y escritura en fichero local
             byte[] array = new byte[1000]; // buffer temporal de lectura.
-            int leido = is.read(array);
+            int leido = recibida.read(array);
             while (leido > 0) {
-                    fos.write(array, 0, leido);
-                    leido = is.read(array);
+                fos.write(array, 0, leido);
+                leido = recibida.read(array);
             }
             // cierre de conexion y fichero.
-            is.close();
             fos.close();
+                
+            
+            String[] rets;
+            rets = getDescription(urli);
+            //Obtiene byte[] del la direccion local
+            byte[] ima;
+            
             //ImageIO.write(imagen, "jpg", dir);
+            Image foto = ImageIO.read(recibida);
+            imagen = new Imagen(foto, rets, urli);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("No se ha podido cargar la imagen");
         }
+        return imagen;
     }
 
     /**
