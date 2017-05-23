@@ -1,12 +1,6 @@
 package storyteller.Estructura;
 /*Importes de bibliotecas*/
-import java.awt.Image;
-import java.lang.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import storyteller.Estructura.Nodo;
 import storyteller.librerias.Imagen;
 import storyteller.program.Logica;
 /*
