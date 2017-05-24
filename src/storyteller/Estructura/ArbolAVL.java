@@ -24,7 +24,7 @@ public class ArbolAVL<T> implements Serializable
     {
         this.t = Logica.getInstance();
         //Inicializo variables globales
-        this.raiz = new Nodo();
+        this.raiz = null;
         depurado = false;
     }
     //Gets and Sets-----------------------------------------------------------
@@ -32,6 +32,11 @@ public class ArbolAVL<T> implements Serializable
     {
         return depurado;
     }
+
+    public void setRaiz(Nodo<T> raiz) {
+        this.raiz = raiz;
+    }
+    
     public void setDepurado(boolean depurado) 
     {
         this.depurado = depurado;
@@ -243,23 +248,28 @@ public class ArbolAVL<T> implements Serializable
     {
         if(nodo != null)
         {
-            inOrden(nodo.getLeft());
+            inOrdenDesplegarImagenes(nodo.getLeft());
             ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
             fotos.stream().forEach((foto) -> {
                 
                 t.desplegar_imagen(foto);
                 
             });
-            inOrden(nodo.getRight());
+            inOrdenDesplegarImagenes(nodo.getRight());
         }
     }
-    public void inOrden(Nodo<T> nodo)
+    public void inOrden(Nodo<T> nodo, int nivel)
     {
         if(nodo != null)
         {
-            inOrden(nodo.getLeft());
-            System.out.print(nodo.getKey() + " ");
-            inOrden(nodo.getRight());
+            inOrden(nodo.getLeft(), nivel+1);
+            String tabs = "";
+            for(int i = 0; i<nivel ;i++)
+            {
+                tabs += "\t";
+            }
+            System.out.print(tabs + nodo.getKey() + " en el nivel "+ nivel+"\n");
+            inOrden(nodo.getRight(), nivel+1);
         }
     }
     /**
@@ -308,7 +318,7 @@ public class ArbolAVL<T> implements Serializable
     {
         if(nodo != null)
         {
-            inOrden(nodo.getLeft());
+            inOrdenDescartar(nodo.getLeft());
             ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
             
             fotos.stream().forEach((foto) -> {
@@ -323,7 +333,7 @@ public class ArbolAVL<T> implements Serializable
                 nodo.setBorrar(true);
             }
             
-            inOrden(nodo.getRight());
+            inOrdenDescartar(nodo.getRight());
         }
     }
     /**
@@ -334,14 +344,14 @@ public class ArbolAVL<T> implements Serializable
     {
         if(nodo != null)
         {
-            inOrden(nodo.getLeft());
+            inOrdenElimina(nodo.getLeft());
             
             if(nodo.isBorrar())
             {
                 deleteNode(raiz, nodo.getKey());
             }
             
-            inOrden(nodo.getRight());
+            inOrdenElimina(nodo.getRight());
         }
     }
     /**
@@ -411,8 +421,13 @@ public class ArbolAVL<T> implements Serializable
             return root;
 
         // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
-        root.setHeight(max(root.getLeft().getHeight(), root.getRight().getHeight() )+ 1);
-
+        try{
+            root.setHeight(max(root.getLeft().getHeight(), root.getRight().getHeight() )+ 1);
+        }catch(NullPointerException e)
+        {
+            System.out.println(e.getMessage());
+            root.setHeight(1);
+        }
         // STEP 3: GET THE BALANCE FACTOR OF THIS NODE (to check whether
         //  this node became unbalanced)
         int balance = getBalance(root);
