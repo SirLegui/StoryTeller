@@ -15,21 +15,22 @@ public class Main {
             //Inicio el programa Psicodelic canvas
             EventQueue.invokeLater(() -> {
             try {
-                //Inicializo clases
+//                //Inicializo clases
                 ArbolAVL tree = new ArbolAVL();
-                Interfaz v1 = new Interfaz();
-                Logica c = Logica.getInstance();
-                //Habilito la interfaz
-                v1.setControlador(c);
-                c.setInterfaz(v1);  //Inicializo clase logica
-                c.setAVL(tree);     //Inicializo clase AVL
-                v1.setVisible(true);
-                
+//                Interfaz v1 = new Interfaz();
+//                Logica c = Logica.getInstance();
+//                //Habilito la interfaz
+//                v1.setControlador(c);
+//                c.setInterfaz(v1);  //Inicializo clase logica
+//                c.setAVL(tree);     //Inicializo clase AVL
+//                v1.setVisible(true);
+//                
                 Nodo raiz = tree.getRaiz();
+                
+                tree.raiz = tree.insert(raiz, "abc");
                 System.out.println("--");
-                tree.raiz = tree.insert(tree.raiz, "abc");
-                tree.raiz = tree.insert(tree.raiz, "aaa");
-                tree.raiz = tree.insert(tree.raiz, "z");
+                tree.raiz = tree.insert(raiz, "aaa");
+                tree.raiz = tree.insert(raiz, "z");
                 tree.deleteNode(raiz, "aaa");
                 tree.inOrden(raiz);
                 //c.recorreAVL();
