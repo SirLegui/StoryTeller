@@ -84,7 +84,7 @@ public class MCS
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public Imagen getImage(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException
+    public Imagen getImagen(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException
     {
         // Url con la foto
         Imagen imagen = null;

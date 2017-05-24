@@ -2,12 +2,16 @@ package storyteller.librerias;
 
 import java.awt.Image;
 
+/**
+ * Para manejo de fotografias y los datos del API Microsoft
+ * @author eleguizamon
+ */
 public class Imagen
 {
     //Variables globales----------------------------
-    private Image imagen;
-    private String caption;
-    private String url;
+    private final Image imagen;
+    private final String caption;
+    private final String url;
     private String[] tags;
     private boolean check;
     //Constructor

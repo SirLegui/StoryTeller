@@ -29,7 +29,7 @@ public class Logica {
    
     private static Logica Instance;
     private Iterator<String> iter;
-    private JSONParser parser;
+    private final JSONParser parser;
     private JSONObject jsonObject;
     private JSONArray urls;
     private ImageIcon icon;
@@ -43,7 +43,7 @@ public class Logica {
     //Clases a usar
     private Interfaz interfaz;
     private MCS api;
-    private ArbolAVL avl;
+    private final ArbolAVL avl;
     // Variables del quicksort
     private String[] numbers;
     private int number;
@@ -111,7 +111,7 @@ public class Logica {
             // Logica del API Cognitive services Microsotf
             try {
                 // Guardo bytes de .jpg(actual) a nuestro .jpg(local)
-                Imagen Ima = api.getImage(actual, local);
+                Imagen Ima = api.getImagen(actual, local);
                 // Descripcion de la foto
                 rets = Ima.getTags();
                 
@@ -138,11 +138,14 @@ public class Logica {
         // Hasta que se termine las ulrs .jpg del Json
         }while(iter.hasNext());
         
-        avl.inOrdenDepurar(raiz);
+        avl.inOrdenDescartar(raiz);
         // Preorden
         recorreAVL();
     }
-    
+    /**
+     * Despliega la imagen en el Jframe correspondiente y hace el sleep para el slide show
+     * @param foto Imagen a desplegar
+     */
     public void desplegar_imagen(Imagen foto)
     {
         // Imprimo la Imagen en interfaz
@@ -179,7 +182,7 @@ public class Logica {
         //fc.showOpenDialog(null);
         local = interfaz.getDireccion_guardado() + "imagen"+Integer.toString(interfaz.getFoto())+".jpg";
         try {
-            api.getImage(interfaz.getDireccion_imagen().getText(), local);
+            api.getImagen(interfaz.getDireccion_imagen().getText(), local);
             rets = api.getDescription(interfaz.getDireccion_imagen().getText());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
