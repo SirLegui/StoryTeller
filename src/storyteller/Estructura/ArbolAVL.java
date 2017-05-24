@@ -24,14 +24,11 @@ public class ArbolAVL<T> implements Serializable
     {
         // Singlenton
         this.t = Logica.getInstance();
-<<<<<<< HEAD
         //Inicializo variables globales
         this.raiz = null;
-=======
         // Inicializo nodo
         this.raiz = new Nodo();
         // Depurar en false
->>>>>>> a5faa341499e819b3cccb5bb3b056a8fa8d564c4
         depurado = false;
     }
     //Gets and Sets-----------------------------------------------------------
