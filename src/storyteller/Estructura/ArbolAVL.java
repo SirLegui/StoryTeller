@@ -27,7 +27,7 @@ public class ArbolAVL<T> implements Serializable
         //Inicializo variables globales
         this.raiz = null;
         // Inicializo nodo
-        this.raiz = new Nodo();
+        this.raiz = null;
         // Depurar en false
         depurado = false;
     }

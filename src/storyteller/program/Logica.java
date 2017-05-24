@@ -142,9 +142,9 @@ public class Logica
         // Y que ya hemos hecho la señalacion de punteros, osea nodo->Imagen[]
         //----------------------------------------------------------------------
         // Proceso el avl, borro punteros de nodos a foto
-        avl.inOrdenDescartar(raiz);
+        avl.inOrdenDescartar(avl.getRaiz());
         // Elimino nodos del avl y balanceo
-        avl.deleteNode(raiz, local);
+        avl.inOrdenElimina(avl.getRaiz());
         // Despliego Slay Show
         recorreAVL();
         
@@ -218,9 +218,9 @@ public class Logica
         String name = JOptionPane.showInputDialog(null,null,"Digite el nombre de su paint a guardar",3);
         name+=".psc";
         //paso de la cola a el arreglo de 
-        FileManager f1 = new FileManager(name) {};
-        byte[] serial = s1.serializar(lista_cola);
-        f1.escribirArchivo(serial, name);
+//        FileManager f1 = new FileManager(name) {};
+//        byte[] serial = s1.serializar(lista_cola);
+//        f1.escribirArchivo(serial, name);
     }
     /**
      * Boton continuar
@@ -229,7 +229,7 @@ public class Logica
     {
         //
         
-    }
+    };
     /**
      * Boton abrir
      */
