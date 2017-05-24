@@ -1,6 +1,7 @@
 //Progra 02 - StoryTeller
 package storyteller.program;
 /*Librerias a usar*/
+import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -213,7 +215,12 @@ public class Logica
     public void botonSave()
     {
         //
-        
+        String name = JOptionPane.showInputDialog(null,null,"Digite el nombre de su paint a guardar",3);
+        name+=".psc";
+        //paso de la cola a el arreglo de 
+        FileManager f1 = new FileManager(name) {};
+        byte[] serial = s1.serializar(lista_cola);
+        f1.escribirArchivo(serial, name);
     }
     /**
      * Boton continuar
