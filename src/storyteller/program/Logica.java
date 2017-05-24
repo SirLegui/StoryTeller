@@ -90,7 +90,7 @@ public class Logica {
     public void recorreAVL()
     {
         // Imprimo Arbol
-        avl.preOrder(avl.raiz);
+        avl.inOrden(avl.raiz);
         
     }
 
