@@ -27,17 +27,15 @@ public class ArbolAVL<T> implements Serializable
         this.raiz = new Nodo();
         depurado = false;
     }
-    //Gets and Sets------------------------------------------------------------
-
-    public boolean isDepurado() {
+    //Gets and Sets-----------------------------------------------------------
+    public boolean isDepurado() 
+    {
         return depurado;
     }
-
-    public void setDepurado(boolean depurado) {
+    public void setDepurado(boolean depurado) 
+    {
         this.depurado = depurado;
     }
-    
-    
     public Nodo<T> getRaiz()
     {
         return raiz;
@@ -54,13 +52,16 @@ public class ArbolAVL<T> implements Serializable
  
         return Nodo.getHeight();
     }
- 
-    //Obtiene el maximo entre dos valores
+    /**
+     * Obtiene el maximo entre dos valores
+     * @param a
+     * @param b
+     * @return 
+     */
     public int getMax(int a, int b) 
     {
         return (a > b) ? a : b;
     }
- 
     /**
      * Zag
      * @param y Nodo a rotar
@@ -80,7 +81,6 @@ public class ArbolAVL<T> implements Serializable
         //Retorno nueva raiz
         return x;
     }
- 
     /**
      * Zig
      * @param x Nodo a rotar
@@ -100,7 +100,6 @@ public class ArbolAVL<T> implements Serializable
         //Retorno nueva raiz
         return y;
     }
- 
     /**
      * Saca el balance del nodo
      * @param Nodo nodo a buscar balance
@@ -114,7 +113,6 @@ public class ArbolAVL<T> implements Serializable
         //Obtengo la altura del nodo deseado
         return getHeight(Nodo.getLeft()) - getHeight(Nodo.getRight());
     }
- 
     /**
      * Inserto nodo en el avl, con sus debidos casos a efectuar
      * @param node Nodo a insertar
@@ -170,7 +168,6 @@ public class ArbolAVL<T> implements Serializable
         //Devuelve el puntero del nodo sin cambios 
         return node;
     }
- 
     /**
      * Recorre el arbol buscando con la key para el eliminar el nodo si se encuentra
      * @param node Raiz por la cual empezar
@@ -185,8 +182,8 @@ public class ArbolAVL<T> implements Serializable
         
         int acumodador = key.compareTo(node.getKey());
         //Caso si es menor
-        String tag = node.getKey();
-        ArrayList<Imagen> matriz = (ArrayList<Imagen>) node.getValue();
+        //String tag = node.getKey();
+        //ArrayList<Imagen> matriz = (ArrayList<Imagen>) node.getValue();
         
  
         //Actualizo la altura del nodo actual
@@ -238,20 +235,30 @@ public class ArbolAVL<T> implements Serializable
             preOrder(nodo.getRight());
         }
     }
-    
     /**
      * Recorrido e impresion en orden
      * @param nodo 
      */
-    public void inOrden(Nodo<T> nodo)
+    public void inOrdenDesplegarImagenes(Nodo<T> nodo)
     {
         if(nodo != null)
         {
             inOrden(nodo.getLeft());
             ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
             fotos.stream().forEach((foto) -> {
+                
                 t.desplegar_imagen(foto);
+                
             });
+            inOrden(nodo.getRight());
+        }
+    }
+    public void inOrden(Nodo<T> nodo)
+    {
+        if(nodo != null)
+        {
+            inOrden(nodo.getLeft());
+            System.out.print(nodo.getKey() + " ");
             inOrden(nodo.getRight());
         }
     }
@@ -268,7 +275,6 @@ public class ArbolAVL<T> implements Serializable
             System.out.print(nodo.getKey() + " ");
         }
     }
-    
     /**
      * Encuentra el valor minimo del arbol
      * @param node
@@ -284,12 +290,66 @@ public class ArbolAVL<T> implements Serializable
 
         return current;
     }
-
+    /**
+     * 
+     * @param a
+     * @param b
+     * @return 
+     */
     int max(int a, int b)
     {
         return (a > b) ? a : b;
     }
-    
+    /**
+     * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
+     * @param nodo Actual a procesar
+     */
+    public void inOrdenDescartar(Nodo<T> nodo)
+    {
+        if(nodo != null)
+        {
+            inOrden(nodo.getLeft());
+            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
+            
+            fotos.stream().forEach((foto) -> {
+                Imagen fo = foto;
+                if(fo.isCheck()){
+                   fotos.remove(fo);
+                }
+            });
+            
+            if(fotos.isEmpty())
+            {
+                nodo.setBorrar(true);
+            }
+            
+            inOrden(nodo.getRight());
+        }
+    }
+    /**
+     * Recorre el arbol y elimina a los nodos inutilizados para despues borrarlos
+     * @param nodo Actual a procesar
+     */
+    public void inOrdenElimina(Nodo<T> nodo)
+    {
+        if(nodo != null)
+        {
+            inOrden(nodo.getLeft());
+            
+            if(nodo.isBorrar())
+            {
+                deleteNode(raiz, nodo.getKey());
+            }
+            
+            inOrden(nodo.getRight());
+        }
+    }
+    /**
+     * 
+     * @param root
+     * @param key
+     * @return 
+     */
     public Nodo<T> deleteNode(Nodo root, String key)
     {
         // STEP 1: PERFORM STANDARD BST DELETE
@@ -381,49 +441,5 @@ public class ArbolAVL<T> implements Serializable
         }
 
         return root;
-    }
-    /**
-     * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
-     * @param nodo Actual a procesar
-     */
-    public void inOrdenDescartar(Nodo<T> nodo)
-    {
-        if(nodo != null)
-        {
-            inOrden(nodo.getLeft());
-            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
-            
-            fotos.stream().forEach((foto) -> {
-                Imagen fo = foto;
-                if(fo.isCheck()){
-                   fotos.remove(fo);
-                }
-            });
-            
-            if(fotos.isEmpty())
-            {
-                nodo.setBorrar(true);
-            }
-            
-            inOrden(nodo.getRight());
-        }
-    }
-    /**
-     * Recorre el arbol y elimina a los nodos inutilizados para despues borrarlos
-     * @param nodo Actual a procesar
-     */
-    public void inOrdenElimina(Nodo<T> nodo)
-    {
-        if(nodo != null)
-        {
-            inOrden(nodo.getLeft());
-            
-            if(nodo.isBorrar())
-            {
-                delete(raiz, nodo.getKey());
-            }
-            
-            inOrden(nodo.getRight());
-        }
     }
 }

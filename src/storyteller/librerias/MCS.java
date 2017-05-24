@@ -181,8 +181,7 @@ public class MCS
             Iterator<JSONObject> iter = caption.iterator();
             JSONObject text = iter.next();
             String texto = (String) text.get("text");
-            
-
+            // 
             rets[0] = texto;
             for(int i = 1; i<4;i++)
             {
@@ -191,12 +190,11 @@ public class MCS
                     rets[i]= iterator.next();
                 }
             }
+        // 
         }catch(NullPointerException e)
         {
             rets[0]= "El url no es accesible, intente con otra imagen";
         }    
-        //System.out.println(texto);
-        //manejo de error
         return rets;
     }
     /**
