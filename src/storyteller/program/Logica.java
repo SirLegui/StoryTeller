@@ -207,10 +207,36 @@ public class Logica
                 Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
-    
-    //Boton Procesar.
+    /**
+     * Boton save
+     */
+    public void botonSave()
+    {
+        //
+        
+    }
+    /**
+     * Boton continuar
+     */
+    public void botonFollow()
+    {
+        //
+        
+    }
+    /**
+     * Boton abrir
+     */
+    public void botonAbrir()
+    {
+        //
+        
+    }
+    /**
+     *  Boton Procesar
+     */
     public void botonProcesar()
     {
+        //
         api = new MCS();
         rets = null;
         //FileChooser fc = new FileChooser();
@@ -236,11 +262,10 @@ public class Logica
         interfaz.getLblTag3().setText(rets[3]);
         interfaz.aumentarFoto();
     }
-
     /*
      * Quicksort
+     * Funcion principal del quicksort
      */
-    // Funcion principal del quicksort
     public void sort(String[] values) 
     {
         // Valida si el array en null
@@ -258,7 +283,9 @@ public class Logica
         }
     }
 
-    // Funcion que divide a la izquierda los menores y en la derecha los mayores
+    /**
+     * Funcion que divide a la izquierda los menores y en la derecha los mayores
+     */
     private void quicksort(int low, int high) 
     {
         // Inicializo el i y j que se usarán
@@ -297,7 +324,9 @@ public class Logica
             quicksort(i, high);
     }
 
-    // Cambia el i con el j y viceversa
+    /**
+     * Cambia el i con el j y viceversa
+     */
     private void exchange(int i, int j) 
     {
         String temp = numbers[i];
