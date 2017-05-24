@@ -173,7 +173,7 @@ public class ArbolAVL<T> implements Serializable
  
     /**
      * Recorre el arbol buscando con la key para el eliminar el nodo si se encuentra
-     * @param node Actual a comparar
+     * @param node Raiz por la cual empezar
      * @param key llave con la cual comparar
      * @return El nodo eliminado si le logró
      */
@@ -417,18 +417,10 @@ public class ArbolAVL<T> implements Serializable
         if(nodo != null)
         {
             inOrden(nodo.getLeft());
-            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
             
-            fotos.stream().forEach((foto) -> {
-                Imagen fo = foto;
-                if(fo.isCheck()){
-                   fotos.remove(fo);
-                }
-            });
-            
-            if(fotos.isEmpty())
+            if(nodo.isBorrar())
             {
-                nodo.setBorrar(true);
+                delete(raiz, nodo.getKey());
             }
             
             inOrden(nodo.getRight());
