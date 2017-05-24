@@ -1,10 +1,5 @@
 package storyteller.librerias;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/*Librerias a usar*/
 import storyteller.librerias.Serializacion;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -14,78 +9,46 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import storyteller.librerias.Album;
 import storyteller.librerias.ParesOrdenados;
-
 /**
  *
- * @author edgerik
+ * @author edgerik, live
  */
-public class Archivo {
-
+public class Archivo 
+{
+    // Variables Globables ---------------------------------------------
     private String file;
     private Serializacion serial;
     private ParesOrdenados pares;
-
     private FileInputStream fileInput;
     private BufferedInputStream bufferedInput;
-
     private FileOutputStream fileOutput;
     private BufferedOutputStream bufferedOutput;
-
     private byte[] bytes = null;
-
-    public Archivo(String pArchivo) {
+    /**
+     * Constructor -----------------------------------------------------
+     * @param pArchivo 
+     */
+    public Archivo(String pArchivo) 
+    {
+        // Inicializo el 
         file = pArchivo;
+        // Inicializo la clase Serializacion
         serial = new Serializacion();
     }
-
-    public Archivo() {
-    }
-
-    public Album Abrir() {
-
-        byte[] lectura;
-        Album temp = null;
-        try {
-            if (!file.isEmpty()) {
-                lectura = leerArchivo();
-                temp = (Album) serial.deserializar(lectura);
-            } else {
-                temp = null;
-            }
-        } catch (Exception e) {
-            System.out.println("No se ha cargado un dibujo");
-        }
-
-        return temp;
-    }
-
-    public void Guardar(Album nuevo) {
-
-        //pares.
-        //Se serializa la lista de figuras
-        byte[] ser = serial.serializar(nuevo);
-        //Se nombra el archivo con el nombre leido
-        if (file.isEmpty()) {
-            file = "Albums.alb";
-        } else {
-            file += ".alb";
-        }
-        //Se escribe el archivo en .psc
-        escribirArchivo(ser);
-
-        System.out.println("Se ha guardado el archivo con el nombre: " + file);
-        System.out.println("En la dirección: /home/edgerik/NetBeansProjects/Paint");
-
-    }
-
-    public byte[] leerArchivo() {
+    /**
+     * 
+     * @return 
+     */
+    public byte[] leerArchivo() 
+    {
+        //
         try {
             fileInput = new FileInputStream(file);
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
             return null;
         }
-
+        //
         bufferedInput = new BufferedInputStream(fileInput);
         try {
             bytes = new byte[1000];
@@ -103,14 +66,20 @@ public class Archivo {
         }
         return bytes;
     }
-
-    public void escribirArchivo(byte[] pBytes) {
+    /**
+     * 
+     * @param pBytes 
+     */
+    public void escribirArchivo(byte[] pBytes) 
+    {
+        //
         bytes = pBytes;
         try {
             fileOutput = new FileOutputStream(file, true);
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
+        //
         bufferedOutput = new BufferedOutputStream(fileOutput);
         try {
             bufferedOutput.write(bytes);
@@ -124,4 +93,48 @@ public class Archivo {
             }
         }
     }
+    /**
+     * 
+     * @return 
+     */
+    public Album Abrir() 
+    {
+        //
+        byte[] lectura;
+        Album temp = null;
+        // 
+        try {
+            if (!file.isEmpty()) {
+                lectura = leerArchivo();
+                temp = (Album) serial.deserializar(lectura);
+            } else {
+                temp = null;
+            }
+        } catch (Exception e) {
+            System.out.println("No se ha cargado un dibujo");
+        }
+        return temp;
+    }
+    /**
+     * 
+     * @param nuevo 
+     */
+    public void Guardar(Album nuevo) 
+    {
+        //pares.
+        //Se serializa la lista de figuras
+        byte[] ser = serial.serializar(nuevo);
+        //Se nombra el archivo con el nombre leido
+        if (file.isEmpty()) {
+            file = "Albums.alb";
+        } else {
+            file += ".alb";
+        }
+        //Se escribe el archivo en .psc
+        escribirArchivo(ser);
+        System.out.println("Se ha guardado el archivo con el nombre: " + file);
+        System.out.println("En la dirección: /home/edgerik/NetBeansProjects/Paint");
+    }
+
+
 }

@@ -14,7 +14,11 @@ Generica, serializa un byte[]
 */
 public class Serializacion<e> 
 {
-
+  /**
+   * 
+   * @param objeto
+   * @return 
+   */
   public byte[] serializar(e objeto){
         ByteArrayOutputStream bs= new ByteArrayOutputStream();
         ObjectOutputStream os;
@@ -27,7 +31,11 @@ public class Serializacion<e>
         }
         return bs.toByteArray();
     }
-
+    /**
+     * 
+     * @param bytes
+     * @return 
+     */
     public e deserializar(byte[] bytes){
         ByteArrayInputStream bs= new ByteArrayInputStream(bytes);
         ObjectInputStream is;
@@ -41,7 +49,6 @@ public class Serializacion<e>
                 System.out.println("Se ha ingresado un archivo con una extension invalida");
                 System.out.println("El archivo leido probablemente es de una version anterior del programa");
         }
-
         return objeto;
     }
 }

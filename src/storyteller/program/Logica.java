@@ -1,6 +1,7 @@
 //Progra 02 - StoryTeller
 package storyteller.program;
 /*Librerias a usar*/
+import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -108,7 +110,7 @@ public class Logica
     public void botonCargar() throws IOException, ParseException
     {
         // Direccion donde esta el Json, lo creo
-        obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Desktop\\Prueba.json"));
+        obj = parser.parse(new FileReader("C:\\Users\\TEMP.ESTUDIANTES.004\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
@@ -157,22 +159,22 @@ public class Logica
      */
     public void nodoInsertarTags(String[] pTags, Imagen Ima)
     {
-        // Inserto al AVL
+        // Apunto a la raiz del avl
         raiz = avl.getRaiz();
+        // Inserto la Imagen al nodo
+        raiz.getValue().add(Ima);
         // Marco como procesada la foto
         Ima.setCheck(true);
-        // Inserto la Imagen 
-        raiz.getValue().add(Ima);
         // Insercion 1
-        avl.raiz = avl.insert(avl.raiz, rets[1]);
+        avl.raiz = avl.insert(raiz, pTags[1]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
         // Insercion 2
-        avl.raiz = avl.insert(avl.raiz, rets[2]);
+        avl.raiz = avl.insert(raiz, pTags[2]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
         // Insercion 3
-        avl.raiz = avl.insert(avl.raiz, rets[3]);
+        avl.raiz = avl.insert(raiz, pTags[3]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
     }
@@ -213,7 +215,12 @@ public class Logica
     public void botonSave()
     {
         //
-        
+        String name = JOptionPane.showInputDialog(null,null,"Digite el nombre de su paint a guardar",3);
+        name+=".psc";
+        //paso de la cola a el arreglo de 
+        FileManager f1 = new FileManager(name) {};
+        byte[] serial = s1.serializar(lista_cola);
+        f1.escribirArchivo(serial, name);
     }
     /**
      * Boton continuar
