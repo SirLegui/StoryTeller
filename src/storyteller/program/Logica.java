@@ -24,12 +24,12 @@ import storyteller.librerias.MCS;
  * @author edgerik
  * @author jeremy
  */
-public class Logica {
-    //Variables globales-------------------------------------------------------
-   
+public class Logica 
+{
+    //Variables globales-------------------------------------------------------   
     private static Logica Instance;
     private Iterator<String> iter;
-    private final JSONParser parser;
+    private JSONParser parser;
     private JSONObject jsonObject;
     private JSONArray urls;
     private ImageIcon icon;
@@ -43,7 +43,7 @@ public class Logica {
     //Clases a usar
     private Interfaz interfaz;
     private MCS api;
-    private final ArbolAVL avl;
+    private ArbolAVL avl;
     // Variables del quicksort
     private String[] numbers;
     private int number;
@@ -61,40 +61,50 @@ public class Logica {
     private Logica()
     {
         this.interfaz = null;   //No se inicializa porque se hace en el main
-            this.api = new MCS();
-            this.parser = new JSONParser();
-            this.avl = new ArbolAVL();
-            this.raiz = new Nodo<>();
-            this.obj = null;
-            this.jsonObject = null;
-            this.urls = null;
-            this.iter = null;
-            this.rets = null;
-            this.icon = null;
-            this.icono = null;
-            this.local = null;
-            this.numbers = null;
-            this.number = 0;
-            this.i = 0;
-            this.j = 0;
-            this.pivot = null;
+        this.raiz = new Nodo<>();
+        this.api = new MCS();
+        this.parser = new JSONParser();
+        
+        this.avl = null;
+        this.obj = null;
+        this.jsonObject = null;
+        this.urls = null;
+        this.iter = null;
+        this.rets = null;
+        this.icon = null;
+        this.icono = null;
+        this.local = null;
+        this.numbers = null;
+        this.pivot = null;
+        this.number = 0;
+        this.i = 0;
+        this.j = 0;
     }
     // Inicializo Interfaz
-    public void setInterfaz(Interfaz interfaz) {
+    public void setInterfaz(Interfaz interfaz) 
+    {
         this.interfaz = interfaz;
     }
     //Gets y Sets---------------------------------------------------------------
-    
+    public void setAVL(ArbolAVL avl1)
+    {
+        this.avl = avl1;
+    }
     //Funciones StoryTeller-----------------------------------------------------
-    // Recorro el avl
+    /**
+     * Recorro el avl
+     */
     public void recorreAVL()
     {
         // Imprimo Arbol
         avl.inOrden(avl.raiz);
         
     }
-
-    //Boton Cargar.
+    /**
+     * Boton Cargar.
+     * @throws IOException
+     * @throws ParseException 
+     */
     public void botonCargar() throws IOException, ParseException
     {
         // Direccion donde esta el Json, lo creo
@@ -114,20 +124,8 @@ public class Logica {
                 Imagen Ima = api.getImagen(actual, local);
                 // Descripcion de la foto
                 rets = Ima.getTags();
-                
-                // Inserto al AVL
-                raiz = avl.getRaiz();
-                Ima.setCheck(true);
-                raiz.getValue().add(Ima);
-                avl.raiz = avl.insert(avl.raiz, rets[1]);
-                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-                arrayImagen.add(Ima);
-                avl.raiz = avl.insert(avl.raiz, rets[2]);
-                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-                arrayImagen.add(Ima);
-                avl.raiz = avl.insert(avl.raiz, rets[3]);
-                arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-                arrayImagen.add(Ima);
+                // Inserto al nodo: 3 tags y foto
+                nodoInsertarTags(rets, Ima);
             // capta errores
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,11 +135,48 @@ public class Logica {
             
         // Hasta que se termine las ulrs .jpg del Json
         }while(iter.hasNext());
-        
+        //----------------------------------------------------------------------
+        // Despues de que el avl este hecho, una vez insertado los nodos al arbol 
+        // Y que ya hemos hecho la señalacion de punteros, osea nodo->Imagen[]
+        //----------------------------------------------------------------------
+        // Proceso el avl, borro punteros de nodos a foto
         avl.inOrdenDescartar(raiz);
-        // Preorden
+        // Elimino nodos del avl y balanceo
+        avl.deleteNode(raiz, local);
+        // Despliego Slay Show
         recorreAVL();
+        
+        
+       
+        //...
     }
+    /**
+     * Inserto al nodo: 3 tags y foto
+     * @param pTags
+     * @param Ima 
+     */
+    public void nodoInsertarTags(String[] pTags, Imagen Ima)
+    {
+        // Inserto al AVL
+        raiz = avl.getRaiz();
+        // Marco como procesada la foto
+        Ima.setCheck(true);
+        // Inserto la Imagen 
+        raiz.getValue().add(Ima);
+        // Insercion 1
+        avl.raiz = avl.insert(avl.raiz, rets[1]);
+        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+        arrayImagen.add(Ima);
+        // Insercion 2
+        avl.raiz = avl.insert(avl.raiz, rets[2]);
+        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+        arrayImagen.add(Ima);
+        // Insercion 3
+        avl.raiz = avl.insert(avl.raiz, rets[3]);
+        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+        arrayImagen.add(Ima);
+    }
+    
     /**
      * Despliega la imagen en el Jframe correspondiente y hace el sleep para el slide show
      * @param foto Imagen a desplegar

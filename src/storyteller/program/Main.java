@@ -16,16 +16,22 @@ public class Main {
             EventQueue.invokeLater(() -> {
             try {
                 //Inicializo clases
+                ArbolAVL tree = new ArbolAVL();
                 Interfaz v1 = new Interfaz();
                 Logica c = Logica.getInstance();
                 //Habilito la interfaz
                 v1.setControlador(c);
-                c.setInterfaz(v1);  //Inializo clase logica
+                c.setInterfaz(v1);  //Inicializo clase logica
+                c.setAVL(tree);     //Inicializo clase AVL
                 v1.setVisible(true);
-                //Logica del programa
-                //String indices[] = {"b","ab","aa"};
-                //c.sort(indices);
                 
+                Nodo raiz = tree.getRaiz();
+                System.out.println("--");
+                tree.raiz = tree.insert(tree.raiz, "abc");
+                tree.raiz = tree.insert(tree.raiz, "aaa");
+                tree.raiz = tree.insert(tree.raiz, "z");
+                tree.deleteNode(raiz, "aaa");
+                tree.inOrden(raiz);
                 //c.recorreAVL();
                 //...
                     
