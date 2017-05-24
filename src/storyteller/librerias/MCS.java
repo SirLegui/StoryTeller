@@ -124,36 +124,6 @@ public class MCS
         }
         return imagen;
     }
-
-    /**
-     * 
-     * @param dire ruta de la imagen
-     * @return byte[] de la imagen solicitada
-     * @throws MalformedURLException
-     * @throws FileNotFoundException
-     * @throws IOException 
-     */
-    public byte[] getImageBYTES(String dire) throws MalformedURLException, FileNotFoundException, IOException{
-        // Url con la foto
-        byte[] datos = new byte[2000];
-        try{
-            // open image
-            File imgPath = new File(dire);
-            BufferedImage bufferedImage = ImageIO.read(imgPath);
-
-            // get DataBufferBytes from Raster
-            WritableRaster raster = bufferedImage .getRaster();
-            DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-
-            datos = data.getData();
-            
-            //ImageIO.write(imagen, "jpg", dir);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("No se ha podido cargar la imagen");
-        }
-        return datos;
-    }
     
     /**
      * Recibe el json y retorna una lista de Strings. 
@@ -221,7 +191,32 @@ public class MCS
         //manejo de error
         return rets;
     }
-    /*
-    code..
-    */
+    
 }
+
+/*
+
+    public byte[] getImageBYTES(String dire) throws MalformedURLException, FileNotFoundException, IOException{
+        // Url con la foto
+        byte[] datos = new byte[2000];
+        try{
+            // open image
+            File imgPath = new File(dire);
+            BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+            // get DataBufferBytes from Raster
+            WritableRaster raster = bufferedImage .getRaster();
+            DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+
+            datos = data.getData();
+            
+            //ImageIO.write(imagen, "jpg", dir);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("No se ha podido cargar la imagen");
+        }
+        return datos;
+    }
+
+
+*/
