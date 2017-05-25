@@ -46,6 +46,91 @@ public class ArbolAVL implements Serializable
     {
         return raiz;
     }
+    
+    /**
+     * Recorrido e impresion en orden
+     * @param nodo 
+     */
+    public void inOrdenDesplegarImagenes(Nodo nodo)
+    {
+        if(nodo != null)
+        {
+            //
+            inOrdenDesplegarImagenes(nodo.getLeft());
+            //
+            int largo = nodo.getValue().size();
+            for (int i = largo-1; i >0; i--) {
+                t.desplegar_imagen(nodo.getValue().get(i));
+            }
+            //
+            inOrdenDesplegarImagenes(nodo.getRight());
+        }
+    }
+    /**
+     * 
+     * @param nodo
+     * @param nivel 
+     */
+    public void inOrden(Nodo nodo, int nivel)
+    {
+        if(nodo != null)
+        {
+            inOrden(nodo.getLeft(), nivel+1);
+            String tabs = "";
+            for(int i = 0; i<nivel ;i++)
+            {
+                tabs += "\t";
+            }
+            System.out.print(tabs + nodo.getKey() + " en el nivel "+ nivel+"\n");
+            inOrden(nodo.getRight(), nivel+1);
+        }
+    }
+
+    /**
+     * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
+     * @param nodo Actual a procesar
+     */
+    public void inOrdenDescartar(Nodo nodo)
+    {
+        if(nodo != null)
+        {
+            //
+            inOrdenDescartar(nodo.getLeft());
+            //
+            int largo = nodo.getValue().size();
+            for (int i = largo-1; i >0; i--) {
+                Imagen fo = nodo.getValue().get(i);
+                if(fo.isCheck()){
+                   nodo.getValue().remove(fo);
+                }
+            }
+
+            if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
+            {
+                nodo.setBorrar(true);   
+            }
+            //
+            inOrdenDescartar(nodo.getRight());
+        }
+    }
+    /**
+     * Recorre el arbol y elimina a los nodos inutilizados para despues borrarlos
+     * @param nodo Actual a procesar
+     */
+    public void inOrdenElimina(Nodo nodo)
+    {
+        if(nodo != null)
+        {
+            inOrdenElimina(nodo.getLeft());
+            
+            if(nodo.isBorrar())
+            {
+                deleteNode(raiz, nodo.getKey());
+            }
+            
+            inOrdenElimina(nodo.getRight());
+        }
+    }
     /**
      * 
      * @param Nodo altura del nodo
@@ -175,118 +260,6 @@ public class ArbolAVL implements Serializable
         return node;
     }
     /**
-     * Recorre el arbol buscando con la key para el eliminar el nodo si se encuentra
-     * @param node Raiz por la cual empezar
-     * @param key llave con la cual comparar
-     * @return El nodo eliminado si le logró
-     */
-    public Nodo delete(Nodo node, String key)
-    {
-        //Caso de que el avl este vacio
-        if (node == null)
-            return null;
-        
-        int acumodador = key.compareTo(node.getKey());
-        //Caso si es menor
-        //String tag = node.getKey();
-        //ArrayList<Imagen> matriz = (ArrayList<Imagen>) node.getValue();
-        
- 
-        //Actualizo la altura del nodo actual
-        node.setHeight(1 + getMax(getHeight(node.getLeft()),
-                              getHeight(node.getRight())));
-
-        //Obtengo el factor balanceado del nodo actul 
-        //para comprobar si este nodo se desequilibrado
-        int balance = getBalance(node);
- 
-        //Si el nodo esta desbalanceado, se efectua los siguientes casos.
-        //Left Left Case
-        if (balance > 1 && acumodador < 0)
-            return rotacionDerecha(node);
- 
-        //Right Right Case
-        if (balance < -1 && acumodador > 0)
-            return rotacionIzquierda(node);
- 
-        //Left Right Case
-        if (balance > 1 && acumodador > 0) {
-            node.setLeft(rotacionIzquierda(node.getLeft()));
-            return rotacionDerecha(node);
-        }
- 
-        // Right Left Case
-        if (balance < -1 && acumodador < 0) {
-            node.setRight(rotacionDerecha(node.getRight()));
-            return rotacionIzquierda(node);
-        }
-        
-        //Devuelve el puntero del nodo sin cambios 
-        return node;
-    
-    }
-    /**
-     * Recorrido en preorden del arbol, Padre-> hizq -> hder
-     * @param nodo  Actual a procesar
-     */
-    public void preOrder(Nodo nodo) 
-    {
-        if (nodo != null) 
-        {
-            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
-            fotos.stream().forEach((foto) -> {
-                t.desplegar_imagen(foto);
-            });
-            preOrder(nodo.getLeft());
-            preOrder(nodo.getRight());
-        }
-    }
-    /**
-     * Recorrido e impresion en orden
-     * @param nodo 
-     */
-    public void inOrdenDesplegarImagenes(Nodo nodo)
-    {
-        if(nodo != null)
-        {
-            inOrdenDesplegarImagenes(nodo.getLeft());
-            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
-            fotos.stream().forEach((foto) -> {
-                
-                t.desplegar_imagen(foto);
-                
-            });
-            inOrdenDesplegarImagenes(nodo.getRight());
-        }
-    }
-    public void inOrden(Nodo nodo, int nivel)
-    {
-        if(nodo != null)
-        {
-            inOrden(nodo.getLeft(), nivel+1);
-            String tabs = "";
-            for(int i = 0; i<nivel ;i++)
-            {
-                tabs += "\t";
-            }
-            System.out.print(tabs + nodo.getKey() + " en el nivel "+ nivel+"\n");
-            inOrden(nodo.getRight(), nivel+1);
-        }
-    }
-    /**
-     * Recorre e imprime el arbol en preorden: padre-> hizq-> hder
-     * @param nodo Actual a procesar
-     */
-    public void postOrden(Nodo nodo)
-    {
-        if(nodo != null)
-        {
-            postOrden(nodo.getLeft());
-            postOrden(nodo.getRight());
-            System.out.print(nodo.getKey() + " ");
-        }
-    }
-    /**
      * Encuentra el valor minimo del arbol
      * @param node
      * @return 
@@ -300,61 +273,6 @@ public class ArbolAVL implements Serializable
            current = current.getLeft();
 
         return current;
-    }
-    /**
-     * 
-     * @param a
-     * @param b
-     * @return 
-     */
-    int max(int a, int b)
-    {
-        return (a > b) ? a : b;
-    }
-    /**
-     * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
-     * @param nodo Actual a procesar
-     */
-    public void inOrdenDescartar(Nodo nodo)
-    {
-        if(nodo != null)
-        {
-            //
-            inOrdenDescartar(nodo.getLeft());
-            //
-            int largo = nodo.getValue().size();
-            for (int i = largo-1; i >0; i--) {
-                Imagen fo = nodo.getValue().get(i);
-                if(fo.isCheck()){
-                   nodo.getValue().remove(fo);
-                }
-            }
-
-            if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
-            {
-                nodo.setBorrar(true);   
-            }
-            //
-            inOrdenDescartar(nodo.getRight());
-        }
-    }
-    /**
-     * Recorre el arbol y elimina a los nodos inutilizados para despues borrarlos
-     * @param nodo Actual a procesar
-     */
-    public void inOrdenElimina(Nodo nodo)
-    {
-        if(nodo != null)
-        {
-            inOrdenElimina(nodo.getLeft());
-            
-            if(nodo.isBorrar())
-            {
-                deleteNode(raiz, nodo.getKey());
-            }
-            
-            inOrdenElimina(nodo.getRight());
-        }
     }
     /**
      * 
@@ -424,7 +342,7 @@ public class ArbolAVL implements Serializable
 
         // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
         try{
-            root.setHeight(max(root.getLeft().getHeight(), root.getRight().getHeight() )+ 1);
+            root.setHeight(getMax(root.getLeft().getHeight(), root.getRight().getHeight() )+ 1);
         }catch(NullPointerException e)
         {
             System.out.println(e.getMessage());
