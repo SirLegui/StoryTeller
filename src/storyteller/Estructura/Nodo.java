@@ -1,5 +1,6 @@
 package storyteller.Estructura;
 /*Importes de bibliotecas*/
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
 import storyteller.librerias.Imagen;
@@ -17,7 +18,7 @@ public class Nodo<T> implements Serializable{
     /*Constructores*/
     public Nodo()
     {
-        this.Value = null;
+        this.Value = (T) new ArrayList<Imagen>();
         this.left = null;
         this.right = null;
         this.key = "";
@@ -25,7 +26,7 @@ public class Nodo<T> implements Serializable{
     }
     public Nodo(String d) 
     {
-        this.Value = null;
+        this.Value = (T) new ArrayList<Imagen>();
         this.left = null;
         this.right = null;
         this.key = d;
@@ -45,9 +46,11 @@ public class Nodo<T> implements Serializable{
     {
         return Value;
     }
-    public void setValue(T Value) 
+    public void setValue(T pValue, Imagen ima) 
     {
-        this.Value = Value;
+        ArrayList<Imagen> array = (ArrayList<Imagen>)Value;
+        array.add(ima);
+        this.Value = pValue;
     }
     public Nodo<T> getLeft() 
     {

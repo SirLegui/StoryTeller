@@ -1,8 +1,10 @@
 package storyteller.program;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.*;
 import storyteller.interfaz.Interfaz;
+import storyteller.librerias.Imagen;
 import storyteller.librerias.Serializacion;
 /*
  * Clase Main
@@ -20,7 +22,7 @@ public class Main {
             Logica c = Logica.getInstance();
             Serializacion  s = new Serializacion();
             // Creo el arbol
-            ArbolAVL tree = new ArbolAVL();
+            ArbolAVL<ArrayList<Imagen>> tree = new ArbolAVL<>();
             // Habilito la interfaz
             v1.setControlador(c);
             c.setInterfaz(v1);  //Inicializo clase logica

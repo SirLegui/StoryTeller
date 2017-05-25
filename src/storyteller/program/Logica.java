@@ -178,22 +178,25 @@ public class Logica
         // Apunto a la raiz del avl
         raiz = avl.getRaiz();
         // Inserto la Imagen al nodo
-        //raiz.getValue().add(Ima);
+        // ArrayList<Imagen> array = new ArrayList<>();
+        //array = raiz.getValue().add(Ima);
+        raiz.setValue(raiz.getValue(), Ima);
         // Marco como procesada la foto
         Ima.setCheck(true);
+        
         // Insercion 1
-        Nodo<ArrayList<Imagen>> new_nodo = new Nodo(pTags[1]);
-        avl.raiz = avl.insert(raiz, pTags[1]);
-        arrayImagen = (ArrayList<Imagen>) new_nodo.getValue();
+        // Nodo<ArrayList<Imagen>> new_nodo = new Nodo(pTags[1]);
+        avl.raiz = avl.insert(avl.raiz, pTags[1]);
+        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
         
 
         // Insercion 2
-        avl.raiz = avl.insert(raiz, pTags[2]);
+        avl.raiz = avl.insert(avl.raiz, pTags[2]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
         // Insercion 3
-        avl.raiz = avl.insert(raiz, pTags[3]);
+        avl.raiz = avl.insert(avl.raiz, pTags[3]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
         arrayImagen.add(Ima);
     }

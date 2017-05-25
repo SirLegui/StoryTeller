@@ -131,7 +131,7 @@ public class ArbolAVL<T> implements Serializable
     {
         //Caso de que el avl este vacio
         if (node == null)
-            return (new Nodo(key));
+            return (new Nodo<>(key));
         
         int acumodador = key.compareTo(node.getKey());
         //Caso si es menor
