@@ -14,15 +14,15 @@ public class ArbolAVL implements Serializable
 {
     /*Variables Globales*/
     private Nodo raiz;
-    private Logica t;
+    private Logica controlador;
     private boolean depurado;
     /**
      * Constructor de la clase con llamada a Singleton Logica
      */
-    public ArbolAVL()
+    public ArbolAVL(Logica c)
     {
         // Singlenton
-        this.t = Logica.getInstance();
+        this.controlador = c;
         // Inicializo nodo
         this.raiz = null;
         // Depurar en false
@@ -61,7 +61,7 @@ public class ArbolAVL implements Serializable
             int largo = nodo.getValue().size();
             for (int i = largo-1; i >0; i--) {
                 if(nodo.getValue().get(i) != null) {
-                    t.desplegar_imagen(nodo.getValue().get(i));
+                    controlador .desplegar_imagen(nodo.getValue().get(i));
                 }
             }
             //

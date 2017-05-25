@@ -32,22 +32,22 @@ import storyteller.librerias.Serializacion;
 public class Logica 
 {
     //Variables globales-------------------------------------------------------   
-    private static Logica Instance;
     private Iterator<String> iter;
     private JSONParser parser;
     private JSONObject jsonObject;
     private JSONArray urls;
-    private ImageIcon icon;
+    private ImageIcon icon;                 
     private Icon icono; 
     private Object obj;
-    // Variables Quicksort
+    // Variables Json
     private String[] rets;
-    private String local;
-    private String actual;
+    private String local;       // Json ubicacion
+    private String actual;      // htpp
     // Variables avl
     private Nodo raiz;
     private ArrayList<Imagen> arrayImagen;
     //Clases a usar
+    private static Logica Instance;
     private Interfaz interfaz;
     private MCS api;
     private ArbolAVL avl;
@@ -147,6 +147,9 @@ public class Logica
                 System.out.println(rets[0]);
                 System.out.println(rets[1]);
                 System.out.println(rets[2]);
+                // 
+                
+                Ima.getImagen();
                 // Inserto al nodo: 3 tags y foto
                 nodoInsertarImaTags(rets, Ima);
             // capta errores

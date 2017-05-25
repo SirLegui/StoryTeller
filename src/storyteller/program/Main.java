@@ -21,8 +21,8 @@ public class Main {
             Interfaz v1 = new Interfaz();
             Logica c = Logica.getInstance();
             Serializacion  s = new Serializacion();
-            // Creo el arbol
-            ArbolAVL tree = new ArbolAVL();
+            // Creo el arbol, le paso la Logica por parametro
+            ArbolAVL tree = new ArbolAVL(c);
             // Habilito la interfaz
             v1.setControlador(c);
             c.setInterfaz(v1);  //Inicializo clase logica

@@ -12,9 +12,9 @@ import storyteller.Estructura.ArbolAVL;
 public class Album 
 {
     // Variables Globales --------------------------------------------------
-    private ArbolAVL tree;
-    private String nombre;
-    private String local_path;
+    private ArbolAVL tree;          // tree
+    private String nombre;          // name album
+    private String local_path;      // c://
     /**
      * Constructor ---------------------------------------------------------
      * @param tree

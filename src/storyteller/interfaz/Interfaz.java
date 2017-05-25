@@ -20,7 +20,6 @@ public class Interfaz extends javax.swing.JFrame
 {
     //Variables globales
     private String direccion_guardado;
-    private String direccion_Json;
     private int foto;
     //Clases a usar
     private Logica controlador;
@@ -31,7 +30,6 @@ public class Interfaz extends javax.swing.JFrame
         initComponents();
         // Inicializo variables globales
         this.direccion_guardado = "";
-        this.direccion_Json = "";
         this.foto = 0;
     }
     //Gets y Sets
@@ -48,9 +46,6 @@ public class Interfaz extends javax.swing.JFrame
     }
     public String getDireccion_guardado() {
         return direccion_guardado;
-    }
-    public String getDireccion_Json() {
-        return direccion_Json;
     }
     public JTextField getDireccion_imagen() 
     {

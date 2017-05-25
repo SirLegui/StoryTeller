@@ -12,7 +12,7 @@ public class Nodo implements Serializable{
     private ArrayList<Imagen> Value = new ArrayList<Imagen>();
     private Nodo left;
     private Nodo right;
-    private String key;
+    private String key;             // Tag 
     private int height;
     private boolean borrar;
     /*Constructores*/

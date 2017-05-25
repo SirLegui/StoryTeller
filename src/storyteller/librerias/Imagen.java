@@ -9,11 +9,11 @@ import java.lang.String;
 public class Imagen
 {
     //Variables globales----------------------------
-    private final Image imagen;
-    private final String caption;
-    private final String url;
-    private String[] tags;
-    private boolean check;
+    private final Image imagen;     
+    private final String caption;   // Describcion
+    private final String url;       // http
+    private String[] tags;          // 3 tags
+    private boolean check;          // Marca Procesada
     //Constructor
     
    
