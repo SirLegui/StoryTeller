@@ -203,29 +203,28 @@ public class Logica
      */
     public void desplegar_imagen(Imagen foto)
     {
-        // Imprimo la Imagen en interfaz
-        
-            icon = new ImageIcon(foto.getImagen());
-            icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
-            interfaz.getLblFoto().setIcon(icono);
-            interfaz.getLblFoto().setText(null);
-            // Inserto en el arreglo los datos a usar
-            // 1)Descriccion, 2)3)4)tags
-            rets= foto.getTags();
-            interfaz.getLblDescripcion().setText(rets[0]);
-            interfaz.getLblTag1().setText(rets[1]);
-            interfaz.getLblTag2().setText(rets[2]);
-            interfaz.getLblTag3().setText(rets[3]);
-            // Aumento contador de fotos
-            interfaz.aumentarFoto();
-            // Pinto
-            interfaz.repaint();
-            // Slepp
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        // Imprimo la Imagen en interfaz      
+        icon = new ImageIcon(foto.getImagen());
+        icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
+        interfaz.getLblFoto().setIcon(icono);
+        interfaz.getLblFoto().setText(null);
+        // Inserto en el arreglo los datos a usar
+        // 1)Descriccion, 2)3)4)tags
+        rets= foto.getTags();
+        interfaz.getLblDescripcion().setText(rets[0]);
+        interfaz.getLblTag1().setText(rets[1]);
+        interfaz.getLblTag2().setText(rets[2]);
+        interfaz.getLblTag3().setText(rets[3]);
+        // Aumento contador de fotos
+        interfaz.aumentarFoto();
+        // Pinto
+        interfaz.repaint();
+        // Slepp
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * Boton save

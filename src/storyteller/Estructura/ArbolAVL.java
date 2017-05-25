@@ -60,7 +60,9 @@ public class ArbolAVL implements Serializable
             //
             int largo = nodo.getValue().size();
             for (int i = largo-1; i >0; i--) {
-                t.desplegar_imagen(nodo.getValue().get(i));
+                if(nodo.getValue().get(i) != null) {
+                    t.desplegar_imagen(nodo.getValue().get(i));
+                }
             }
             //
             inOrdenDesplegarImagenes(nodo.getRight());
