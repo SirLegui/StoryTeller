@@ -17,6 +17,7 @@ public class ArbolAVL<T> implements Serializable
     public Logica t;
     public boolean depurado;
     
+    
     /**
      * Constructor de la clase con llamada a Singleton Logica
      */
@@ -24,8 +25,6 @@ public class ArbolAVL<T> implements Serializable
     {
         // Singlenton
         this.t = Logica.getInstance();
-        //Inicializo variables globales
-        this.raiz = null;
         // Inicializo nodo
         this.raiz = null;
         // Depurar en false

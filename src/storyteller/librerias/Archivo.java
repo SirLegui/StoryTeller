@@ -16,24 +16,26 @@ import storyteller.librerias.ParesOrdenados;
 public class Archivo 
 {
     // Variables Globables ---------------------------------------------
-    private String file;
-    private Serializacion serial;
-    private ParesOrdenados pares;
     private FileInputStream fileInput;
     private BufferedInputStream bufferedInput;
     private FileOutputStream fileOutput;
     private BufferedOutputStream bufferedOutput;
-    private byte[] bytes = null;
+    private byte[] bytes;
+    private String file;
+    // Clases a usar
+    private Serializacion serial;
     /**
      * Constructor -----------------------------------------------------
      * @param pArchivo 
      */
-    public Archivo(String pArchivo) 
+    public Archivo(String pArchivo, Serializacion ss1) 
     {
-        // Inicializo el 
+        // Inicializo el nombre del album
         file = pArchivo;
         // Inicializo la clase Serializacion
-        serial = new Serializacion();
+        serial = ss1;
+        // Inicializo variables globales
+        this.bytes = null;
     }
     /**
      * 

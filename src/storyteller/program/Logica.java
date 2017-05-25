@@ -3,6 +3,7 @@ package storyteller.program;
 /*Librerias a usar*/
 import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 import java.awt.Image;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,8 +21,10 @@ import org.json.simple.parser.ParseException;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
+import storyteller.librerias.Archivo;
 import storyteller.librerias.Imagen;
 import storyteller.librerias.MCS;
+import storyteller.librerias.Serializacion;
 /**
  * @author edgerik
  * @author jeremy
@@ -46,6 +49,7 @@ public class Logica
     private Interfaz interfaz;
     private MCS api;
     private ArbolAVL avl;
+    private Serializacion s1;
     // Variables del quicksort
     private String[] numbers;
     private int number;
@@ -63,10 +67,10 @@ public class Logica
     private Logica()
     {
         this.interfaz = null;   //No se inicializa porque se hace en el main
-        this.raiz = new Nodo<>();
+        this.raiz = new Nodo<ArrayList<Imagen>>();
         this.api = new MCS();
         this.parser = new JSONParser();
-        
+        this.s1 = new Serializacion();
         this.avl = null;
         this.obj = null;
         this.jsonObject = null;
@@ -92,6 +96,18 @@ public class Logica
     {
         this.avl = avl1;
     }
+    public ArbolAVL getAVL()
+    {
+        return avl;
+    }
+    public void setSerializacion(Serializacion s)
+    {
+        this.s1 = s;
+    }
+    public Serializacion getSerializacion()
+    {
+        return s1;
+    }
     //Funciones StoryTeller-----------------------------------------------------
     /**
      * Recorro el avl
@@ -99,8 +115,8 @@ public class Logica
     public void recorreAVL()
     {
         // Imprimo Arbol
-        avl.inOrden(avl.raiz,0);
-        
+        //avl.inOrden(avl.raiz,0);
+        avl.inOrdenDesplegarImagenes(avl.raiz);
     }
     /**
      * Boton Cargar.
@@ -110,7 +126,7 @@ public class Logica
     public void botonCargar() throws IOException, ParseException
     {
         // Direccion donde esta el Json, lo creo
-        obj = parser.parse(new FileReader("C:\\Users\\TEMP.ESTUDIANTES.004\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
+        obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
@@ -162,13 +178,16 @@ public class Logica
         // Apunto a la raiz del avl
         raiz = avl.getRaiz();
         // Inserto la Imagen al nodo
-        raiz.getValue().add(Ima);
+        //raiz.getValue().add(Ima);
         // Marco como procesada la foto
         Ima.setCheck(true);
         // Insercion 1
+        Nodo<ArrayList<Imagen>> new_nodo = new Nodo(pTags[1]);
         avl.raiz = avl.insert(raiz, pTags[1]);
-        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+        arrayImagen = (ArrayList<Imagen>) new_nodo.getValue();
         arrayImagen.add(Ima);
+        
+
         // Insercion 2
         avl.raiz = avl.insert(raiz, pTags[2]);
         arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
@@ -214,13 +233,15 @@ public class Logica
      */
     public void botonSave()
     {
-        //
-        String name = JOptionPane.showInputDialog(null,null,"Digite el nombre de su paint a guardar",3);
-        name+=".psc";
-        //paso de la cola a el arreglo de 
-//        FileManager f1 = new FileManager(name) {};
-//        byte[] serial = s1.serializar(lista_cola);
-//        f1.escribirArchivo(serial, name);
+        // Le pedimos el nombre del album al usuario
+        String name = JOptionPane.showInputDialog(null,null,"Digite el nombre del album a guardar",3);
+        name+=".alb";
+        // Serializo el AVL
+        Archivo f1 = new Archivo(name, getSerializacion());
+        byte[] serial = s1.serializar(getAVL());
+        f1.escribirArchivo(serial);
+        // 
+        
     }
     /**
      * Boton continuar

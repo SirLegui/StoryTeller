@@ -19,17 +19,20 @@ import storyteller.program.Logica;
 public class Interfaz extends javax.swing.JFrame 
 {
     //Variables globales
-    String direccion_guardado;
-    int foto;
+    private String direccion_guardado;
+    private String direccion_Json;
+    private int foto;
     //Clases a usar
-    Logica controlador;
+    private Logica controlador;
     //Constructor
     public Interfaz() 
     {
-        //Inicializa la interfaz
+        // Inicializa la interfaz
         initComponents();
+        // Inicializo variables globales
+        this.direccion_guardado = "";
+        this.direccion_Json = "";
         this.foto = 0;
-        //
     }
     //Gets y Sets
     public void setControlador(Logica controlador) 
@@ -45,6 +48,9 @@ public class Interfaz extends javax.swing.JFrame
     }
     public String getDireccion_guardado() {
         return direccion_guardado;
+    }
+    public String getDireccion_Json() {
+        return direccion_Json;
     }
     public JTextField getDireccion_imagen() 
     {
@@ -94,6 +100,7 @@ public class Interfaz extends javax.swing.JFrame
         Procesar = new javax.swing.JButton();
 
         save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        save_path.setCurrentDirectory(new java.io.File("C:\\Users\\Usuario1\\Escritorio"));
         save_path.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         save_path.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         save_path.setBorder(new javax.swing.border.MatteBorder(null));
@@ -121,15 +128,12 @@ public class Interfaz extends javax.swing.JFrame
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(182, 182, 182)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-                            .addComponent(lblTag1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                        .addComponent(lblTag1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -182,7 +186,12 @@ public class Interfaz extends javax.swing.JFrame
     */
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         try {
+            // Digite donde se van a guardar las fotos
             setDireccion_guardado();
+            // Digite donde se va a leer el Json de .jpg
+            //save_path.showSaveDialog(this);
+            //direccion_Json = ((File) save_path.getSelectedFile()).getAbsolutePath();
+            // Logica Cargar
             controlador.botonCargar();
         } catch (IOException | ParseException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);

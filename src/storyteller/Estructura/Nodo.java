@@ -1,6 +1,8 @@
 package storyteller.Estructura;
 /*Importes de bibliotecas*/
 import java.io.Serializable;
+import java.util.ArrayList;
+import storyteller.librerias.Imagen;
 /*
  * Clase Nodo generica
  */
@@ -13,22 +15,16 @@ public class Nodo<T> implements Serializable{
     private int height;
     private boolean borrar;
     /*Constructores*/
-    public Nodo(){
+    public Nodo()
+    {
         this.Value = null;
         this.left = null;
         this.right = null;
-        borrar = false;
+        this.key = "";
+        this.height = 1;
     }
-
-    public boolean isBorrar() {
-        return borrar;
-    }
-
-    public void setBorrar(boolean borrar) {
-        this.borrar = borrar;
-    }
-    
-    public Nodo(String d) {
+    public Nodo(String d) 
+    {
         this.Value = null;
         this.left = null;
         this.right = null;
@@ -36,9 +32,14 @@ public class Nodo<T> implements Serializable{
         this.height = 1;
     }
     //Gets y Sets
-    public void get()
+    public boolean isBorrar()
     {
-        
+        return borrar;
+    }
+
+    public void setBorrar(boolean borrar) 
+    {
+        this.borrar = borrar;
     }
     public T getValue() 
     {

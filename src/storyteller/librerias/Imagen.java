@@ -1,7 +1,7 @@
 package storyteller.librerias;
 
 import java.awt.Image;
-
+import java.lang.String;
 /**
  * Para manejo de fotografias y los datos del API Microsoft
  * @author eleguizamon
@@ -21,9 +21,10 @@ public class Imagen
         this.imagen = imagen;
         this.caption = tagss[0];
         this.url = url;
-        tags[0] = tagss[1];
-        tags[1] = tagss[2];
-        tags[2] = tagss[3];
+        this.tags = new String[3];
+        this.tags[0] = tagss[1];
+        this.tags[1] = tagss[2];
+        this.tags[2] = tagss[3];
         this.check = false;
     }
 
