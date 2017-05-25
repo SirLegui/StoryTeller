@@ -319,29 +319,22 @@ public class ArbolAVL implements Serializable
     {
         if(nodo != null)
         {
+            //
             inOrdenDescartar(nodo.getLeft());
-            ArrayList<Imagen> fotos = nodo.getValue();
-            
-//            fotos.stream().forEach((foto) -> {
-//                Imagen fo = foto;
-//                if(fo.isCheck()){
-//                   fotos.remove(fo);
-//                }
-//            });
-//            
-            for (int i = 0; i < fotos.size(); i++) {
-                Imagen fo = fotos.get(i);
+            //
+            int largo = nodo.getValue().size();
+            for (int i = largo-1; i >0; i--) {
+                Imagen fo = nodo.getValue().get(i);
                 if(fo.isCheck()){
-                   fotos.remove(fo);
+                   nodo.getValue().remove(fo);
                 }
             }
-            nodo.setValueArray(fotos);
-            // 
-            if(fotos.isEmpty())
+
+            if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
             {
-                nodo.setBorrar(true);
+                nodo.setBorrar(true);   
             }
-            
+            //
             inOrdenDescartar(nodo.getRight());
         }
     }
@@ -467,3 +460,12 @@ public class ArbolAVL implements Serializable
         return root;
     }
 }
+/*
+//            fotos.stream().forEach((foto) -> {
+//                Imagen fo = foto;
+//                if(fo.isCheck()){
+//                   fotos.remove(fo);
+//                }
+//            });
+//            
+*/
