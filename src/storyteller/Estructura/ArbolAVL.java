@@ -8,16 +8,14 @@ import storyteller.program.Logica;
  * Clase AVL para manejo de estructura
  * Utiliza la instancia Singleton de Logica
  * @author eleguizamon
- * @param <T> el valor generico a guardar
+ * 
  */
-public class ArbolAVL<T> implements Serializable
+public class ArbolAVL implements Serializable
 {
     /*Variables Globales*/
-    public Nodo<T> raiz;
-    public Logica t;
-    public boolean depurado;
-    
-    
+    private Nodo raiz;
+    private Logica t;
+    private boolean depurado;
     /**
      * Constructor de la clase con llamada a Singleton Logica
      */
@@ -36,7 +34,7 @@ public class ArbolAVL<T> implements Serializable
         return depurado;
     }
 
-    public void setRaiz(Nodo<T> raiz) {
+    public void setRaiz(Nodo raiz) {
         this.raiz = raiz;
     }
     
@@ -44,7 +42,7 @@ public class ArbolAVL<T> implements Serializable
     {
         this.depurado = depurado;
     }
-    public Nodo<T> getRaiz()
+    public Nodo getRaiz()
     {
         return raiz;
     }
@@ -53,7 +51,7 @@ public class ArbolAVL<T> implements Serializable
      * @param Nodo altura del nodo
      * @return altura del nodo
      */
-    public int getHeight(Nodo<T> Nodo) 
+    public int getHeight(Nodo Nodo) 
     {
         if (Nodo == null)
             return 0;
@@ -75,11 +73,11 @@ public class ArbolAVL<T> implements Serializable
      * @param y Nodo a rotar
      * @return Ultimo nodo rotado
      */
-    public Nodo<T> rotacionDerecha(Nodo<T> y) 
+    public Nodo rotacionDerecha(Nodo y) 
     {
         //Inicializo nodos izq y der.
-        Nodo<T> x = y.getLeft();
-        Nodo<T> T2 = x.getRight();
+        Nodo x = y.getLeft();
+        Nodo T2 = x.getRight();
         //Realiza rotaciones
         x.setRight(y);
         y.setLeft(T2);
@@ -94,11 +92,11 @@ public class ArbolAVL<T> implements Serializable
      * @param x Nodo a rotar
      * @return Ultimo nodo rotado
      */
-    public Nodo<T> rotacionIzquierda(Nodo<T> x) 
+    public Nodo rotacionIzquierda(Nodo x) 
     {
         //Inicializo nodos izq y der.
-        Nodo<T> y = x.getRight();
-        Nodo<T> T2 = y.getLeft();
+        Nodo y = x.getRight();
+        Nodo T2 = y.getLeft();
         //Realiza rotaciones
         y.setLeft(x);
         x.setRight(T2);
@@ -113,7 +111,7 @@ public class ArbolAVL<T> implements Serializable
      * @param Nodo nodo a buscar balance
      * @return numero en [-1,1] si esta en balance, sino, esta desbalanceado
      */
-    public int getBalance(Nodo<T> Nodo) 
+    public int getBalance(Nodo Nodo) 
     {
         //Caso de que el nodo sea null, se retorna un cero 
         if (Nodo == null)
@@ -127,19 +125,19 @@ public class ArbolAVL<T> implements Serializable
      * @param key Llave para comparar y colocar el Nodo correctamente
      * @return 
      */
-    public Nodo<T> insert(Nodo<T> node, String key) 
+    public Nodo insert(Nodo node, String key, Imagen ima) 
     {
         //Caso de que el avl este vacio
         if (node == null)
-            return (new Nodo<>(key));
+            return (new Nodo(key, ima));
         
         int acumodador = key.compareTo(node.getKey());
         //Caso si es menor
         if (acumodador < 0)
-            node.setLeft(insert(node.getLeft(), key));
+            node.setLeft(insert(node.getLeft(), key, ima));
         //Caso si es mayor
         else if (acumodador > 0)
-            node.setRight(insert(node.getRight(), key));
+            node.setRight(insert(node.getRight(), key, ima));
         //No se permiten claves duplicadas
         else
             return node;
@@ -182,7 +180,7 @@ public class ArbolAVL<T> implements Serializable
      * @param key llave con la cual comparar
      * @return El nodo eliminado si le logró
      */
-    public Nodo<T> delete(Nodo<T> node, String key)
+    public Nodo delete(Nodo node, String key)
     {
         //Caso de que el avl este vacio
         if (node == null)
@@ -231,7 +229,7 @@ public class ArbolAVL<T> implements Serializable
      * Recorrido en preorden del arbol, Padre-> hizq -> hder
      * @param nodo  Actual a procesar
      */
-    public void preOrder(Nodo<T> nodo) 
+    public void preOrder(Nodo nodo) 
     {
         if (nodo != null) 
         {
@@ -247,7 +245,7 @@ public class ArbolAVL<T> implements Serializable
      * Recorrido e impresion en orden
      * @param nodo 
      */
-    public void inOrdenDesplegarImagenes(Nodo<T> nodo)
+    public void inOrdenDesplegarImagenes(Nodo nodo)
     {
         if(nodo != null)
         {
@@ -261,7 +259,7 @@ public class ArbolAVL<T> implements Serializable
             inOrdenDesplegarImagenes(nodo.getRight());
         }
     }
-    public void inOrden(Nodo<T> nodo, int nivel)
+    public void inOrden(Nodo nodo, int nivel)
     {
         if(nodo != null)
         {
@@ -279,7 +277,7 @@ public class ArbolAVL<T> implements Serializable
      * Recorre e imprime el arbol en preorden: padre-> hizq-> hder
      * @param nodo Actual a procesar
      */
-    public void postOrden(Nodo<T> nodo)
+    public void postOrden(Nodo nodo)
     {
         if(nodo != null)
         {
@@ -293,7 +291,7 @@ public class ArbolAVL<T> implements Serializable
      * @param node
      * @return 
      */
-    public Nodo<T> minValueNode(Nodo node)
+    public Nodo minValueNode(Nodo node)
     {
         Nodo current = node;
 
@@ -317,20 +315,28 @@ public class ArbolAVL<T> implements Serializable
      * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
      * @param nodo Actual a procesar
      */
-    public void inOrdenDescartar(Nodo<T> nodo)
+    public void inOrdenDescartar(Nodo nodo)
     {
         if(nodo != null)
         {
             inOrdenDescartar(nodo.getLeft());
-            ArrayList<Imagen> fotos = ((ArrayList<Imagen>) nodo.getValue());
+            ArrayList<Imagen> fotos = nodo.getValue();
             
-            fotos.stream().forEach((foto) -> {
-                Imagen fo = foto;
+//            fotos.stream().forEach((foto) -> {
+//                Imagen fo = foto;
+//                if(fo.isCheck()){
+//                   fotos.remove(fo);
+//                }
+//            });
+//            
+            for (int i = 0; i < fotos.size(); i++) {
+                Imagen fo = fotos.get(i);
                 if(fo.isCheck()){
                    fotos.remove(fo);
                 }
-            });
-            
+            }
+            nodo.setValueArray(fotos);
+            // 
             if(fotos.isEmpty())
             {
                 nodo.setBorrar(true);
@@ -343,7 +349,7 @@ public class ArbolAVL<T> implements Serializable
      * Recorre el arbol y elimina a los nodos inutilizados para despues borrarlos
      * @param nodo Actual a procesar
      */
-    public void inOrdenElimina(Nodo<T> nodo)
+    public void inOrdenElimina(Nodo nodo)
     {
         if(nodo != null)
         {
@@ -363,7 +369,7 @@ public class ArbolAVL<T> implements Serializable
      * @param key
      * @return 
      */
-    public Nodo<T> deleteNode(Nodo root, String key)
+    public Nodo deleteNode(Nodo root, String key)
     {
         // STEP 1: PERFORM STANDARD BST DELETE
         if (root == null)

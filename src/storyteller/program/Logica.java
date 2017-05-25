@@ -40,10 +40,12 @@ public class Logica
     private ImageIcon icon;
     private Icon icono; 
     private Object obj;
+    // Variables Quicksort
     private String[] rets;
     private String local;
     private String actual;
-    private Nodo<ArrayList<Imagen>> raiz;
+    // Variables avl
+    private Nodo raiz;
     private ArrayList<Imagen> arrayImagen;
     //Clases a usar
     private Interfaz interfaz;
@@ -67,7 +69,7 @@ public class Logica
     private Logica()
     {
         this.interfaz = null;   //No se inicializa porque se hace en el main
-        this.raiz = new Nodo<ArrayList<Imagen>>();
+        this.raiz = null;
         this.api = new MCS();
         this.parser = new JSONParser();
         this.s1 = new Serializacion();
@@ -116,7 +118,7 @@ public class Logica
     {
         // Imprimo Arbol
         //avl.inOrden(avl.raiz,0);
-        avl.inOrdenDesplegarImagenes(avl.raiz);
+        avl.inOrdenDesplegarImagenes(avl.getRaiz());
     }
     /**
      * Boton Cargar.
@@ -142,8 +144,11 @@ public class Logica
                 Imagen Ima = api.getImagen(actual, local);
                 // Descripcion de la foto
                 rets = Ima.getTags();
+                System.out.println(rets[0]);
+                System.out.println(rets[1]);
+                System.out.println(rets[2]);
                 // Inserto al nodo: 3 tags y foto
-                nodoInsertarTags(rets, Ima);
+                nodoInsertarImaTags(rets, Ima);
             // capta errores
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,32 +178,23 @@ public class Logica
      * @param pTags
      * @param Ima 
      */
-    public void nodoInsertarTags(String[] pTags, Imagen Ima)
+    public void nodoInsertarImaTags(String[] pTags, Imagen Ima)
     {
         // Apunto a la raiz del avl
         raiz = avl.getRaiz();
         // Inserto la Imagen al nodo
-        // ArrayList<Imagen> array = new ArrayList<>();
-        //array = raiz.getValue().add(Ima);
-        raiz.setValue(raiz.getValue(), Ima);
+        //raiz.setValue(Ima);
         // Marco como procesada la foto
         Ima.setCheck(true);
-        
-        // Insercion 1
-        // Nodo<ArrayList<Imagen>> new_nodo = new Nodo(pTags[1]);
-        avl.raiz = avl.insert(avl.raiz, pTags[1]);
-        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-        arrayImagen.add(Ima);
-        
-
-        // Insercion 2
-        avl.raiz = avl.insert(avl.raiz, pTags[2]);
-        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-        arrayImagen.add(Ima);
-        // Insercion 3
-        avl.raiz = avl.insert(avl.raiz, pTags[3]);
-        arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
-        arrayImagen.add(Ima);
+        // Insercion tag 1
+        avl.setRaiz(avl.insert(avl.getRaiz(), pTags[0], Ima));
+        arrayImagen = avl.getRaiz().getValue();
+        // Insercion tag 2
+        avl.setRaiz(avl.insert(avl.getRaiz(), pTags[1], Ima));
+        arrayImagen = avl.getRaiz().getValue(); 
+        // Insercion tag 3
+        avl.setRaiz(avl.insert(avl.getRaiz(), pTags[2], Ima));
+        arrayImagen = avl.getRaiz().getValue();
     }
     
     /**
@@ -366,3 +362,9 @@ public class Logica
     }
 
 }
+/*
+        //avl.raiz = avl.insert(avl.raiz, pTags[1]);
+        //arrayImagen = (ArrayList<Imagen>)avl.raiz.getValue();
+        //arrayImagen.add(Ima);
+
+*/

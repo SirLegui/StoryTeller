@@ -7,32 +7,32 @@ import storyteller.librerias.Imagen;
 /*
  * Clase Nodo generica
  */
-public class Nodo<T> implements Serializable{
+public class Nodo implements Serializable{
     /*Variables Globales*/
-    private T Value;
-    private Nodo<T> left;
-    private Nodo<T> right;
+    private ArrayList<Imagen> Value = new ArrayList<Imagen>();
+    private Nodo left;
+    private Nodo right;
     private String key;
     private int height;
     private boolean borrar;
     /*Constructores*/
-    public Nodo()
+    public Nodo(String d, Imagen ima) 
     {
-        this.Value = (T) new ArrayList<Imagen>();
-        this.left = null;
-        this.right = null;
-        this.key = "";
-        this.height = 1;
-    }
-    public Nodo(String d) 
-    {
-        this.Value = (T) new ArrayList<Imagen>();
+        this.Value.add(ima);
         this.left = null;
         this.right = null;
         this.key = d;
         this.height = 1;
     }
     //Gets y Sets
+    public void setValueArray(ArrayList<Imagen> pArray)
+    {
+        Value = pArray;
+    }
+    public void setValue(Imagen ima) 
+    {
+        Value.add(ima);
+    }
     public boolean isBorrar()
     {
         return borrar;
@@ -42,29 +42,23 @@ public class Nodo<T> implements Serializable{
     {
         this.borrar = borrar;
     }
-    public T getValue() 
+    public ArrayList<Imagen> getValue() 
     {
         return Value;
     }
-    public void setValue(T pValue, Imagen ima) 
-    {
-        ArrayList<Imagen> array = (ArrayList<Imagen>)Value;
-        array.add(ima);
-        this.Value = pValue;
-    }
-    public Nodo<T> getLeft() 
+    public Nodo getLeft() 
     {
         return left;
     }
-    public void setLeft(Nodo<T> left) 
+    public void setLeft(Nodo left) 
     {
         this.left = left;
     }
-    public Nodo<T> getRight() 
+    public Nodo getRight() 
     {
         return right;
     }
-    public void setRight(Nodo<T> right) 
+    public void setRight(Nodo right) 
     {
         this.right = right;
     }

@@ -22,7 +22,7 @@ public class Main {
             Logica c = Logica.getInstance();
             Serializacion  s = new Serializacion();
             // Creo el arbol
-            ArbolAVL<ArrayList<Imagen>> tree = new ArbolAVL<>();
+            ArbolAVL tree = new ArbolAVL();
             // Habilito la interfaz
             v1.setControlador(c);
             c.setInterfaz(v1);  //Inicializo clase logica
