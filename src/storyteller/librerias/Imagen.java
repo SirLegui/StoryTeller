@@ -3,6 +3,8 @@ package storyteller.librerias;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.lang.String;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import storyteller.interfaz.Interfaz;
 /**
  * Para manejo de fotografias y los datos del API Microsoft
@@ -32,7 +34,6 @@ public class Imagen
     {
         // Dibujo el titulo,imagen,descripcion
         g.drawImage(imagen, 10, 10, null);
-        
     }
     @Override
     public String toString()

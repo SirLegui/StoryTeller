@@ -114,6 +114,22 @@ public class Logica
     }
     //Gets y Sets---------------------------------------------------------------
 
+    public ImageIcon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(ImageIcon icon) {
+        this.icon = icon;
+    }
+
+    public Icon getIcono() {
+        return icono;
+    }
+
+    public void setIcono(Icon icono) {
+        this.icono = icono;
+    }
+
     public Graphics getG() {
         return g;
     }
@@ -148,7 +164,7 @@ public class Logica
     {
         // Direccion donde esta el Json, lo creo
         try{
-            obj = parser.parse(new FileReader("/home/edgerik/NetBeansProjects/StoryTeller/src/storyteller/librerias/Prueba.json"));
+            obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
         }catch(FileNotFoundException e)
         {
             System.out.println("No se cargo el JSON correctamente"); 
@@ -252,6 +268,7 @@ public class Logica
 
             for (int i = largo - 1; i >= 0; i--) 
             {
+                System.out.println("entro al for");
                 // Obtengo la Clase Imagen 
                 Imagen nueva_Imagen = nodo.getValue().get(i);
                 // Dibujo la Image
@@ -261,10 +278,24 @@ public class Logica
                 interfaz.setDescripcion(nueva_Imagen.getCaption());
                 String[] tags = nueva_Imagen.getTags();
                 interfaz.setTitulo(tags[0]);
+                ImageIcon icon2 = new ImageIcon(nueva_Imagen.getImagen());
+                if(icon2 != null){
+                    setIcon(new ImageIcon(nueva_Imagen.getImagen()));
+                    //Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
+                    setIcono(new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH)));
+                    interfaz.getLblFoto().setIcon(icono);
+                }
                 interfaz.repaint();
+                // Slepp
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 //controlador.desplegar_imagen(nodo.getValue().get(i));
                 
             }
+            System.out.println("Sale del for");
             //
             inOrdenDesplegarImagenes(g, nodo.getRight());
         }

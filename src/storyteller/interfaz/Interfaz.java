@@ -277,8 +277,8 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         //controlador.inOrdenDesplegarImagenes(g, controlador.getAVL().getRaiz());
         
         // Despliego Slay Show
-        if(controlador.isCargar_listo())
-            nodo_foto.dibujar(g);
+        //if(controlador.isCargar_listo())
+        //    nodo_foto.dibujar(g);
         //    controlador.inOrdenDesplegarImagenes(g,controlador.getAVL().getRaiz());
         
         // Pinto
@@ -289,30 +289,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
 //        } catch (InterruptedException ex) {
 //            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        try{
-            icon = new ImageIcon(foto_actual);
-            //icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
-            lblFoto.setIcon(icon);
-            lblFoto.setText(null);
-            // Inserto en el arreglo los datos a usar
-            // 1)Descriccion, 2)3)4)tags
-            String[] etiquetas;
-            etiquetas= nodo_foto.getTags();
-            lblDescripcion.setText(nodo_foto.getCaption());
-            lblTag1.setText(etiquetas[0]);
-            lblTag2.setText(etiquetas[1]);
-            lblTag3.setText(etiquetas[2]);
-            // Aumento contador de fotos
-            aumentarFoto();
-            
-        }catch(NullPointerException e){
-            //e.printStackTrace();
-            //System.out.println("No se ha pintado porque es null");
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        repaint();
     }
     @Override
     public void keyPressed(KeyEvent e) {
