@@ -97,21 +97,26 @@ public class ArbolAVL implements Serializable
      */
     public void inOrdenDescartar(Nodo nodo)
     {
+        System.out.println("Empiezo a podar los tags");
         if(nodo != null)
         {
             //
             inOrdenDescartar(nodo.getLeft());
             //
             int largo = nodo.getValue().size();
-            for (int i = largo-1; i >0; i--) {
+            System.out.println(largo);
+            for (int i = largo-1; i >= 0; i--) {
                 Imagen fo = nodo.getValue().get(i);
+                System.out.println(fo.getCaption());
                 if(fo.isCheck()){
-                   nodo.getValue().remove(fo);
+                    System.out.println("se borra imagen");
+                    nodo.getValue().remove(fo);
                 }
             }
 
-            if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
+            if(nodo.getValue() == null)         // Borra el nodo si el array esta vacio
             {
+                System.out.println("esta vacio el array");
                 nodo.setBorrar(true);   
             }
             //
@@ -130,6 +135,7 @@ public class ArbolAVL implements Serializable
             
             if(nodo.isBorrar())
             {
+                System.out.println("Elimino!");
                 deleteNode(raiz, nodo.getKey());
             }
             

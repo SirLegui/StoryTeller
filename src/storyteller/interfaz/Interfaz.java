@@ -1,8 +1,10 @@
 package storyteller.interfaz;
 //Librerias a importar
+import java.awt.event.KeyListener;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,9 +24,10 @@ import storyteller.program.Logica;
  * 
  * Extiende JFrame
  */
-public class Interfaz extends javax.swing.JFrame 
+public class Interfaz extends javax.swing.JFrame implements KeyListener
 {
     //Variables globales
+    private String tecla;
     private String direccion_guardado;
     private Image dbImage;
     private Graphics dbg;
@@ -42,17 +45,21 @@ public class Interfaz extends javax.swing.JFrame
     {
         // Inicializa la interfaz
         initComponents();
+        addKeyListener(this);
         // Inicializo variables globales
         this.v2 = new Interfaz02();
         this.direccion_guardado = "";
         this.foto = 0;
+        this.tecla = "";
     }
     //Gets y Sets
-
     public void setNodo_foto(Imagen nodo_foto) {
         this.nodo_foto = nodo_foto;
-        this.foto_actual = nodo_foto.getImagen();
     }
+    public void setFoto_actual(Image foto_actual) {
+        this.foto_actual = foto_actual;
+    }
+    
 
     public Imagen getNodo_foto() {
         return nodo_foto;
@@ -74,10 +81,7 @@ public class Interfaz extends javax.swing.JFrame
         return foto_actual;
     }
 
-    public void setFoto_actual(Image foto_actual) {
-        this.foto_actual = foto_actual;
-    }
-    
+
     
     public String getDireccion_guardado() {
         return direccion_guardado;
@@ -208,7 +212,6 @@ public class Interfaz extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /*
     Funcion del boton procesar.
     */
@@ -216,7 +219,22 @@ public class Interfaz extends javax.swing.JFrame
         setDireccion_guardado();
         controlador.botonProcesar();
     }//GEN-LAST:event_ProcesarActionPerformed
-    
+    /*
+    Funcion del boton cargar
+    */
+    private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
+        try {
+            // Digite donde se van a guardar las fotos
+            setDireccion_guardado();
+            // Digite donde se va a leer el Json de .jpg
+            //save_path.showSaveDialog(this);
+            //direccion_Json = ((File) save_path.getSelectedFile()).getAbsolutePath();
+            // Logica Cargar
+            controlador.botonCargar();
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_CargarActionPerformed
     
     @Override
     public void paint(Graphics g)
@@ -235,7 +253,6 @@ public class Interfaz extends javax.swing.JFrame
             else
                 System.out.println("Cargando imagen...");
             icon = new ImageIcon(foto_actual);
-
             icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
             lblFoto.setIcon(icono);
             lblFoto.setText(null);
@@ -250,45 +267,32 @@ public class Interfaz extends javax.swing.JFrame
             // Aumento contador de fotos
             aumentarFoto();
         }catch(Exception e){
-//            e.printStackTrace();
+            //e.printStackTrace();
             //System.out.println("No se ha pintado porque es null");
         }
-        repaint();
     }
-    /*
-    Funcion del boton cargar
-    */
-    private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
-        try {
-            // Digite donde se van a guardar las fotos
-            setDireccion_guardado();
-            // Digite donde se va a leer el Json de .jpg
-            //save_path.showSaveDialog(this);
-            //direccion_Json = ((File) save_path.getSelectedFile()).getAbsolutePath();
-            // Logica Cargar
-            controlador.botonCargar();
-        } catch (IOException | ParseException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+    @Override
+    public void keyPressed(KeyEvent e) {
+        tecla = KeyEvent.getKeyText(e.getKeyCode());
+        if(tecla != null)
+        {
+            v2.setControlador(controlador);
+            v2.setVisible(true);
         }
-    }//GEN-LAST:event_CargarActionPerformed
+    }
+
     //Fin---------------------------------------------------------
     /*
     Codigo Basura................................................
     */
     private void ContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueActionPerformed
     }//GEN-LAST:event_ContinueActionPerformed
-
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
     }//GEN-LAST:event_SaveActionPerformed
-
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
     }//GEN-LAST:event_AbrirActionPerformed
-
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-        v2.setControlador(controlador);
-        v2.setVisible(true);
     }//GEN-LAST:event_formKeyTyped
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;
     private javax.swing.JButton Procesar;
@@ -300,4 +304,12 @@ public class Interfaz extends javax.swing.JFrame
     private javax.swing.JLabel lblTag3;
     private javax.swing.JFileChooser save_path;
     // End of variables declaration//GEN-END:variables
+    @Override
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
