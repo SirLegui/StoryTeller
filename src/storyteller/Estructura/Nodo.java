@@ -19,11 +19,7 @@ public class Nodo implements Serializable{
     public Nodo(String d, Imagen ima) 
     {
         Value = new ArrayList();
-        if(!ima.isCheck())
-        {
-            ima.check();
-            Value.add(ima);
-        }
+        Value.add(ima);
         this.left = null;
         this.right = null;
         this.key = d;
@@ -32,12 +28,7 @@ public class Nodo implements Serializable{
     //Gets y Sets
     public void addImagen(Imagen ima)
     {
-        
-        if(!ima.isCheck())
-        {
-            ima.check();
             Value.add(ima);
-        }
     }
     
     public void setValueArray(ArrayList<Imagen> pArray)

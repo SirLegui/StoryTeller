@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -45,7 +46,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     {
         // Inicializa la interfaz
         initComponents();
-        addKeyListener(this);
+//        addKeyListener(this);
         // Inicializo variables globales
         this.v2 = new Interfaz02();
         this.direccion_guardado = "";
@@ -134,7 +135,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         Procesar = new javax.swing.JButton();
 
         save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        save_path.setCurrentDirectory(new java.io.File("C:\\Users\\Usuario1\\Escritorio"));
+        save_path.setCurrentDirectory(new java.io.File("/home/edgerik/C:/Users/Usuario1/Escritorio"));
         save_path.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         save_path.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         save_path.setBorder(new javax.swing.border.MatteBorder(null));
@@ -145,6 +146,8 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
                 formKeyTyped(evt);
             }
         });
+
+        lblFoto.setDoubleBuffered(true);
 
         Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
         Cargar.setText("Cargar");
@@ -169,11 +172,9 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
             .addGroup(layout.createSequentialGroup()
                 .addGap(182, 182, 182)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-                        .addComponent(lblTag1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 34, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Cargar)
@@ -186,6 +187,10 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
                     .addComponent(Procesar)
                     .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,9 +206,9 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(30, 30, 30)
                 .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,20 +222,28 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     */
     private void ProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcesarActionPerformed
         setDireccion_guardado();
-        controlador.botonProcesar();
+        try {
+            controlador.botonProcesar();
+        } catch (MalformedURLException | InterruptedException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ProcesarActionPerformed
     /*
     Funcion del boton cargar
     */
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         try {
-            // Digite donde se van a guardar las fotos
-            setDireccion_guardado();
+            try {
+                // Digite donde se van a guardar las fotos
+            //            setDireccion_guardado();
             // Digite donde se va a leer el Json de .jpg
             //save_path.showSaveDialog(this);
             //direccion_Json = ((File) save_path.getSelectedFile()).getAbsolutePath();
             // Logica Cargar
             controlador.botonCargar();
+            } catch (MalformedURLException | InterruptedException ex) {
+                Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (IOException | ParseException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -249,8 +262,8 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         super.paint(g);
         try{
             icon = new ImageIcon(foto_actual);
-            icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
-            lblFoto.setIcon(icono);
+            //icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
+            lblFoto.setIcon(icon);
             lblFoto.setText(null);
             // Inserto en el arreglo los datos a usar
             // 1)Descriccion, 2)3)4)tags
@@ -262,10 +275,15 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
             lblTag3.setText(etiquetas[2]);
             // Aumento contador de fotos
             aumentarFoto();
-        }catch(Exception e){
+            
+        }catch(NullPointerException e){
             //e.printStackTrace();
             //System.out.println("No se ha pintado porque es null");
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
+        repaint();
     }
     @Override
     public void keyPressed(KeyEvent e) {

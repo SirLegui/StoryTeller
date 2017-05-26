@@ -1,8 +1,11 @@
 package storyteller.Estructura;
 
 /*Importes de bibliotecas*/
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import storyteller.librerias.Imagen;
 import storyteller.program.Logica;
 
@@ -63,9 +66,16 @@ public class ArbolAVL implements Serializable {
             int largo = nodo.getValue().size();
             //System.out.println(nodo.getValue().get(0).getUrl());
 
-            for (int i = largo - 1; i > 0; i--) {
+            for (int i = largo - 1; i >= 0; i--) {
                 if (nodo.getValue().get(i) != null) {
+                    System.out.println("Cargando imagen en "+nodo.getKey());
                     controlador.desplegar_imagen(nodo.getValue().get(i));
+                    // Slepp
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
             //
@@ -96,19 +106,21 @@ public class ArbolAVL implements Serializable {
      * @param nodo Actual a procesar
      */
     public void inOrdenDescartar(Nodo nodo) {
-        System.out.println("Empiezo a podar los tags");
         if (nodo != null) {
             //
             inOrdenDescartar(nodo.getLeft());
             //
             int largo = nodo.getValue().size();
             System.out.println(largo);
-            for (int i = largo - 1; i >= 0; i--) {
+            for (int i = largo-1; i >= 0; i--) {
+                System.out.println(i);
                 Imagen fo = nodo.getValue().get(i);
+                Image a = fo.getImagen();
                 System.out.println(fo.getCaption());
                 if (fo.isCheck()) {
                     System.out.println("se borra imagen");
                     nodo.getValue().remove(fo);
+                    
                 }
             }
             //System.out.println("Nodo actual a depurar: "+nodo.getKey());
@@ -232,7 +244,7 @@ public class ArbolAVL implements Serializable {
      *
      * @param node Nodo a insertar
      * @param key Llave para comparar y colocar el Nodo correctamente
-     * @param ima
+     * @param ima La foto a apuntar en el nodo
      * @return
      */
     public Nodo insert(Nodo node, String key, Imagen ima) {
