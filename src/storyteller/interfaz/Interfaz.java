@@ -1,12 +1,18 @@
 package storyteller.interfaz;
 //Librerias a importar
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import org.json.simple.parser.ParseException;
+import storyteller.librerias.Imagen;
 import storyteller.program.Logica;
 /**
  * @author jeremy
@@ -20,7 +26,14 @@ public class Interfaz extends javax.swing.JFrame
 {
     //Variables globales
     private String direccion_guardado;
+    private Image dbImage;
+    private Graphics dbg;
     private int foto;
+    private Image foto_actual;
+    private Imagen nodo_foto;
+    private ImageIcon icon;
+    private Icon icono;
+    private String[] rets;
     //Clases a usar
     private Logica controlador;
     //Constructor
@@ -33,6 +46,16 @@ public class Interfaz extends javax.swing.JFrame
         this.foto = 0;
     }
     //Gets y Sets
+
+    public void setNodo_foto(Imagen nodo_foto) {
+        this.nodo_foto = nodo_foto;
+        this.foto_actual = nodo_foto.getImagen();
+    }
+
+    public Imagen getNodo_foto() {
+        return nodo_foto;
+    }
+    
     public void setControlador(Logica controlador) 
     {
         this.controlador = controlador;
@@ -44,6 +67,16 @@ public class Interfaz extends javax.swing.JFrame
         save_path.showSaveDialog(this);
         direccion_guardado = ((File) save_path.getSelectedFile()).getAbsolutePath();
     }
+
+    public Image getFoto_actual() {
+        return foto_actual;
+    }
+
+    public void setFoto_actual(Image foto_actual) {
+        this.foto_actual = foto_actual;
+    }
+    
+    
     public String getDireccion_guardado() {
         return direccion_guardado;
     }
@@ -176,6 +209,45 @@ public class Interfaz extends javax.swing.JFrame
         setDireccion_guardado();
         controlador.botonProcesar();
     }//GEN-LAST:event_ProcesarActionPerformed
+    
+    
+    @Override
+    public void paint(Graphics g)
+    {        
+        dbImage = createImage(getWidth(), getHeight());
+        dbg = dbImage.getGraphics();
+        paintComponent(dbg);
+        g.drawImage(dbImage, 0, 0, this);
+    }
+    public void paintComponent(Graphics g)
+    {
+        super.paint(g);
+        try{
+            if(foto_actual == null)
+                System.out.println("No hay imagen por cargar");
+            else
+                System.out.println("Cargando imagen...");
+            icon = new ImageIcon(foto_actual);
+
+            icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
+            lblFoto.setIcon(icono);
+            lblFoto.setText(null);
+            // Inserto en el arreglo los datos a usar
+            // 1)Descriccion, 2)3)4)tags
+            String[] etiquetas;
+            etiquetas= nodo_foto.getTags();
+            lblDescripcion.setText(nodo_foto.getCaption());
+            lblTag1.setText(etiquetas[0]);
+            lblTag2.setText(etiquetas[1]);
+            lblTag3.setText(etiquetas[2]);
+            // Aumento contador de fotos
+            aumentarFoto();
+        }catch(Exception e){
+//            e.printStackTrace();
+            //System.out.println("No se ha pintado porque es null");
+        }
+        repaint();
+    }
     /*
     Funcion del boton cargar
     */
