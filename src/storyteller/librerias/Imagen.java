@@ -47,6 +47,11 @@ public class Imagen
     public void setCheck(boolean check) {
         this.check = check;
     }
+    public void check(){
+        if(!check){
+            check = true;
+        }
+    }
     
     
 

@@ -21,7 +21,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -90,7 +89,6 @@ public class MCS
         Imagen imagen = null;
         try
         {
-            System.out.println("");
             URL url = new URL(urli);
             // Establecemos conexion
             URLConnection urlCon = url.openConnection();

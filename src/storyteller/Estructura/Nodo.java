@@ -9,7 +9,7 @@ import storyteller.librerias.Imagen;
  */
 public class Nodo implements Serializable{
     /*Variables Globales*/
-    private ArrayList<Imagen> Value = new ArrayList<Imagen>();
+    private ArrayList<Imagen> Value;
     private Nodo left;
     private Nodo right;
     private String key;             // Tag 
@@ -18,13 +18,28 @@ public class Nodo implements Serializable{
     /*Constructores*/
     public Nodo(String d, Imagen ima) 
     {
-        this.Value.add(ima);
+        Value = new ArrayList();
+        if(!ima.isCheck())
+        {
+            ima.check();
+            Value.add(ima);
+        }
         this.left = null;
         this.right = null;
         this.key = d;
         this.height = 1;
     }
     //Gets y Sets
+    public void addImagen(Imagen ima)
+    {
+        
+        if(!ima.isCheck())
+        {
+            ima.check();
+            Value.add(ima);
+        }
+    }
+    
     public void setValueArray(ArrayList<Imagen> pArray)
     {
         Value = pArray;

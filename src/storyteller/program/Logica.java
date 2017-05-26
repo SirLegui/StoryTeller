@@ -169,9 +169,9 @@ public class Logica
         // Y que ya hemos hecho la señalacion de punteros, osea nodo->Imagen[]
         //----------------------------------------------------------------------
         // Proceso el avl, borro punteros de nodos a foto
+        avl.inOrden(avl.getRaiz(), 0);
         avl.inOrdenDescartar(avl.getRaiz());
         // Elimino nodos del avl y balanceo
-        avl.inOrdenElimina(avl.getRaiz());
         avl.inOrden(avl.getRaiz(), 0);
         // Despliego Slay Show
         recorreAVL();
@@ -187,12 +187,7 @@ public class Logica
      */
     public void nodoInsertarImaTags(String[] pTags, Imagen Ima)
     {
-        // Apunto a la raiz del avl
-        raiz = avl.getRaiz();
-        // Inserto la Imagen al nodo
-        //raiz.setValue(Ima);
-        // Marco como procesada la foto
-        Ima.setCheck(true);
+        
         // Insercion tag 1
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[0], Ima));
         arrayImagen = avl.getRaiz().getValue();
