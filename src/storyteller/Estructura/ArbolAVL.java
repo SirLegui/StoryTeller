@@ -97,23 +97,38 @@ public class ArbolAVL implements Serializable
      */
     public void inOrdenDescartar(Nodo nodo)
     {
+        System.out.println("Empiezo a podar los tags");
         if(nodo != null)
         {
             //
             inOrdenDescartar(nodo.getLeft());
             //
             int largo = nodo.getValue().size();
-            for (int i = largo-1; i >0; i--) {
+            System.out.println(largo);
+            for (int i = largo-1; i >= 0; i--) {
                 Imagen fo = nodo.getValue().get(i);
+<<<<<<< HEAD
                 
+=======
+                System.out.println(fo.getCaption());
+>>>>>>> 4adcd3df7ea522fc9fc2d68cd4ca4e70f3aee0a7
                 if(fo.isCheck()){
-                   nodo.getValue().remove(fo);
+                    System.out.println("se borra imagen");
+                    nodo.getValue().remove(fo);
                 }
             }
+<<<<<<< HEAD
             //System.out.println("Nodo actual a depurar: "+nodo.getKey());
             if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
             {
                  nodo.setBorrar(true);
+=======
+
+            if(nodo.getValue() == null)         // Borra el nodo si el array esta vacio
+            {
+                System.out.println("esta vacio el array");
+                nodo.setBorrar(true);   
+>>>>>>> 4adcd3df7ea522fc9fc2d68cd4ca4e70f3aee0a7
             }
             //
             inOrdenDescartar(nodo.getRight());
@@ -131,8 +146,13 @@ public class ArbolAVL implements Serializable
             
             if(nodo.isBorrar())
             {
+<<<<<<< HEAD
                 System.out.println("Se debe eliminar este nodo "+nodo.getKey());
                 nodo = deleteNode(raiz, nodo.getKey());  
+=======
+                System.out.println("Elimino!");
+                deleteNode(raiz, nodo.getKey());
+>>>>>>> 4adcd3df7ea522fc9fc2d68cd4ca4e70f3aee0a7
             }
             
             inOrdenElimina(nodo.getRight());
