@@ -37,10 +37,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     private int foto;
     private Image foto_actual;
     private Imagen nodo_foto;
-    private ImageIcon icon;
-    private Icon icono;
-    private String[] rets;
-    private String[] etiquetas;
     //Clases a usar
     private Logica controlador;
     private Interfaz02 v2;
@@ -55,7 +51,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         this.direccion_guardado = "";
         this.foto = 0;
         this.tecla = "";
-        this.etiquetas = null;
     }
     //Gets y Sets
     public void setDescripcion(String caption){
@@ -252,44 +247,12 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     {        
         dbImage = createImage(getWidth(), getHeight());
         dbg = dbImage.getGraphics();
-        paintComponent(dbg);
+        //paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
         // Le paso el g a Logica
         controlador.setG(g);
     }
-    public void paintComponent(Graphics g)
-    {
-        // Constructor
-        super.paint(g);
-        // Creo Image
-        //icon = new ImageIcon(foto_actual);
-        //icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
-        // Inicializo los datos de la Image
-        //etiquetas= nodo_foto.getTags();
-        // Inserto Descripcion, letra med
-        //lblDescripcion.setText(nodo_foto.getCaption());
-        // Inserto Titulo, letra grand
-        //lblTag1.setText(etiquetas[0]);
 
-        // Pinto la Image, con herencia
-        //lblFoto.setIcon(icono);
-        //lblFoto.setText(null);
-        //controlador.inOrdenDesplegarImagenes(g, controlador.getAVL().getRaiz());
-        
-        // Despliego Slay Show
-        //if(controlador.isCargar_listo())
-        //    nodo_foto.dibujar(g);
-        //    controlador.inOrdenDesplegarImagenes(g,controlador.getAVL().getRaiz());
-        
-        // Pinto
-//        repaint();
-//        // Slepp
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
     @Override
     public void keyPressed(KeyEvent e) {
         tecla = KeyEvent.getKeyText(e.getKeyCode());
@@ -338,4 +301,37 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
             //save_path.showSaveDialog(this);
             //direccion_Json = ((File) save_path.getSelectedFile()).getAbsolutePath();
             
+    public void paintComponent(Graphics g)
+    {
+        // Constructor
+        super.paint(g);
+        // Creo Image
+        //icon = new ImageIcon(foto_actual);
+        //icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
+        // Inicializo los datos de la Image
+        //etiquetas= nodo_foto.getTags();
+        // Inserto Descripcion, letra med
+        //lblDescripcion.setText(nodo_foto.getCaption());
+        // Inserto Titulo, letra grand
+        //lblTag1.setText(etiquetas[0]);
+
+        // Pinto la Image, con herencia
+        //lblFoto.setIcon(icono);
+        //lblFoto.setText(null);
+        //controlador.inOrdenDesplegarImagenes(g, controlador.getAVL().getRaiz());
+        
+        // Despliego Slay Show
+        //if(controlador.isCargar_listo())
+        //    nodo_foto.dibujar(g);
+        //    controlador.inOrdenDesplegarImagenes(g,controlador.getAVL().getRaiz());
+        
+        // Pinto
+//        repaint();
+//        // Slepp
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
 */

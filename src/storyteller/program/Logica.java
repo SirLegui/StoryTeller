@@ -25,6 +25,7 @@ import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
 import storyteller.librerias.Album;
 import storyteller.librerias.Archivo;
+import storyteller.librerias.Hilo;
 import storyteller.librerias.Imagen;
 import storyteller.librerias.MCS;
 import storyteller.librerias.ParesOrdenados;
@@ -46,6 +47,7 @@ public class Logica
     private Object obj;
     private Graphics g;
     private boolean cargar_listo;
+    private boolean seguirHilo;			//Condicion del while
     // Variables Json
     private String[] rets;
     private String local;       // Json ubicacion
@@ -98,6 +100,7 @@ public class Logica
         this.number = 0;
         this.i = 0;
         this.j = 0;
+        this.seguirHilo = false;
     }
 
     public boolean isCargar_listo() {
@@ -113,7 +116,14 @@ public class Logica
         this.interfaz = interfaz;
     }
     //Gets y Sets---------------------------------------------------------------
-
+    public void setSeguirHilo(boolean h)
+    {
+        seguirHilo = h;
+    }
+    public boolean getSeguirHilo()
+    {
+        return seguirHilo;
+    }
     public ImageIcon getIcon() {
         return icon;
     }
@@ -216,7 +226,8 @@ public class Logica
         avl.inOrden(avl.getRaiz(), 0);
         
         // Despliego Slay Show
-        inOrdenDesplegarImagenes(g, avl.getRaiz());
+        //inOrdenDesplegarImagenes(g, avl.getRaiz());
+        Comienza();
         //...
     }
     /**
@@ -237,17 +248,12 @@ public class Logica
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[2], Ima));
         //arrayImagen = avl.getRaiz().getValue();
     }
-    
-    /**
-     * Despliega la imagen en el Jframe correspondiente y hace el sleep para el slide show
-     * @param foto Imagen a desplegar
-     */
-    public void desplegar_imagen(Imagen foto)
+    /*Inicia hilo*/
+    public void Comienza()
     {
-        // Inicializo clase Imagen y Image(foto)
-        //interfaz.setNodo_foto(foto);
-        //interfaz.setFoto_actual(foto.getImagen());
-        
+    	Hilo inicio = new Hilo(avl.getRaiz(), 0, this);
+    	setSeguirHilo(true);
+    	inicio.start();
     }
     /**
      * Recorrido e impresion en orden

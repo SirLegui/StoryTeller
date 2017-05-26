@@ -52,37 +52,6 @@ public class ArbolAVL implements Serializable {
     public Nodo getRaiz() {
         return raiz;
     }
-
-    /**
-     * Recorrido e impresion en orden
-     *
-     * @param nodo
-     */
-    public void inOrdenDesplegarImagenes(Nodo nodo) {
-        if (nodo != null) {
-            //
-            inOrdenDesplegarImagenes(nodo.getLeft());
-            //
-            int largo = nodo.getValue().size();
-            //System.out.println(nodo.getValue().get(0).getUrl());
-
-            for (int i = largo - 1; i >= 0; i--) {
-                if (nodo.getValue().get(i) != null) {
-                    System.out.println("Cargando imagen en "+nodo.getKey());
-                    controlador.desplegar_imagen(nodo.getValue().get(i));
-                    // Slepp
-                    try {
-                        Thread.sleep(4000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            //
-            inOrdenDesplegarImagenes(nodo.getRight());
-        }
-    }
-
     /**
      *
      * @param nodo
