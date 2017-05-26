@@ -230,12 +230,7 @@ public class Interfaz extends javax.swing.JFrame
     {
         super.paint(g);
         try{
-            if(foto_actual == null)
-                System.out.println("No hay imagen por cargar");
-            else
-                System.out.println("Cargando imagen...");
             icon = new ImageIcon(foto_actual);
-
             icono = new ImageIcon(icon.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_SMOOTH));
             lblFoto.setIcon(icono);
             lblFoto.setText(null);
