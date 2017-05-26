@@ -128,7 +128,7 @@ public class Logica
     public void botonCargar() throws IOException, ParseException
     {
         // Direccion donde esta el Json, lo creo
-        obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
+        obj = parser.parse(new FileReader("/home/edgerik/NetBeansProjects/StoryTeller/src/storyteller/librerias/Prueba.json"));
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
@@ -169,6 +169,7 @@ public class Logica
         avl.inOrdenDescartar(avl.getRaiz());
         // Elimino nodos del avl y balanceo
         avl.inOrdenElimina(avl.getRaiz());
+        avl.inOrden(avl.getRaiz(), 0);
         // Despliego Slay Show
         recorreAVL();
         
@@ -206,20 +207,7 @@ public class Logica
      */
     public void desplegar_imagen(Imagen foto)
     {
-        // Imprimo la Imagen en interfaz      
-        icon = new ImageIcon(foto.getImagen());
-        icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_DEFAULT));
-        interfaz.getLblFoto().setIcon(icono);
-        interfaz.getLblFoto().setText(null);
-        // Inserto en el arreglo los datos a usar
-        // 1)Descriccion, 2)3)4)tags
-        rets= foto.getTags();
-        interfaz.getLblDescripcion().setText(rets[0]);
-        interfaz.getLblTag1().setText(rets[1]);
-        interfaz.getLblTag2().setText(rets[2]);
-        interfaz.getLblTag3().setText(rets[3]);
-        // Aumento contador de fotos
-        interfaz.aumentarFoto();
+        interfaz.setNodo_foto(foto);
         // Pinto
         interfaz.repaint();
         // Slepp
@@ -270,7 +258,7 @@ public class Logica
         rets = null;
         //FileChooser fc = new FileChooser();
         //fc.showOpenDialog(null);
-        local = interfaz.getDireccion_guardado() + "imagen"+Integer.toString(interfaz.getFoto())+".jpg";
+        local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
         try {
             api.getImagen(interfaz.getDireccion_imagen().getText(), local);
             rets = api.getDescription(interfaz.getDireccion_imagen().getText());

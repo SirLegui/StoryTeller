@@ -18,6 +18,7 @@ public class ArbolAVL implements Serializable
     private boolean depurado;
     /**
      * Constructor de la clase con llamada a Singleton Logica
+     * @param c Logica del controlador, para hacer funciones de logica
      */
     public ArbolAVL(Logica c)
     {
@@ -59,9 +60,11 @@ public class ArbolAVL implements Serializable
             inOrdenDesplegarImagenes(nodo.getLeft());
             //
             int largo = nodo.getValue().size();
+            //System.out.println(nodo.getValue().get(0).getUrl());
+            
             for (int i = largo-1; i >0; i--) {
                 if(nodo.getValue().get(i) != null) {
-                    controlador .desplegar_imagen(nodo.getValue().get(i));
+                    controlador.desplegar_imagen(nodo.getValue().get(i));
                 }
             }
             //
