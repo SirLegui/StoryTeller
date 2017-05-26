@@ -105,14 +105,15 @@ public class ArbolAVL implements Serializable
             int largo = nodo.getValue().size();
             for (int i = largo-1; i >0; i--) {
                 Imagen fo = nodo.getValue().get(i);
+                
                 if(fo.isCheck()){
                    nodo.getValue().remove(fo);
                 }
             }
-
+            //System.out.println("Nodo actual a depurar: "+nodo.getKey());
             if(nodo.getValue().isEmpty())         // Borra el nodo si el array esta vacio
             {
-                nodo.setBorrar(true);   
+                 nodo.setBorrar(true);
             }
             //
             inOrdenDescartar(nodo.getRight());
@@ -130,7 +131,8 @@ public class ArbolAVL implements Serializable
             
             if(nodo.isBorrar())
             {
-                deleteNode(raiz, nodo.getKey());
+                System.out.println("Se debe eliminar este nodo "+nodo.getKey());
+                nodo = deleteNode(raiz, nodo.getKey());  
             }
             
             inOrdenElimina(nodo.getRight());
@@ -213,6 +215,7 @@ public class ArbolAVL implements Serializable
      * Inserto nodo en el avl, con sus debidos casos a efectuar
      * @param node Nodo a insertar
      * @param key Llave para comparar y colocar el Nodo correctamente
+     * @param ima
      * @return 
      */
     public Nodo insert(Nodo node, String key, Imagen ima) 
@@ -230,7 +233,10 @@ public class ArbolAVL implements Serializable
             node.setRight(insert(node.getRight(), key, ima));
         //No se permiten claves duplicadas
         else
+        {
+            node.addImagen(ima);
             return node;
+        }
  
         //Actualizo la altura del nodo actual
         node.setHeight(1 + getMax(getHeight(node.getLeft()),
