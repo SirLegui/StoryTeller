@@ -49,30 +49,6 @@ public class ArbolAVL implements Serializable {
     public Nodo getRaiz() {
         return raiz;
     }
-
-    /**
-     * Recorrido e impresion en orden
-     *
-     * @param nodo
-     */
-    public void inOrdenDesplegarImagenes(Nodo nodo) {
-        if (nodo != null) {
-            //
-            inOrdenDesplegarImagenes(nodo.getLeft());
-            //
-            int largo = nodo.getValue().size();
-            //System.out.println(nodo.getValue().get(0).getUrl());
-
-            for (int i = largo - 1; i > 0; i--) {
-                if (nodo.getValue().get(i) != null) {
-                    controlador.desplegar_imagen(nodo.getValue().get(i));
-                }
-            }
-            //
-            inOrdenDesplegarImagenes(nodo.getRight());
-        }
-    }
-
     /**
      *
      * @param nodo
@@ -147,7 +123,29 @@ public class ArbolAVL implements Serializable {
             inOrdenElimina(nodo.getRight());
         }
     }
-
+    /**
+     * Busqueda Binaria
+     */
+    public boolean busquedaBinaria(Nodo node, String key)
+    {
+        //Caso de que el avl este vacio
+        if (node == null) {
+            return false;
+        }
+        // Inicializo el resultafo de la comparacion
+        int acumodador = key.compareTo(node.getKey());
+        //Caso si es menor
+        if (acumodador < 0) {
+            busquedaBinaria(node.getLeft(), key);
+        } //Caso si es mayor
+        else if (acumodador > 0) {
+            busquedaBinaria(node.getRight(), key);
+        } //No se permiten claves duplicadas
+        else {
+            return true;
+        }
+        return false;
+    }
     /**
      *
      * @param Nodo altura del nodo

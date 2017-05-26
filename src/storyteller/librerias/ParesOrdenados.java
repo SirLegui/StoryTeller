@@ -1,6 +1,8 @@
 package storyteller.librerias;
 /*Librerias a usar*/
 import java.io.Serializable;
+import java.util.ArrayList;
+import storyteller.Estructura.ArbolAVL;
 
 /**
  * 
@@ -9,25 +11,36 @@ import java.io.Serializable;
 public class ParesOrdenados implements Serializable
 {
     // Variables globales 
-    private String[][] indices;
+    private String[][] indices;     // name, indice(donde empieza byte)
+    private int largo_indices;
     /**
      * constructor
      */
     public ParesOrdenados() 
     {
         this.indices = null;
+        this.largo_indices = 0;
     }
+    
+    
+    //Gets and Sets
     /**
      * 
-     * @return Tabla de pares ordenados
+     * @param name 
      */
-    public String[][] getIndices()
+    public void addAlbum(String name, Album avl, int largo)
     {
-        return indices;
-    }
-    public void setIndices(String[][] pIndices)
-    {
-        indices = pIndices;
+        // Obtengo el largo de pares ordenados
+        largo_indices = indices.length;
+        
+        // Validacion 
+        
+        // Hago set de name y total de bytes del album
+        indices[largo_indices][0] = name;
+        indices[largo_indices][1] = Integer.toString(largo);
+        
+        
+    
     }
     /**
      * Serializa y guarda la clase en un archivo.pros

@@ -2,6 +2,7 @@
 package storyteller.program;
 /*Librerias a usar*/
 import com.sun.jna.platform.mac.MacFileUtils.FileManager;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,6 +26,7 @@ import storyteller.librerias.Album;
 import storyteller.librerias.Archivo;
 import storyteller.librerias.Imagen;
 import storyteller.librerias.MCS;
+import storyteller.librerias.ParesOrdenados;
 import storyteller.librerias.Serializacion;
 /**
  * @author edgerik
@@ -41,6 +43,8 @@ public class Logica
     private ImageIcon icon;                 
     private Icon icono; 
     private Object obj;
+    private Graphics g;
+    private boolean cargar_listo;
     // Variables Json
     private String[] rets;
     private String local;       // Json ubicacion
@@ -54,8 +58,9 @@ public class Logica
     private ArbolAVL avl;
     private Serializacion s1;
     private Album album;
+    private ParesOrdenados pares_ordenados;
     // Variables del quicksort
-    private String[] numbers;
+    private String[][] numbers;
     private int number;
     private int i, j;
     private String pivot;
@@ -75,9 +80,11 @@ public class Logica
         this.api = new MCS();
         this.parser = new JSONParser();
         this.s1 = new Serializacion();
+        this.pares_ordenados = new ParesOrdenados();
         this.album = null;
         this.avl = null;
         this.obj = null;
+        this.cargar_listo = false;
         this.jsonObject = null;
         this.urls = null;
         this.iter = null;
@@ -91,12 +98,29 @@ public class Logica
         this.i = 0;
         this.j = 0;
     }
+
+    public boolean isCargar_listo() {
+        return cargar_listo;
+    }
+
+    public void setCargar_listo(boolean cargar_listo) {
+        this.cargar_listo = cargar_listo;
+    }
     // Inicializo Interfaz
     public void setInterfaz(Interfaz interfaz) 
     {
         this.interfaz = interfaz;
     }
     //Gets y Sets---------------------------------------------------------------
+
+    public Graphics getG() {
+        return g;
+    }
+
+    public void setG(Graphics g) {
+        this.g = g;
+    }
+
     public void setAVL(ArbolAVL avl1)
     {
         this.avl = avl1;
@@ -114,15 +138,6 @@ public class Logica
         return s1;
     }
     //Funciones StoryTeller-----------------------------------------------------
-    /**
-     * Recorro el avl
-     */
-    public void recorreAVL()
-    {
-        // Imprimo Arbol
-        //avl.inOrden(avl.raiz,0);
-        avl.inOrdenDesplegarImagenes(avl.getRaiz());
-    }
     /**
      * Boton Cargar.
      * @throws IOException
@@ -145,6 +160,8 @@ public class Logica
             try {
                 // Guardo bytes de .jpg(actual) a nuestro .jpg(local)
                 Imagen Ima = api.getImagen(actual, local);
+                //
+                
                 // Descripcion de la foto
                 rets = Ima.getTags();
                 System.out.println(rets[0]);
@@ -154,6 +171,9 @@ public class Logica
                 Ima.getImagen();
                 // Inserto al nodo: 3 tags y foto
                 nodoInsertarImaTags(rets, Ima);
+                // Aumento contador de fotos
+                interfaz.aumentarFoto();
+        
             // capta errores
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
@@ -170,13 +190,10 @@ public class Logica
         // Proceso el avl, borro punteros de nodos a foto
         avl.inOrden(avl.getRaiz(), 0);
         avl.inOrdenDescartar(avl.getRaiz());
-        // Elimino nodos del avl y balanceo
         avl.inOrden(avl.getRaiz(), 0);
+        
         // Despliego Slay Show
-        recorreAVL();
-        
-        
-       
+        inOrdenDesplegarImagenes(g, avl.getRaiz());
         //...
     }
     /**
@@ -196,6 +213,7 @@ public class Logica
         // Insercion tag 3
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[2], Ima));
         arrayImagen = avl.getRaiz().getValue();
+        
     }
     
     /**
@@ -205,15 +223,44 @@ public class Logica
     public void desplegar_imagen(Imagen foto)
     {
         // Inicializo clase Imagen y Image(foto)
-        interfaz.setNodo_foto(foto);
-        interfaz.setFoto_actual(foto.getImagen());
-        // Pinto
-        interfaz.repaint();
-        // Slepp
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+        //interfaz.setNodo_foto(foto);
+        //interfaz.setFoto_actual(foto.getImagen());
+        
+    }
+    /**
+     * Recorrido e impresion en orden
+     *
+     * @param nodo
+     */
+    public void inOrdenDesplegarImagenes(Graphics g,Nodo nodo) {
+        if (nodo != null) {
+            //
+            inOrdenDesplegarImagenes(g, nodo.getLeft());
+            //
+            int largo = nodo.getValue().size();
+            System.out.println(largo);
+            System.out.println(nodo.getValue().get(0).getUrl());
+            System.out.println(nodo.getValue().get(0).getCaption());
+            String[] a = nodo.getValue().get(0).getTags();
+            System.out.println(a[0]);
+
+            for (int i = largo - 1; i >= 0; i--) 
+            {
+                // Obtengo la Clase Imagen 
+                Imagen nueva_Imagen = nodo.getValue().get(i);
+                // Dibujo la Image
+                //nueva_Imagen.dibujar(g, interfaz);
+                interfaz.setFoto_actual(nueva_Imagen.getImagen());
+                interfaz.setNodo_foto(nueva_Imagen);
+                interfaz.setDescripcion(nueva_Imagen.getCaption());
+                String[] tags = nueva_Imagen.getTags();
+                interfaz.setTitulo(tags[0]);
+                interfaz.repaint();
+                //controlador.desplegar_imagen(nodo.getValue().get(i));
+                
+            }
+            //
+            inOrdenDesplegarImagenes(g, nodo.getRight());
         }
     }
     /**
@@ -224,16 +271,26 @@ public class Logica
         // Le pedimos el nombre del album al usuario
         String name = JOptionPane.showInputDialog(null,null,"Digite el nombre del album a guardar",3);
         name+=".alb";
-        // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
-        album = new Album(avl, name, local);
-        // Serializo el AVL
-        Archivo f1 = new Archivo(name, getSerializacion());
-        byte[] serial = s1.serializar(getAVL());
-        f1.escribirArchivo(serial);
-        // Escribo en el archivo principal de byte[] Albums.alb
-        
-        
-        JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
+        // Busqueda binaria, ver si no esta repetido
+        if(avl.busquedaBinaria(avl.getRaiz(), name))    //Si es true, add
+        {
+            // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
+            album = new Album(avl, name, local);
+            // Serializo el AVL************************************
+            // Creo instancia para R/W bytes .alb
+            Archivo f1 = new Archivo(name, getSerializacion());
+            // Creo el byte[] de album
+            byte[] serial = s1.serializar(album);
+            // Inicializo el largo del byte[] del album
+            int total_bytes = serial.length;
+            // Escribo en el Album.alb el byte[] del album a insertar en el final
+            f1.escribirArchivo(serial);
+            // Inserto al final del album
+            pares_ordenados.addAlbum(name, album, total_bytes);
+            //   
+            JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
+
+        }
         //....
     }
     /**
@@ -287,12 +344,13 @@ public class Logica
      * Quicksort
      * Funcion principal del quicksort
      */
-    public void sort(String[] values) 
+    public void sort(String[][] values) 
     {
         // Valida si el array en null
         if (values ==null || values.length==0){
             return;
         }
+        
         // Inicializo array con que se trabajará y el largo
         this.numbers = values;
         number = values.length;
@@ -313,18 +371,18 @@ public class Logica
         i = low;
         j = high;
         // Obtengo el pivote el cual esta a la mitad del array
-        pivot = numbers[low + (high-low)/2];
+        pivot = numbers[low + (high-low)/2][0];
             
        int acumodador;
         // Se divide en dos listas
         while (i <= j) {
             // Si el numero es menor al pivote se coloca a la izquierda
-            acumodador = numbers[i].compareTo(pivot);
+            acumodador = numbers[i][0].compareTo(pivot);
             while (acumodador < 0) {
                 i++;
             }
             // Si el numero es mayor al pivote se coloca a la derecha
-            acumodador = numbers[j].compareTo(pivot);
+            acumodador = numbers[j][0].compareTo(pivot);
             while (acumodador > 0) {
                 j--;
             }
@@ -350,7 +408,7 @@ public class Logica
      */
     private void exchange(int i, int j) 
     {
-        String temp = numbers[i];
+        String[] temp = numbers[i];
         numbers[i] = numbers[j];
         numbers[j] = temp;
     }

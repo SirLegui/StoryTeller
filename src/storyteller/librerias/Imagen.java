@@ -1,7 +1,9 @@
 package storyteller.librerias;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.lang.String;
+import storyteller.interfaz.Interfaz;
 /**
  * Para manejo de fotografias y los datos del API Microsoft
  * @author eleguizamon
@@ -15,8 +17,6 @@ public class Imagen
     private String[] tags;          // 3 tags
     private boolean check;          // Marca Procesada
     //Constructor
-    
-   
     public Imagen(Image imagen, String[] tagss,String url) {
         this.imagen = imagen;
         this.caption = tagss[0];
@@ -27,7 +27,13 @@ public class Imagen
         this.tags[2] = tagss[3];
         this.check = false;
     }
-
+    // Dibujar
+    public void dibujar(Graphics g)
+    {
+        // Dibujo el titulo,imagen,descripcion
+        g.drawImage(imagen, 10, 10, null);
+        
+    }
     public Image getImagen() {
         return imagen;
     }
