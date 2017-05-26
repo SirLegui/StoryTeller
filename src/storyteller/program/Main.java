@@ -30,6 +30,8 @@ public class Main {
             v1.setVisible(true);
 
             //c.recorreAVL();
+            //"http://www.sergerente.net/wp-content/uploads/2015/07/stevejobs1.jpg",
+             //"http://www.infotigres.com/Imagenes/tigres-de-bengala-apareandose.jpg",
             //...
         } catch (Exception e) {
             e.printStackTrace();
