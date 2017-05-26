@@ -34,6 +34,16 @@ public class Imagen
         g.drawImage(imagen, 10, 10, null);
         
     }
+    @Override
+    public String toString()
+    {
+        String ret = "vacio";
+        
+        if(caption != null)
+            ret = caption;
+        
+        return ret;
+    }
     public Image getImagen() {
         return imagen;
     }
@@ -57,13 +67,6 @@ public class Imagen
         if(!check){
             check = true;
         }
-    }
-    
-    
-
-    @Override
-    public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
     }
     
      //Gets and Sets

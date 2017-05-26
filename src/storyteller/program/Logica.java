@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -143,10 +144,16 @@ public class Logica
      * @throws IOException
      * @throws ParseException 
      */
-    public void botonCargar() throws IOException, ParseException
+    public void botonCargar() throws IOException, ParseException, MalformedURLException, InterruptedException
     {
         // Direccion donde esta el Json, lo creo
-        obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
+        try{
+            obj = parser.parse(new FileReader("/home/edgerik/NetBeansProjects/StoryTeller/src/storyteller/librerias/Prueba.json"));
+        }catch(FileNotFoundException e)
+        {
+            System.out.println("No se cargo el JSON correctamente"); 
+        }
+        
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
@@ -155,20 +162,17 @@ public class Logica
             // Direccion Url .jpg
             actual = iter.next();
             // Direccion .jpg local 
-            local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
+            //local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
             // Logica del API Cognitive services Microsotf
             try {
-                // Guardo bytes de .jpg(actual) a nuestro .jpg(local)
-                Imagen Ima = api.getImagen(actual, local);
-                //
+                //Imagen Ima = api.getImagen(actual, local);
+                Imagen Ima = api.getImagen(actual);
                 
                 // Descripcion de la foto
                 rets = Ima.getTags();
                 System.out.println(rets[0]);
                 System.out.println(rets[1]);
                 System.out.println(rets[2]);
-                // 
-                Ima.getImagen();
                 // Inserto al nodo: 3 tags y foto
                 nodoInsertarImaTags(rets, Ima);
                 // Aumento contador de fotos
@@ -181,7 +185,7 @@ public class Logica
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-        // Hasta que se termine las ulrs .jpg del Json
+        // Hasta que se termine las urls.jpg del Json
         }while(iter.hasNext());
         //----------------------------------------------------------------------
         // Despues de que el avl este hecho, una vez insertado los nodos al arbol 
@@ -189,7 +193,10 @@ public class Logica
         //----------------------------------------------------------------------
         // Proceso el avl, borro punteros de nodos a foto
         avl.inOrden(avl.getRaiz(), 0);
+        
         avl.inOrdenDescartar(avl.getRaiz());
+        // Elimino nodos del avl y balanceo
+        avl.inOrdenElimina(avl.getRaiz());
         avl.inOrden(avl.getRaiz(), 0);
         
         // Despliego Slay Show
@@ -206,14 +213,13 @@ public class Logica
         
         // Insercion tag 1
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[0], Ima));
-        arrayImagen = avl.getRaiz().getValue();
+        //arrayImagen = avl.getRaiz().getValue();
         // Insercion tag 2
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[1], Ima));
-        arrayImagen = avl.getRaiz().getValue(); 
+        //arrayImagen = avl.getRaiz().getValue(); 
         // Insercion tag 3
         avl.setRaiz(avl.insert(avl.getRaiz(), pTags[2], Ima));
-        arrayImagen = avl.getRaiz().getValue();
-        
+        //arrayImagen = avl.getRaiz().getValue();
     }
     
     /**
@@ -311,8 +317,10 @@ public class Logica
     }
     /**
      *  Boton Procesar
+     * @throws java.net.MalformedURLException
+     * @throws java.lang.InterruptedException
      */
-    public void botonProcesar()
+    public void botonProcesar() throws MalformedURLException, InterruptedException
     {
         //
         api = new MCS();
@@ -321,7 +329,7 @@ public class Logica
         //fc.showOpenDialog(null);
         local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
         try {
-            api.getImagen(interfaz.getDireccion_imagen().getText(), local);
+            api.getImagen(interfaz.getDireccion_imagen().getText());
             rets = api.getDescription(interfaz.getDireccion_imagen().getText());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);

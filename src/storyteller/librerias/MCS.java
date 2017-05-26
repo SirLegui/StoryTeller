@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,6 +25,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -77,13 +79,12 @@ public class MCS
     /**
      * 
      * @param urli Link de la imagen a descargar
-     * @param dire Direccion de guardado de la imagen
      * @return lista de bytes de la imagen
      * @throws MalformedURLException
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public Imagen getImagen(String urli, String dire) throws MalformedURLException, FileNotFoundException, IOException
+    public Imagen getImagen(String urli) throws MalformedURLException, FileNotFoundException, IOException, InterruptedException
     {
         // Url con la foto
         Imagen imagen = null;
@@ -94,26 +95,21 @@ public class MCS
             URLConnection urlCon = url.openConnection();
             // Sacamos por pantalla el tipo de fichero
             System.out.println(urlCon.getContentType());
-            FileOutputStream fos;
             InputStream recibida;
             // Se obtiene el inputStream de la foto web y se abre el fichero local.
             recibida = urlCon.getInputStream();
-            fos = new FileOutputStream(dire);
-            // Lectura de la foto de la web y escritura en fichero local
-            byte[] array = new byte[1000];     // buffer temporal de lectura.
-            int leido = recibida.read(array);
-            while (leido > 0) 
-            {
-                fos.write(array, 0, leido);
-                leido = recibida.read(array);
-            }
-            // Cierre de conexion y fichero.
-            fos.close();       
-            // Inicializo string de descripcion y tags
+            //Convierto a byte[]
+            Thread.sleep(10000);
+            
+            byte[] bytes = new byte[recibida.available()];
+            recibida.read(bytes);
+            
+            //Saco el json del API
             String[] rets;
             rets = getDescription(urli);
-            // Creo Image y igualo la imagen a retornar
-            Image foto = ImageIO.read(recibida);
+            
+            // Creo Image e igualo a la imagen a retornar
+            Image foto = ImageIO.read(new ByteArrayInputStream(bytes));
             imagen = new Imagen(foto, rets, urli);
         // Capto WARNING
         } catch (IOException e) {
@@ -190,13 +186,13 @@ public class MCS
         return rets;
     }
     
-}
 
-/*
 
-    public byte[] getImageBYTES(String dire) throws MalformedURLException, FileNotFoundException, IOException{
+
+    public Imagen getImageBYTES(String dire) throws MalformedURLException, FileNotFoundException, IOException{
         // Url con la foto
         byte[] datos = new byte[2000];
+        Imagen ima = null;
         try{
             // open image
             File imgPath = new File(dire);
@@ -207,14 +203,13 @@ public class MCS
             DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
 
             datos = data.getData();
-            
+            ima = new Imagen(bufferedImage, null, dire);
             //ImageIO.write(imagen, "jpg", dir);
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("No se ha podido cargar la imagen");
         }
-        return datos;
+        return ima;
     }
 
-
-*/
+}
