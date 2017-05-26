@@ -68,6 +68,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="OPEN"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AbrirActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Save">
       <Properties>
@@ -81,6 +84,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="CONTINUE"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ContinueActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

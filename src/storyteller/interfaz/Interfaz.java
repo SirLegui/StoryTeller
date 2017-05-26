@@ -23,12 +23,14 @@ public class Interfaz extends javax.swing.JFrame
     private int foto;
     //Clases a usar
     private Logica controlador;
+    private Interfaz02 v2;
     //Constructor
     public Interfaz() 
     {
         // Inicializa la interfaz
         initComponents();
         // Inicializo variables globales
+        this.v2 = new Interfaz02();
         this.direccion_guardado = "";
         this.foto = 0;
     }
@@ -101,6 +103,11 @@ public class Interfaz extends javax.swing.JFrame
         save_path.setBorder(new javax.swing.border.MatteBorder(null));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
         Cargar.setText("Cargar");
@@ -192,28 +199,23 @@ public class Interfaz extends javax.swing.JFrame
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_CargarActionPerformed
+    //Fin---------------------------------------------------------
     /*
-    Funcion del boton Continuar
+    Codigo Basura................................................
     */
     private void ContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueActionPerformed
-       // Llamo a la funcion del boton continue
-       controlador.botonFollow();
     }//GEN-LAST:event_ContinueActionPerformed
-    /*
-    Funcion del boton Guardar
-    */
+
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-        // Llamo a la funcion del boton save
-        controlador.botonSave();
     }//GEN-LAST:event_SaveActionPerformed
-    /*
-    Funcion del boton Abrir
-    */
+
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
-        // Llamo a la funcion del boton abrir
-        controlador.botonAbrir();
     }//GEN-LAST:event_AbrirActionPerformed
 
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        v2.setControlador(controlador);
+        v2.setVisible(true);
+    }//GEN-LAST:event_formKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;

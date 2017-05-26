@@ -45,19 +45,4 @@ public class Album
     {
         return tree;
     }
-    
-    public void setLocal_path(String local_path) 
-    {
-        this.local_path = local_path;
-    }
-    
-    public void setNombre(String nombre) 
-    {
-        this.nombre = nombre;
-    }
-
-    public void setTree(ArbolAVL tree) 
-    {
-        this.tree = tree;
-    } 
 }

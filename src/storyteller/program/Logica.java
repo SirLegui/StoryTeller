@@ -21,6 +21,7 @@ import org.json.simple.parser.ParseException;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
+import storyteller.librerias.Album;
 import storyteller.librerias.Archivo;
 import storyteller.librerias.Imagen;
 import storyteller.librerias.MCS;
@@ -32,6 +33,7 @@ import storyteller.librerias.Serializacion;
 public class Logica 
 {
     //Variables globales-------------------------------------------------------   
+    private static Logica Instance;
     private Iterator<String> iter;
     private JSONParser parser;
     private JSONObject jsonObject;
@@ -47,11 +49,11 @@ public class Logica
     private Nodo raiz;
     private ArrayList<Imagen> arrayImagen;
     //Clases a usar
-    private static Logica Instance;
     private Interfaz interfaz;
     private MCS api;
     private ArbolAVL avl;
     private Serializacion s1;
+    private Album album;
     // Variables del quicksort
     private String[] numbers;
     private int number;
@@ -73,6 +75,7 @@ public class Logica
         this.api = new MCS();
         this.parser = new JSONParser();
         this.s1 = new Serializacion();
+        this.album = null;
         this.avl = null;
         this.obj = null;
         this.jsonObject = null;
@@ -237,12 +240,17 @@ public class Logica
         // Le pedimos el nombre del album al usuario
         String name = JOptionPane.showInputDialog(null,null,"Digite el nombre del album a guardar",3);
         name+=".alb";
+        // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
+        album = new Album(avl, name, local);
         // Serializo el AVL
         Archivo f1 = new Archivo(name, getSerializacion());
         byte[] serial = s1.serializar(getAVL());
         f1.escribirArchivo(serial);
-        // 
+        // Escribo en el archivo principal de byte[] Albums.alb
         
+        
+        JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
+        //....
     }
     /**
      * Boton continuar
