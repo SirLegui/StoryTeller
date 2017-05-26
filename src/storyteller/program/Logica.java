@@ -278,8 +278,9 @@ public class Logica
                 interfaz.setDescripcion(nueva_Imagen.getCaption());
                 String[] tags = nueva_Imagen.getTags();
                 interfaz.setTitulo(tags[0]);
-                ImageIcon icon2 = new ImageIcon(nueva_Imagen.getImagen());
-                if(icon2 != null){
+                
+                if(nueva_Imagen.getImagen() != null){
+                    //ImageIcon icon2 = new ImageIcon(nueva_Imagen.getImagen());
                     setIcon(new ImageIcon(nueva_Imagen.getImagen()));
                     //Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
                     setIcono(new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH)));
