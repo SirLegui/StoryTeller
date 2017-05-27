@@ -378,6 +378,14 @@ public class Logica implements KeyListener
                         Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                while(!getSeguirHilo())
+                {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 //while (condicion_true) {}
                 // Repinto
                 interfaz.repaint();

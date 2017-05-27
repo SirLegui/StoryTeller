@@ -284,9 +284,9 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
 
     private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
         // TODO add your handling code here:
+        controlador.setSeguirHilo(false);
         v2.setControlador(controlador);
         v2.setVisible(true);
-        controlador.setSeguirHilo(false);
     }//GEN-LAST:event_STOPActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
