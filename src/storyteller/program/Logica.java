@@ -443,8 +443,8 @@ public class Logica implements KeyListener
      */
     public void botonFollow()
     {
-        // Hacer el while en la corrida del inorden
-        
+        // Sigo el hilo
+        setSeguirHilo(true);
     };
     /**
      * Boton abrir

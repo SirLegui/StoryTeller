@@ -6,9 +6,14 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import org.json.simple.parser.ParseException;
 import storyteller.librerias.Imagen;
@@ -39,7 +44,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     {
         // Inicializa la interfaz
         initComponents();
-//        addKeyListener(this);
+        addKeyListener(this);
         // Inicializo variables globales
         this.v2 = new Interfaz02();
         this.direccion_guardado = "";
@@ -47,6 +52,11 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         this.tecla = "";
     }
     //Gets y Sets
+    public void setBarValue(int val, String message){
+        barra.setValue(val);
+        //mensajes.append(message);
+        JOptionPane.showMessageDialog(null,message,"INFO",0);
+    }
     public void setDescripcion(String caption){
         lblDescripcion.setText(caption);
     }
@@ -107,6 +117,10 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         lblTag1 = new javax.swing.JLabel();
         Cargar = new javax.swing.JButton();
         STOP = new javax.swing.JButton();
+        barra = new javax.swing.JProgressBar();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        mensajes = new javax.swing.JTextArea();
 
         save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         save_path.setCurrentDirectory(new java.io.File("C:\\Users\\Usuario1\\Escritorio"));
@@ -121,61 +135,96 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
             }
         });
 
+        lblFoto.setBackground(new java.awt.Color(255, 255, 255));
+        lblFoto.setFont(new java.awt.Font("Consolas", 3, 11)); // NOI18N
+        lblFoto.setText("----------------Imagen a desplegar en el SLIDE SHOW--------------------------");
         lblFoto.setDoubleBuffered(true);
 
-        Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
-        Cargar.setText("Cargar");
-        Cargar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CargarActionPerformed(evt);
-            }
-        });
+        lblDescripcion.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        lblDescripcion.setText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\Descripcion de la Imagen\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 
-        STOP.setText("STOP");
-        STOP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                STOPActionPerformed(evt);
-            }
-        });
+            lblTag1.setFont(new java.awt.Font("Bauhaus 93", 1, 24)); // NOI18N
+            lblTag1.setText("Titulo");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Cargar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(226, 226, 226)
-                .addComponent(STOP)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(117, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(STOP, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(79, 79, 79)
-                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
+            Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
+            Cargar.setText("Cargar");
+            Cargar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    CargarActionPerformed(evt);
+                }
+            });
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            STOP.setText("STOP");
+            STOP.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    STOPActionPerformed(evt);
+                }
+            });
+
+            jLabel1.setFont(new java.awt.Font("MS Gothic", 1, 18)); // NOI18N
+            jLabel1.setText("LOADING..........");
+
+            mensajes.setColumns(20);
+            mensajes.setRows(5);
+            jScrollPane1.setViewportView(mensajes);
+
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(Cargar)
+                                    .addGap(307, 307, 307)
+                                    .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(STOP))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(217, 217, 217)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(28, 28, 28))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(37, 37, 37)
+                            .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 878, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 44, Short.MAX_VALUE)))
+                    .addContainerGap())
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(406, 406, 406)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(STOP, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTag1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(64, 64, 64)
+                            .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                    .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(23, 23, 23))
+            );
+
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 
    /*
     Funcion del boton cargar
@@ -187,11 +236,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         try {
             // Logica Cargar
             controlador.botonCargar();
-        } catch (IOException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
+        } catch (IOException | ParseException | InterruptedException | URISyntaxException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -241,14 +286,19 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         // TODO add your handling code here:
         v2.setControlador(controlador);
         v2.setVisible(true);
+        controlador.setSeguirHilo(false);
     }//GEN-LAST:event_STOPActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;
     private javax.swing.JButton STOP;
+    private javax.swing.JProgressBar barra;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblTag1;
+    private javax.swing.JTextArea mensajes;
     private javax.swing.JFileChooser save_path;
     // End of variables declaration//GEN-END:variables
     @Override
