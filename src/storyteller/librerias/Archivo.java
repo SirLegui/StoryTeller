@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import storyteller.librerias.Album;
 import storyteller.librerias.ParesOrdenados;
 /**
@@ -47,8 +48,9 @@ public class Archivo
         try {
             fileInput = new FileInputStream(file);
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
             return null;
+        } catch (RuntimeException e2) {
+            JOptionPane.showMessageDialog(null,"¡No hay Album ah guardar!","ERROR",2);
         }
         //
         bufferedInput = new BufferedInputStream(fileInput);

@@ -80,10 +80,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     public String getDireccion_guardado() {
         return direccion_guardado;
     }
-    public JTextField getDireccion_imagen() 
-    {
-        return direccion_imagen;
-    }
+
     public int aumentarFoto() 
     {
         return foto++;
@@ -106,11 +103,10 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
 
         save_path = new javax.swing.JFileChooser();
         lblFoto = new javax.swing.JLabel();
-        direccion_imagen = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
         lblTag1 = new javax.swing.JLabel();
         Cargar = new javax.swing.JButton();
-        Procesar = new javax.swing.JButton();
+        STOP = new javax.swing.JButton();
 
         save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         save_path.setCurrentDirectory(new java.io.File("C:\\Users\\Usuario1\\Escritorio"));
@@ -127,12 +123,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
 
         lblFoto.setDoubleBuffered(true);
 
-        direccion_imagen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                direccion_imagenActionPerformed(evt);
-            }
-        });
-
         Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
         Cargar.setText("Cargar");
         Cargar.addActionListener(new java.awt.event.ActionListener() {
@@ -141,11 +131,10 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
             }
         });
 
-        Procesar.setFont(new java.awt.Font("Modern No. 20", 0, 18)); // NOI18N
-        Procesar.setText("Procesar con link");
-        Procesar.addActionListener(new java.awt.event.ActionListener() {
+        STOP.setText("STOP");
+        STOP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProcesarActionPerformed(evt);
+                STOPActionPerformed(evt);
             }
         });
 
@@ -158,11 +147,9 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
                 .addComponent(Cargar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(114, 114, 114)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Procesar)
-                    .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                .addGap(226, 226, 226)
+                .addComponent(STOP)
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -177,29 +164,20 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Procesar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(32, 32, 32)
+                        .addGap(40, 40, 40)
+                        .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(STOP, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(79, 79, 79)
                 .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /*
-    Funcion del boton procesar.
-    */
-    private void ProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcesarActionPerformed
-        setDireccion_guardado();
-        //controlador.botonProcesar();
 
-    }//GEN-LAST:event_ProcesarActionPerformed
-    /*
+   /*
     Funcion del boton cargar
     */
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
@@ -237,7 +215,8 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent e) {
         tecla = KeyEvent.getKeyText(e.getKeyCode());
-        if(tecla == Integer.toString(KeyEvent.VK_A))
+        System.out.println(tecla);
+        if(tecla.equals(Integer.toString(KeyEvent.VK_ENTER)))
         {
             v2.setControlador(controlador);
             v2.setVisible(true);
@@ -258,14 +237,15 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
     }//GEN-LAST:event_formKeyTyped
 
-    private void direccion_imagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccion_imagenActionPerformed
+    private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_direccion_imagenActionPerformed
+        v2.setControlador(controlador);
+        v2.setVisible(true);
+    }//GEN-LAST:event_STOPActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;
-    private javax.swing.JButton Procesar;
-    private javax.swing.JTextField direccion_imagen;
+    private javax.swing.JButton STOP;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblTag1;

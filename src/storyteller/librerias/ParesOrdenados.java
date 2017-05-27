@@ -18,7 +18,16 @@ public class ParesOrdenados implements Serializable
     {
         this.indices = null;
     }
-    
+    //Gets and Sets
+    public String[][] getIndices()
+    {
+        return indices;
+    }
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     public boolean esta_en(String name)
     {
         boolean c = false;

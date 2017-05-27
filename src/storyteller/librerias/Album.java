@@ -1,5 +1,6 @@
 package storyteller.librerias;
 /*Librerias a usar*/
+import java.io.Serializable;
 import storyteller.Estructura.ArbolAVL;
 /**
  * 
@@ -9,7 +10,7 @@ import storyteller.Estructura.ArbolAVL;
  * 
  * AVL,name,c\\Direccion.x
  */
-public class Album 
+public class Album implements Serializable
 {
     // Variables Globales --------------------------------------------------
     private ArbolAVL tree;          // tree

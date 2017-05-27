@@ -4,6 +4,8 @@ package storyteller.program;
 import com.sun.jna.platform.mac.MacFileUtils.FileManager;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,6 +26,7 @@ import storyteller.Estructura.ArbolAVL;
 import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
 import storyteller.interfaz.Interfaz00;
+import storyteller.interfaz.Interfaz02;
 import storyteller.librerias.Album;
 import storyteller.librerias.Archivo;
 import storyteller.librerias.Hilo;
@@ -35,7 +38,7 @@ import storyteller.librerias.Serializacion;
  * @author edgerik
  * @author jeremy
  */
-public class Logica 
+public class Logica implements KeyListener
 {
     //Variables globales-------------------------------------------------------   
     private static Logica Instance;
@@ -51,6 +54,9 @@ public class Logica
     private boolean seguirHilo;	
     private ArrayList<String> array_keys;//Condicion del while
     private String ruta_guardado;
+    private String tecla;
+    private int total_bytes;
+    private byte[] serial;
     // Variables Json
     private String[] rets;
     private String local;       // Json ubicacion
@@ -59,6 +65,7 @@ public class Logica
     private Nodo raiz;
     //Clases a usar
     private Interfaz interfaz;
+    private Interfaz02 interfaz02;
     private MCS api;
     private ArbolAVL avl;
     private Serializacion s1;
@@ -92,6 +99,9 @@ public class Logica
         this.cargar_listo = false;
         this.array_keys = null;
         this.ruta_guardado = "";
+        this.tecla = null;
+        this.total_bytes = 0;
+        this.serial = null;
         this.jsonObject = null;
         this.urls = null;
         this.iter = null;
@@ -120,7 +130,30 @@ public class Logica
         this.interfaz = interfaz;
     }
     //Gets y Sets---------------------------------------------------------------
-
+    public int getTotalBytes()
+    {
+        return total_bytes;
+    }
+    public  void setSerial(byte[] se)
+    {
+        this.serial = se;
+    }
+    public void setTotalBytes(int total)
+    {
+        this.total_bytes = total;
+    }
+    public void setAlbum(Album a)
+    {
+        this.album = a;
+    }
+    public Album getAlbum()
+    {
+        return album;
+    }
+    public String getLocal()
+    {
+        return local;
+    }
     public String getRuta_guardado() {
         return ruta_guardado;
     }
@@ -131,7 +164,7 @@ public class Logica
     
     public void addArray(String name)
     {
-        array_keys.add(name);
+        this.array_keys.add(name);
     }
     public void setSeguirHilo(boolean h)
     {
@@ -325,6 +358,7 @@ public class Logica
                         Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                //while (condicion_true) {}
                 // Repinto
                 interfaz.repaint();
                 //controlador.desplegar_imagen(nodo.getValue().get(i));
@@ -345,33 +379,34 @@ public class Logica
         byte[] pares = f1.leerArchivo();
         if(pares.length != 0)
         {
-            pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
+            //pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
         }        
+        
         // Le pedimos el nombre del album al usuario
         String name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
         // Busqueda binaria, ver si no esta repetido
         boolean encontrado = false;
-        while(!encontrado){
+        while(!encontrado)
+        {
             if(!pares_ordenados.esta_en(name))    //Si es true, add
             {
                 encontrado = true;
                 // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
-                album = new Album(avl, name, local);
+                Album a1 = new Album(getAVL(), name, getLocal());
+                setAlbum(a1);
                 // Serializo el AVL************************************
                 // Creo instancia para R/W bytes .alb
                 Archivo f2 = new Archivo(getRuta_guardado()+"Album.alb", getSerializacion());
                 // Creo el byte[] de album
-                byte[] serial = s1.serializar(album);
+                setSerial(s1.serializar(getAlbum()));
                 // Inicializo el largo del byte[] del album
-                int total_bytes = serial.length;
+                setTotalBytes(serial.length);
                 // Escribo en el Album.alb el byte[] del album a insertar en el final
                 f2.escribirArchivo(serial, true);   //Inserto al final
                 // Inserto al final el album en los pares ordenados
-                pares_ordenados.addAlbum(name, album, total_bytes, 0);
+                pares_ordenados.addAlbum(name, getAlbum(), getTotalBytes(), 0);
                 // Termino el save
                 JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
-                
-                
             }else{
                 name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
             }
@@ -388,7 +423,7 @@ public class Logica
      */
     public void botonFollow()
     {
-        //
+        // Hacer el while en la corrida del inorden
         
     };
     /**
@@ -396,44 +431,29 @@ public class Logica
      */
     public void botonAbrir()
     {
-        //
-        
-    }
-    /**
-     *  Boton Procesar
-     * @throws java.net.MalformedURLException
-     * @throws java.lang.InterruptedException
-     */
-    /*
-    public void botonProcesar() throws MalformedURLException, InterruptedException
-    {
-        //
-        api = new MCS();
-        rets = null;
-        //FileChooser fc = new FileChooser();
-        //fc.showOpenDialog(null);
-        local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
-        try {
-            api.getImagen(interfaz.getDireccion_imagen().getText());
-            rets = api.getDescription(interfaz.getDireccion_imagen().getText());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        // Deserealizar los pares ordenados
+        Archivo f1 = new Archivo(getRuta_guardado()+"Pares.pros", getSerializacion());
+        byte[] pares = f1.leerArchivo();
+        if(pares.length != 0)
+        {
+            pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
+        }  
+        String[][] pares_1 =pares_ordenados.getIndices();
+        String[] nombre_albums = null;
+        for (int x = 0; x < pares_1.length; x++) {
+            nombre_albums[x] = pares_1[x][0];
         }
+        //interfaz02.text.add(nombre_albums)
+        String name1 = JOptionPane.showInputDialog(null,"Digite el nombre del album a abrir","ABRIR ALBUM",3);
+        // Validar si ese nombre existe en los pares ordenados
         
-        icon = new ImageIcon(local);
-        icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
-        interfaz.getLblFoto().setIcon( icono );
+        // Obtener AVL
         
-        interfaz.getLblFoto().setText(null);
-        interfaz.getLblDescripcion().setText(rets[0]);
-        interfaz.getLblTag1().setText(rets[1]);
-        interfaz.getLblTag2().setText(rets[2]);
-        interfaz.getLblTag3().setText(rets[3]);
-        interfaz.aumentarFoto();
+        // SLIDE SHOW
+        
+        //..
+        //JOptionPane.showMessageDialog(null, "", "Opciones de ALBUNES disponibles en la TIENDA LIVE PURA VIDA", 2);
     }
-    */
     /*
      * Quicksort
      * Funcion principal del quicksort
@@ -507,6 +527,28 @@ public class Logica
         numbers[j] = temp;
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        tecla = KeyEvent.getKeyText(e.getKeyCode());
+        System.out.println(tecla);
+        if(tecla.equals(Integer.toString(KeyEvent.VK_ENTER)))
+        {
+            interfaz02.setControlador(this);
+            interfaz02.setVisible(true);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
 /*
         //avl.raiz = avl.insert(avl.raiz, pTags[1]);
@@ -514,3 +556,39 @@ public class Logica
         //arrayImagen.add(Ima);
 
 */
+
+    /**
+     *  Boton Procesar
+     * @throws java.net.MalformedURLException
+     * @throws java.lang.InterruptedException
+     */
+    /*
+    public void botonProcesar() throws MalformedURLException, InterruptedException
+    {
+        //
+        api = new MCS();
+        rets = null;
+        //FileChooser fc = new FileChooser();
+        //fc.showOpenDialog(null);
+        local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
+        try {
+            api.getImagen(interfaz.getDireccion_imagen().getText());
+            rets = api.getDescription(interfaz.getDireccion_imagen().getText());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        icon = new ImageIcon(local);
+        icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
+        interfaz.getLblFoto().setIcon( icono );
+        
+        interfaz.getLblFoto().setText(null);
+        interfaz.getLblDescripcion().setText(rets[0]);
+        interfaz.getLblTag1().setText(rets[1]);
+        interfaz.getLblTag2().setText(rets[2]);
+        interfaz.getLblTag3().setText(rets[3]);
+        interfaz.aumentarFoto();
+    }
+    */
