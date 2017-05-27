@@ -81,33 +81,35 @@ public class ArbolAVL implements Serializable {
             //
             int largo = nodo.getValue().size();
             System.out.println(largo);
+            boolean borrar = true;
             for (int i = largo-1; i >= 0; i--) {
                 System.out.println(i);
                 Imagen fo = nodo.getValue().get(i);
-                Image a = fo.getImagen();
                 System.out.println(fo.getCaption());
-                if (fo.isCheck()) {
+                if (!fo.isCheck()) {
+                    borrar = false;
+                    fo.check();
+                }else{
                     System.out.println("se borra imagen");
                     nodo.getValue().remove(fo);
                     
                 }
             }
             //System.out.println("Nodo actual a depurar: "+nodo.getKey());
-            if (nodo.getValue().isEmpty()) // Borra el nodo si el array esta vacio
+            if (borrar) // Borra el nodo si el array esta vacio
             {
+                System.out.println("se borro nodo");
                 nodo.setBorrar(true);
-
-                if (nodo.getValue() == null) // Borra el nodo si el array esta vacio
-                {
-                    System.out.println("esta vacio el array");
-                    nodo.setBorrar(true);
-                }
-                //
-                inOrdenDescartar(nodo.getRight());
+                //array.add(nodo.getKey());
+                controlador.addArray(nodo.getKey());
+                
             }
+            //
+            inOrdenDescartar(nodo.getRight());
+
         }
     }
-
+    
     /**
      * Recorre el arbol y elimina a los nodos inutilizados para despues
      * borrarlos
@@ -121,8 +123,6 @@ public class ArbolAVL implements Serializable {
             if (nodo.isBorrar()) {
                 System.out.println("Se debe eliminar este nodo " + nodo.getKey());
                 nodo = deleteNode(raiz, nodo.getKey());
-                System.out.println("Elimino!");
-                deleteNode(raiz, nodo.getKey());
             }
 
             inOrdenElimina(nodo.getRight());

@@ -45,6 +45,12 @@ public class Hilo implements Runnable
         {
             logica.inOrdenDesplegarImagenes(logica.getG(), logica.getAVL().getRaiz());
         }
+//        // Slepp
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         //Fin del hilo	
     }
 }

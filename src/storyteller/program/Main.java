@@ -1,9 +1,14 @@
 package storyteller.program;
 import java.awt.EventQueue;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+import org.apache.commons.logging.impl.ServletContextCleaner;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.*;
 import storyteller.interfaz.Interfaz;
+import storyteller.interfaz.Interfaz00;
 import storyteller.librerias.Imagen;
 import storyteller.librerias.Serializacion;
 /*
@@ -28,7 +33,10 @@ public class Main {
             c.setInterfaz(v1);  //Inicializo clase logica
             c.setAVL(tree);     //Inicializo clase AVL
             v1.setVisible(true);
-
+//////            String ruta = "Album.alb";
+//            URL fileURL = Main.class.getResource(ruta);
+//            BufferedReader br = new BufferedReader(new InputStreamReader(fileURL.openStream()));
+//            
             //c.recorreAVL();
             //"http://www.sergerente.net/wp-content/uploads/2015/07/stevejobs1.jpg",
              //"http://www.infotigres.com/Imagenes/tigres-de-bengala-apareandose.jpg",

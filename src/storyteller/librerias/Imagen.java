@@ -61,13 +61,12 @@ public class Imagen
         return url;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
+    public void setCheck(boolean check2) {
+        check = check2;
     }
     public void check(){
-        if(!check){
-            check = true;
-        }
+        check = true;
+        
     }
     
      //Gets and Sets

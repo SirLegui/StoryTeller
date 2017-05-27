@@ -1,24 +1,18 @@
 package storyteller.interfaz;
 //Librerias a importar
 import java.awt.event.KeyListener;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import org.json.simple.parser.ParseException;
-import storyteller.Estructura.Nodo;
 import storyteller.librerias.Imagen;
 import storyteller.program.Logica;
-import sun.java2d.pipe.DrawImage;
 /**
  * @author jeremy
  * @author edgerik
@@ -106,14 +100,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     {
         return lblTag1;
     }
-    public JLabel getLblTag2() 
-    {
-        return lblTag2;
-    }
-    public JLabel getLblTag3() 
-    {
-        return lblTag3;
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -123,13 +109,11 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         direccion_imagen = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
         lblTag1 = new javax.swing.JLabel();
-        lblTag2 = new javax.swing.JLabel();
-        lblTag3 = new javax.swing.JLabel();
         Cargar = new javax.swing.JButton();
         Procesar = new javax.swing.JButton();
 
         save_path.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        save_path.setCurrentDirectory(new java.io.File("/home/edgerik/C:/Users/Usuario1/Escritorio"));
+        save_path.setCurrentDirectory(new java.io.File("C:\\Users\\Usuario1\\Escritorio"));
         save_path.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         save_path.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         save_path.setBorder(new javax.swing.border.MatteBorder(null));
@@ -142,6 +126,12 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         });
 
         lblFoto.setDoubleBuffered(true);
+
+        direccion_imagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                direccion_imagenActionPerformed(evt);
+            }
+        });
 
         Cargar.setFont(new java.awt.Font("Modern No. 20", 1, 24)); // NOI18N
         Cargar.setText("Cargar");
@@ -164,49 +154,39 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(182, 182, 182)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 34, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Cargar)
-                .addGap(129, 129, 129)
-                .addComponent(lblTag3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(lblTag2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(114, 114, 114)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Procesar)
                     .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(86, 86, 86)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(lblTag3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblTag2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Procesar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(direccion_imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(32, 32, 32)
                 .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblTag1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         pack();
@@ -216,18 +196,15 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     */
     private void ProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProcesarActionPerformed
         setDireccion_guardado();
-        try {
-            controlador.botonProcesar();
-        } catch (MalformedURLException | InterruptedException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //controlador.botonProcesar();
+
     }//GEN-LAST:event_ProcesarActionPerformed
     /*
     Funcion del boton cargar
     */
     private void CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarActionPerformed
         // Digite donde se van a guardar las fotos
-        setDireccion_guardado();
+        //setDireccion_guardado();
 
         try {
             // Logica Cargar
@@ -247,16 +224,20 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     {        
         dbImage = createImage(getWidth(), getHeight());
         dbg = dbImage.getGraphics();
-        //paintComponent(dbg);
+        paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
         // Le paso el g a Logica
         controlador.setG(g);
     }
-
+    public void paintComponent(Graphics g)
+    {
+        super.paint(g);
+        repaint();
+    }
     @Override
     public void keyPressed(KeyEvent e) {
         tecla = KeyEvent.getKeyText(e.getKeyCode());
-        if(tecla != null)
+        if(tecla == Integer.toString(KeyEvent.VK_A))
         {
             v2.setControlador(controlador);
             v2.setVisible(true);
@@ -276,6 +257,11 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     }//GEN-LAST:event_AbrirActionPerformed
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
     }//GEN-LAST:event_formKeyTyped
+
+    private void direccion_imagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccion_imagenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direccion_imagenActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cargar;
     private javax.swing.JButton Procesar;
@@ -283,8 +269,6 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblTag1;
-    private javax.swing.JLabel lblTag2;
-    private javax.swing.JLabel lblTag3;
     private javax.swing.JFileChooser save_path;
     // End of variables declaration//GEN-END:variables
     @Override

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -94,12 +95,12 @@ public class MCS
             // Establecemos conexion
             URLConnection urlCon = url.openConnection();
             // Sacamos por pantalla el tipo de fichero
-            System.out.println(urlCon.getContentType());
+            //System.out.println(urlCon.getContentType());
             InputStream recibida;
             // Se obtiene el inputStream de la foto web y se abre el fichero local.
             recibida = urlCon.getInputStream();
             //Convierto a byte[]
-            Thread.sleep(10000);
+            Thread.sleep(15000);
             
             byte[] bytes = new byte[recibida.available()];
             recibida.read(bytes);
@@ -115,6 +116,8 @@ public class MCS
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("No se ha podido cargar la imagen");
+        } catch (ArrayIndexOutOfBoundsException e1) {
+            JOptionPane.showMessageDialog(null,"Imagen invalida","Error",2);
         }
         return imagen;
     }

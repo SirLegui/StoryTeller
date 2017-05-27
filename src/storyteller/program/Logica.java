@@ -23,6 +23,7 @@ import org.json.simple.parser.ParseException;
 import storyteller.Estructura.ArbolAVL;
 import storyteller.Estructura.Nodo;
 import storyteller.interfaz.Interfaz;
+import storyteller.interfaz.Interfaz00;
 import storyteller.librerias.Album;
 import storyteller.librerias.Archivo;
 import storyteller.librerias.Hilo;
@@ -47,14 +48,15 @@ public class Logica
     private Object obj;
     private Graphics g;
     private boolean cargar_listo;
-    private boolean seguirHilo;			//Condicion del while
+    private boolean seguirHilo;	
+    private ArrayList<String> array_keys;//Condicion del while
+    private String ruta_guardado;
     // Variables Json
     private String[] rets;
     private String local;       // Json ubicacion
     private String actual;      // htpp
     // Variables avl
     private Nodo raiz;
-    private ArrayList<Imagen> arrayImagen;
     //Clases a usar
     private Interfaz interfaz;
     private MCS api;
@@ -88,6 +90,8 @@ public class Logica
         this.avl = null;
         this.obj = null;
         this.cargar_listo = false;
+        this.array_keys = null;
+        this.ruta_guardado = "";
         this.jsonObject = null;
         this.urls = null;
         this.iter = null;
@@ -116,6 +120,19 @@ public class Logica
         this.interfaz = interfaz;
     }
     //Gets y Sets---------------------------------------------------------------
+
+    public String getRuta_guardado() {
+        return ruta_guardado;
+    }
+
+    public void setRuta_guardado(String ruta_guardado) {
+        this.ruta_guardado = ruta_guardado;
+    }
+    
+    public void addArray(String name)
+    {
+        array_keys.add(name);
+    }
     public void setSeguirHilo(boolean h)
     {
         seguirHilo = h;
@@ -174,7 +191,8 @@ public class Logica
     {
         // Direccion donde esta el Json, lo creo
         try{
-            obj = parser.parse(new FileReader("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\Prueba.json"));
+            setRuta_guardado("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\");
+            obj = parser.parse(new FileReader(getRuta_guardado()+"Prueba.json"));
         }catch(FileNotFoundException e)
         {
             System.out.println("No se cargo el JSON correctamente"); 
@@ -196,9 +214,9 @@ public class Logica
                 
                 // Descripcion de la foto
                 rets = Ima.getTags();
-                System.out.println(rets[0]);
-                System.out.println(rets[1]);
-                System.out.println(rets[2]);
+                //System.out.println(rets[0]);
+                //System.out.println(rets[1]);
+                //System.out.println(rets[2]);
                 // Inserto al nodo: 3 tags y foto
                 nodoInsertarImaTags(rets, Ima);
                 // Aumento contador de fotos
@@ -209,6 +227,8 @@ public class Logica
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "No se ah podido descagar la imagen", "Error", 2);
             }
             
         // Hasta que se termine las urls.jpg del Json
@@ -218,11 +238,18 @@ public class Logica
         // Y que ya hemos hecho la señalacion de punteros, osea nodo->Imagen[]
         //----------------------------------------------------------------------
         // Proceso el avl, borro punteros de nodos a foto
+        // 
+        //Thread.sleep(15000);
         avl.inOrden(avl.getRaiz(), 0);
-        
+        // 
+        array_keys = new ArrayList<>();
         avl.inOrdenDescartar(avl.getRaiz());
         // Elimino nodos del avl y balanceo
-        avl.inOrdenElimina(avl.getRaiz());
+        // avl.inOrdenElimina(avl.getRaiz());
+        array_keys.forEach((key) -> {
+            avl.setRaiz(avl.deleteNode(avl.getRaiz(), key));
+        }); // 
+        
         avl.inOrden(avl.getRaiz(), 0);
         
         // Despliego Slay Show
@@ -266,11 +293,11 @@ public class Logica
             inOrdenDesplegarImagenes(g, nodo.getLeft());
             //
             int largo = nodo.getValue().size();
-            System.out.println(largo);
-            System.out.println(nodo.getValue().get(0).getUrl());
-            System.out.println(nodo.getValue().get(0).getCaption());
-            String[] a = nodo.getValue().get(0).getTags();
-            System.out.println(a[0]);
+            //System.out.println(largo);
+            //System.out.println(nodo.getValue().get(0).getUrl());
+            //System.out.println(nodo.getValue().get(0).getCaption());
+            //String[] a = nodo.getValue().get(0).getTags();
+            //System.out.println(a[0]);
 
             for (int i = largo - 1; i >= 0; i--) 
             {
@@ -279,30 +306,31 @@ public class Logica
                 Imagen nueva_Imagen = nodo.getValue().get(i);
                 // Dibujo la Image
                 //nueva_Imagen.dibujar(g, interfaz);
-                interfaz.setFoto_actual(nueva_Imagen.getImagen());
+                //interfaz.setFoto_actual(nueva_Imagen.getImagen());
                 interfaz.setNodo_foto(nueva_Imagen);
                 interfaz.setDescripcion(nueva_Imagen.getCaption());
                 String[] tags = nueva_Imagen.getTags();
                 interfaz.setTitulo(tags[0]);
                 
                 if(nueva_Imagen.getImagen() != null){
-                    //ImageIcon icon2 = new ImageIcon(nueva_Imagen.getImagen());
-                    setIcon(new ImageIcon(nueva_Imagen.getImagen()));
-                    //Icon icono = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
-                    setIcono(new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH)));
-                    interfaz.getLblFoto().setIcon(icono);
+                    ImageIcon icon2 = new ImageIcon(nueva_Imagen.getImagen());
+                    setIcon(icon2);
+                    Icon icono2 = new ImageIcon(icon.getImage().getScaledInstance(interfaz.getLblFoto().getWidth(), interfaz.getLblFoto().getHeight(), Image.SCALE_SMOOTH));
+                    setIcono(icono2);
+                    interfaz.getLblFoto().setIcon(getIcono());
+                    // Slepp 5 segundos slide show
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                // Repinto
                 interfaz.repaint();
-                // Slepp
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 //controlador.desplegar_imagen(nodo.getValue().get(i));
-                
+            
             }
-            System.out.println("Sale del for");
+            //System.out.println("Sale del for");
             //
             inOrdenDesplegarImagenes(g, nodo.getRight());
         }
@@ -312,29 +340,47 @@ public class Logica
      */
     public void botonSave()
     {
-        // Le pedimos el nombre del album al usuario
-        String name = JOptionPane.showInputDialog(null,null,"Digite el nombre del album a guardar",3);
-        name+=".alb";
-        // Busqueda binaria, ver si no esta repetido
-        if(avl.busquedaBinaria(avl.getRaiz(), name))    //Si es true, add
+        // Deserealizar los pares ordenados
+        Archivo f1 = new Archivo(getRuta_guardado()+"Pares.pros", getSerializacion());
+        byte[] pares = f1.leerArchivo();
+        if(pares.length != 0)
         {
-            // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
-            album = new Album(avl, name, local);
-            // Serializo el AVL************************************
-            // Creo instancia para R/W bytes .alb
-            Archivo f1 = new Archivo(name, getSerializacion());
-            // Creo el byte[] de album
-            byte[] serial = s1.serializar(album);
-            // Inicializo el largo del byte[] del album
-            int total_bytes = serial.length;
-            // Escribo en el Album.alb el byte[] del album a insertar en el final
-            f1.escribirArchivo(serial);
-            // Inserto al final del album
-            pares_ordenados.addAlbum(name, album, total_bytes);
-            //   
-            JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
-
+            pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
+        }        
+        // Le pedimos el nombre del album al usuario
+        String name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
+        // Busqueda binaria, ver si no esta repetido
+        boolean encontrado = false;
+        while(!encontrado){
+            if(!pares_ordenados.esta_en(name))    //Si es true, add
+            {
+                encontrado = true;
+                // Creo el Album, como parametros 1)tree, 2)nombre del album, 3)c://
+                album = new Album(avl, name, local);
+                // Serializo el AVL************************************
+                // Creo instancia para R/W bytes .alb
+                Archivo f2 = new Archivo(getRuta_guardado()+"Album.alb", getSerializacion());
+                // Creo el byte[] de album
+                byte[] serial = s1.serializar(album);
+                // Inicializo el largo del byte[] del album
+                int total_bytes = serial.length;
+                // Escribo en el Album.alb el byte[] del album a insertar en el final
+                f2.escribirArchivo(serial, true);   //Inserto al final
+                // Inserto al final el album en los pares ordenados
+                pares_ordenados.addAlbum(name, album, total_bytes, 0);
+                // Termino el save
+                JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
+                
+                
+            }else{
+                name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
+            }
         }
+        //Hacer Quicksort
+        
+        // Serializar pares ordenados
+        pares = s1.serializar(pares_ordenados);
+        f1.escribirArchivo(pares, false);   //Le caigo encima al Album.alb
         //....
     }
     /**
@@ -358,6 +404,7 @@ public class Logica
      * @throws java.net.MalformedURLException
      * @throws java.lang.InterruptedException
      */
+    /*
     public void botonProcesar() throws MalformedURLException, InterruptedException
     {
         //
@@ -386,6 +433,7 @@ public class Logica
         interfaz.getLblTag3().setText(rets[3]);
         interfaz.aumentarFoto();
     }
+    */
     /*
      * Quicksort
      * Funcion principal del quicksort

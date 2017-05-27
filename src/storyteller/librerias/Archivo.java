@@ -72,12 +72,12 @@ public class Archivo
      * 
      * @param pBytes 
      */
-    public void escribirArchivo(byte[] pBytes) 
+    public void escribirArchivo(byte[] pBytes, boolean bo) 
     {
         //
         bytes = pBytes;
         try {
-            fileOutput = new FileOutputStream(file, true);
+            fileOutput = new FileOutputStream(file, bo);
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
@@ -117,26 +117,4 @@ public class Archivo
         }
         return temp;
     }
-    /**
-     * 
-     * @param nuevo 
-     */
-    public void Guardar(Album nuevo) 
-    {
-        //pares.
-        //Se serializa la lista de figuras
-        byte[] ser = serial.serializar(nuevo);
-        //Se nombra el archivo con el nombre leido
-        if (file.isEmpty()) {
-            file = "Albums.alb";
-        } else {
-            file += ".alb";
-        }
-        //Se escribe el archivo en .psc
-        escribirArchivo(ser);
-        System.out.println("Se ha guardado el archivo con el nombre: " + file);
-        System.out.println("En la dirección: /home/edgerik/NetBeansProjects/Paint");
-    }
-
-
 }
