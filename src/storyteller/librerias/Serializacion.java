@@ -19,7 +19,8 @@ public class Serializacion<e>
    * @param objeto
    * @return 
    */
-  public byte[] serializar(e objeto){
+  public byte[] serializar(e objeto)
+  {
         ByteArrayOutputStream bs= new ByteArrayOutputStream();
         ObjectOutputStream os;
         try {

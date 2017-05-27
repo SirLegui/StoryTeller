@@ -119,9 +119,10 @@ public class Interfaz02 extends javax.swing.JFrame
             setVisible(false);
         } catch (IOException ex) {
             Logger.getLogger(Interfaz02.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException e1) {
-            JOptionPane.showMessageDialog(null,"Los pares ordenados esta en null","ERROR",1);
         }
+//        } catch (NullPointerException e1) {
+//            JOptionPane.showMessageDialog(null,"Los pares ordenados esta en null","ERROR",1);
+//        } 
     }//GEN-LAST:event_SaveActionPerformed
     /*
     Funcion del boton Abrir

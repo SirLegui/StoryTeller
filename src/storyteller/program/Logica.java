@@ -424,10 +424,12 @@ public class Logica implements KeyListener
         String name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
         // Busqueda binaria, ver si no esta repetido
         boolean encontrado = false;
+        if(pares_ordenados == null){
+            pares_ordenados = new ParesOrdenados();
+        }
         while(!encontrado)
-        {
-            
-            System.out.println();
+        {  
+            System.out.println();   
             if(!pares_ordenados.esta_en(name))    //Si es true, add
             {
                 encontrado = true;
@@ -437,9 +439,6 @@ public class Logica implements KeyListener
                 // Serializo el AVL************************************
                 // Creo instancia para R/W bytes .alb
                 Archivo f2 = new Archivo(getRuta_guardado()+"Album.alb", getSerializacion());
-                
-
-
                 // Creo el byte[] de album
                 setSerial(s1.serializar(getAlbum()));
                 // Inicializo el largo del byte[] del album
