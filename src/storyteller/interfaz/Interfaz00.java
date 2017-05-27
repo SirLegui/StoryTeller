@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -175,12 +177,10 @@ public class Interfaz00 extends javax.swing.JFrame
         try {
             // Logica Cargar
             controlador.botonCargar();
-        } catch (IOException ex) {
+        } catch (IOException | ParseException | InterruptedException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Interfaz00.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cargarActionPerformed
 

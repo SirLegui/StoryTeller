@@ -31,7 +31,9 @@ public class ParesOrdenados implements Serializable
     public boolean esta_en(String name)
     {
         boolean c = false;
-        for (int i =0; i<indices.length;i++)
+        System.out.println(name);
+        System.out.println(indices.length);
+        for (int i =0; i<indices.length-1;i++)
         {
             if(indices[i][0].equals(name))
             {
@@ -49,7 +51,7 @@ public class ParesOrdenados implements Serializable
      * @param offset 
      * @param largo 
      */
-    public void addAlbum(String name, Album avl, int offset, int largo)
+    public void addAlbum(String name, int offset, int largo)
     {
         // Obtengo el largo de pares ordenados
         int largo_indices = indices.length;

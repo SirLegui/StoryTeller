@@ -73,13 +73,21 @@ public class Archivo
     /**
      * 
      * @param pBytes 
+     * @param bo 
+     * @return  
+     * @throws java.io.IOException 
      */
-    public void escribirArchivo(byte[] pBytes, boolean bo) 
+    public int escribirArchivo(byte[] pBytes, boolean bo) throws IOException 
     {
         //
         bytes = pBytes;
+        int total= 0;
+        
         try {
             fileOutput = new FileOutputStream(file, bo);
+            fileInput = new FileInputStream(file);
+            total = fileInput.available();
+            fileInput.close();
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
@@ -96,6 +104,7 @@ public class Archivo
                 e2.printStackTrace();
             }
         }
+        return total;
     }
     /**
      * 

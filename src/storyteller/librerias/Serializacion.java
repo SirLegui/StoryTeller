@@ -45,9 +45,9 @@ public class Serializacion<e>
                 objeto = (e)is.readObject();
                 is.close();
         } catch (IOException | ClassNotFoundException e1) {
-                e1.printStackTrace();
                 System.out.println("Se ha ingresado un archivo con una extension invalida");
                 System.out.println("El archivo leido probablemente es de una version anterior del programa");
+                
         }
         return objeto;
     }

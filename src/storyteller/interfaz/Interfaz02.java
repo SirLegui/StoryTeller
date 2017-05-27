@@ -1,6 +1,9 @@
 package storyteller.interfaz;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import storyteller.program.Logica;
 
@@ -114,9 +117,8 @@ public class Interfaz02 extends javax.swing.JFrame
         try{
             controlador.botonSave();
             setVisible(false);
-        } catch (RuntimeException e)
-        {
-            JOptionPane.showMessageDialog(null,"¡No hay Album ah guardar!","ERROR",2);
+        } catch (IOException ex) {
+            Logger.getLogger(Interfaz02.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_SaveActionPerformed
     /*

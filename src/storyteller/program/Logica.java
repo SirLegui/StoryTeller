@@ -399,17 +399,27 @@ public class Logica implements KeyListener
     }
     /**
      * Boton save
+     * @throws java.io.IOException
      */
-    public void botonSave()
+    public void botonSave() throws IOException
     {
         // Deserealizar los pares ordenados
         Archivo f1 = new Archivo(getRuta_guardado()+"Pares.pros", getSerializacion());
-        byte[] pares = f1.leerArchivo();
+         byte[] pares = null;
+        try{
+            pares= f1.leerArchivo();
+        }catch(RuntimeException e){
+            System.out.println("El archivo está vacio, se creará la primera inserción");
+            pares = null;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println(pares.length);
+    
         if(pares.length != 0)
         {
-            //pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
+            pares_ordenados = (ParesOrdenados) s1.deserializar(pares);
         }        
-        
         // Le pedimos el nombre del album al usuario
         String name = JOptionPane.showInputDialog(null,"Digite el nombre del album a guardar","NUEVO ALBUM",3);
         // Busqueda binaria, ver si no esta repetido
@@ -425,14 +435,17 @@ public class Logica implements KeyListener
                 // Serializo el AVL************************************
                 // Creo instancia para R/W bytes .alb
                 Archivo f2 = new Archivo(getRuta_guardado()+"Album.alb", getSerializacion());
+                
+
+
                 // Creo el byte[] de album
                 setSerial(s1.serializar(getAlbum()));
                 // Inicializo el largo del byte[] del album
                 setTotalBytes(serial.length);
                 // Escribo en el Album.alb el byte[] del album a insertar en el final
-                f2.escribirArchivo(serial, true);   //Inserto al final
+                //Inserto al final
                 // Inserto al final el album en los pares ordenados
-                pares_ordenados.addAlbum(name, getAlbum(), getTotalBytes(), 0);
+                pares_ordenados.addAlbum(name, f2.escribirArchivo(serial, true), getTotalBytes());
                 // Termino el save
                 JOptionPane.showMessageDialog(null, null, "HAZ GUARDADO SATISFACTORIAMENTE EL ALBUM"+name+"\n ¡ERES TODO UN PROFECIONAL!" , number);
             }else{
@@ -443,7 +456,7 @@ public class Logica implements KeyListener
         
         // Serializar pares ordenados
         pares = s1.serializar(pares_ordenados);
-        f1.escribirArchivo(pares, false);   //Le caigo encima al Album.alb
+        f1.escribirArchivo(pares, false);   //Le caigo encima al Pares.pros
         //....
     }
     /**
