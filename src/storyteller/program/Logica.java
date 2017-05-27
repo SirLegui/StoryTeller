@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -55,6 +57,7 @@ public class Logica
     private String[] rets;
     private String local;       // Json ubicacion
     private String actual;      // htpp
+    private final String FILES_LOCATION = "/src/storyteller/librerias/";
     // Variables avl
     private Nodo raiz;
     //Clases a usar
@@ -186,35 +189,50 @@ public class Logica
      * Boton Cargar.
      * @throws IOException
      * @throws ParseException 
+     * @throws java.net.MalformedURLException 
+     * @throws java.lang.InterruptedException 
+     * @throws java.net.URISyntaxException 
      */
-    public void botonCargar() throws IOException, ParseException, MalformedURLException, InterruptedException
+    public void botonCargar() throws IOException, ParseException, MalformedURLException, InterruptedException, URISyntaxException
     {
         // Direccion donde esta el Json, lo creo
+        
         try{
-            setRuta_guardado("C:\\Users\\Usuario1\\Documents\\NetBeansProjects\\StoryTeller\\src\\storyteller\\librerias\\");
+            CodeSource codeSource = Interfaz.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            File jarDir = jarFile.getParentFile().getParentFile();
+            setRuta_guardado(jarDir.getAbsolutePath()+FILES_LOCATION);
+            System.out.println(getRuta_guardado()+"Prueba.json");
             obj = parser.parse(new FileReader(getRuta_guardado()+"Prueba.json"));
         }catch(FileNotFoundException e)
         {
             System.out.println("No se cargo el JSON correctamente"); 
         }
-        
+        int progress = 5;
+        interfaz.setBarValue(progress, "Comienza la descarga de imagenes");
+        interfaz.repaint();
         jsonObject = (JSONObject) obj;
         urls = (JSONArray) jsonObject.get("urls");
         iter = urls.iterator();
         // Lectura de ulrs .jpg
+        System.out.println("Se supone que ya cargo el JSON");
+        int inc = 90/urls.size();
         do{
             // Direccion Url .jpg
             actual = iter.next();
             // Direccion .jpg local 
             //local = interfaz.getDireccion_guardado() + "/imagen"+Integer.toString(interfaz.getFoto())+".jpg";
             // Logica del API Cognitive services Microsotf
+            progress += inc;
+            
             try {
                 //Imagen Ima = api.getImagen(actual, local);
                 Imagen Ima = api.getImagen(actual);
-                
+                interfaz.setBarValue(progress,Ima.getCaption());
+                interfaz.repaint();
                 // Descripcion de la foto
                 rets = Ima.getTags();
-                //System.out.println(rets[0]);
+                System.out.println(rets[0]);
                 //System.out.println(rets[1]);
                 //System.out.println(rets[2]);
                 // Inserto al nodo: 3 tags y foto
@@ -251,7 +269,9 @@ public class Logica
         }); // 
         
         avl.inOrden(avl.getRaiz(), 0);
-        
+        progress = 100;
+        interfaz.setBarValue(progress, "Se ha creado con el exito el album");
+        interfaz.repaint();
         // Despliego Slay Show
         //inOrdenDesplegarImagenes(g, avl.getRaiz());
         Comienza();
