@@ -67,13 +67,13 @@ public class Logica implements KeyListener
     // Variables avl
     private Nodo raiz;
     //Clases a usar
-    private Interfaz interfaz;
-    private Interfaz02 interfaz02;
-    private MCS api;
-    private ArbolAVL avl;
-    private Serializacion s1;
-    private Album album;
-    private ParesOrdenados pares_ordenados;
+        private Interfaz interfaz;
+        private Interfaz02 interfaz02;
+        private MCS api;
+        private ArbolAVL avl;
+        private Serializacion s1;
+        private Album album;
+        private ParesOrdenados pares_ordenados;
     // Variables del quicksort
     private String[][] numbers;
     private int number;
@@ -405,7 +405,7 @@ public class Logica implements KeyListener
     {
         // Deserealizar los pares ordenados
         Archivo f1 = new Archivo(getRuta_guardado()+"Pares.pros", getSerializacion());
-         byte[] pares = null;
+        byte[] pares = null;
         try{
             pares= f1.leerArchivo();
         }catch(RuntimeException e){
@@ -426,6 +426,8 @@ public class Logica implements KeyListener
         boolean encontrado = false;
         while(!encontrado)
         {
+            
+            System.out.println();
             if(!pares_ordenados.esta_en(name))    //Si es true, add
             {
                 encontrado = true;

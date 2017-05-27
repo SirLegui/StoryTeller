@@ -16,7 +16,7 @@ public class ParesOrdenados implements Serializable
      */
     public ParesOrdenados() 
     {
-        this.indices = null;
+        this.indices = new String[1][];
     }
     //Gets and Sets
     public String[][] getIndices()
@@ -31,8 +31,8 @@ public class ParesOrdenados implements Serializable
     public boolean esta_en(String name)
     {
         boolean c = false;
-        System.out.println(name);
-        System.out.println(indices.length);
+        System.out.println("Nombre: "+name);
+        System.out.println("Largo: "+indices.length);
         for (int i =0; i<indices.length-1;i++)
         {
             if(indices[i][0].equals(name))
