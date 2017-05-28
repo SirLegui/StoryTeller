@@ -1,10 +1,7 @@
 package storyteller.librerias;
 
-import java.awt.Graphics;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.imageio.ImageIO;
 import storyteller.program.Logica;
 /**
  * Para manejo de fotografias y los datos del API Microsoft

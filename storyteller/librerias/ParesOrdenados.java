@@ -53,6 +53,7 @@ public class ParesOrdenados implements Serializable
         // Obtengo el largo de pares ordenados
         int largo_indices = len();
         System.out.println("Largo de indices: "+largo_indices);
+        System.out.println("Inserto en offset: "+offset+ " "+largo+"bytes...");
         // Validacion 
         
         // Hago set de name y total de bytes del album
@@ -67,13 +68,5 @@ public class ParesOrdenados implements Serializable
         }
         return local;
     }
-    /**
-     * Serializa y guarda la clase en un archivo.pros
-     */
-    public void guardar_pares()
-    {
-        
-    }
-    // ->
    
 }

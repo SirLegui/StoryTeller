@@ -118,7 +118,7 @@ public class Interfaz02 extends javax.swing.JFrame
     */
     private void AbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirActionPerformed
         try{
-            
+            controlador.setSeguirHilo(true);
             controlador.botonAbrir((String) lista_albums.getSelectedItem());
             setVisible(false);
         } catch (RuntimeException e)
@@ -131,6 +131,8 @@ public class Interfaz02 extends javax.swing.JFrame
     @Override
     public void setVisible(boolean vis)
     {
+        DefaultComboBoxModel model = new DefaultComboBoxModel( controlador.getPares_ordenados().getOnlyIndices() );
+        lista_albums.setModel(model);
         super.setVisible(vis);
         
     }

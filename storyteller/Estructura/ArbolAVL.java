@@ -15,17 +15,13 @@ public class ArbolAVL implements Serializable {
 
     /*Variables Globales*/
     private Nodo raiz;
-    private Logica controlador;
     private boolean depurado;
 
     /**
      * Constructor de la clase con llamada a Singleton Logica
      *
-     * @param c Logica del controlador, para hacer funciones de logica
      */
-    public ArbolAVL(Logica c) {
-        // Singlenton
-        this.controlador = c;
+    public ArbolAVL() {
         // Inicializo nodo
         this.raiz = null;
         // Depurar en false
@@ -69,11 +65,12 @@ public class ArbolAVL implements Serializable {
      * Recorre el arbol y marca a los nodos inutilizados para despues borrarlos
      *
      * @param nodo Actual a procesar
+     * @param controlador
      */
-    public void inOrdenDescartar(Nodo nodo) {
+    public void inOrdenDescartar(Nodo nodo, Logica controlador) {
         if (nodo != null) {
             //
-            inOrdenDescartar(nodo.getLeft());
+            inOrdenDescartar(nodo.getLeft(), controlador);
             //
             int largo = nodo.getValue().size();
             boolean borrar = true;
@@ -96,7 +93,7 @@ public class ArbolAVL implements Serializable {
                 
             }
             //
-            inOrdenDescartar(nodo.getRight());
+            inOrdenDescartar(nodo.getRight(), controlador);
 
         }
     }

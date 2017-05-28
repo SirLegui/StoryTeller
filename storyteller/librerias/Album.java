@@ -31,6 +31,7 @@ public class Album implements Serializable
     }
     /**
      * Gets and Sets
+     * @return 
      */
     public String getNombre() 
     {
