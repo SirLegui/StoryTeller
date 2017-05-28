@@ -32,6 +32,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import storyteller.interfaz.Interfaz;
 /**
  * Clase para descarga y procesamiento(mediante Microsoft Cognitive Service) de imagenes mediante el URL con extension .jpg 
  * @author Edgerik Leguizamon
@@ -81,12 +82,16 @@ public class MCS implements Serializable
     /**
      * 
      * @param urli Link de la imagen a descargar
+     * @param interfaz
+     * @param progress
+     * @param inc
      * @return lista de bytes de la imagen
      * @throws MalformedURLException
      * @throws FileNotFoundException
      * @throws IOException 
+     * @throws java.lang.InterruptedException 
      */
-    public Imagen getImagen(String urli) throws MalformedURLException, FileNotFoundException, IOException, InterruptedException
+    public Imagen getImagen(String urli, Interfaz interfaz,int progress, int inc) throws MalformedURLException, FileNotFoundException, IOException, InterruptedException
     {
         // Url con la foto
         Imagen imagen = null;
@@ -101,7 +106,12 @@ public class MCS implements Serializable
             // Se obtiene el inputStream de la foto web y se abre el fichero local.
             recibida = urlCon.getInputStream();
             //Convierto a byte[]
-            //Thread.sleep(15000);
+            for (int i = 0; i < 5; i++) {
+                progress += (inc/5)/2;
+                interfaz.setBarValue(progress,"");
+                Thread.sleep(1000);
+            }
+            
             
             byte[] bytes = new byte[recibida.available()];
             recibida.read(bytes);

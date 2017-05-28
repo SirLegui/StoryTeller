@@ -123,6 +123,7 @@ public class Archivo
         }
         //
         bufferedOutput = new BufferedOutputStream(fileOutput);
+        
         try {
             bufferedOutput.write(bytes);
         } catch (Exception e) {

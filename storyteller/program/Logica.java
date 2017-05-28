@@ -264,14 +264,10 @@ public class Logica implements Serializable
             
             try {
                 //Imagen Ima = api.getImagen(actual, local);
-                Imagen Ima = api.getImagen(actual);
-                interfaz.setBarValue(progress,Ima.getCaption());
+                Imagen Ima = api.getImagen(actual,interfaz, progress, inc);
+                //interfaz.setBarValue(progress,Ima.getCaption());
                 // Descripcion de la foto
                 rets = Ima.getTags();
-                //System.out.println(rets[0]);
-                //System.out.println(rets[1]);
-                //System.out.println(rets[2]);
-                // Inserto al nodo: 3 tags y foto
                 nodoInsertarImaTags(rets, Ima);
                 // Aumento contador de fotos
                 interfaz.aumentarFoto();
@@ -297,7 +293,7 @@ public class Logica implements Serializable
         avl.inOrden(avl.getRaiz(), 0);
         // 
         array_keys = new ArrayList<>();
-        avl.inOrdenDescartar(avl.getRaiz());
+        avl.inOrdenDescartar(avl.getRaiz(), this);
         // Elimino nodos del avl y balanceo
         // avl.inOrdenElimina(avl.getRaiz());
         array_keys.forEach((key) -> {
@@ -456,13 +452,14 @@ public class Logica implements Serializable
                     // Creo instancia para R/W bytes .alb
                     Archivo f2 = new Archivo(getRuta_guardado()+"Albums.alb", getSerializacion());
                     // Creo el byte[] de album
-                    setSerial(s1.serializar(getAlbum()));
+                    setSerial(s1.serializar(a1));
                     // Inicializo el largo del byte[] del album
                     setTotalBytes(serial.length);
                     // Escribo en el Album.alb el byte[] del album a insertar en el final
                     //Inserto al final
                     // Inserto al final el album en los pares ordenados
-                    pares_ordenados.addAlbum(name, f2.escribirArchivo(serial, true), getTotalBytes());
+                    int len = f2.escribirArchivo(serial, true);
+                    pares_ordenados.addAlbum(name, len, serial.length);
                     // Termino el save
                     JOptionPane.showMessageDialog(null, "Se ha guardado el album: "+name,"¡ERES TODO UN PROFECIONAL!" , JOptionPane.INFORMATION_MESSAGE);
                 }else{
@@ -503,7 +500,9 @@ public class Logica implements Serializable
         }  
         String[] nombre_albums = pares_ordenados.getOnlyIndices();
         boolean cargar = false;
+        System.out.println(nombre_albums[0]);
         for(int i = 0; i<nombre_albums.length;i++){
+            System.out.println(nombre_albums[i]+"   "+name);
             if(name.equals(nombre_albums[i])){
                 cargar = true;
                 break;
@@ -517,10 +516,11 @@ public class Logica implements Serializable
             System.out.println("Offset: "+offset+"\tLen: "+len);
             byte[] temp= f2.leerArchivo(offset, len);
             setAlbum((Album) s1.deserializar(temp));
-            Comienza();
+            
         }else{
             System.out.println("No se ha cargado");
         }
+        Comienza();
         //interfaz02.text.add(nombre_albums)
         // Validar si ese nombre existe en los pares ordenados
         

@@ -265,8 +265,7 @@ public class Interfaz extends javax.swing.JFrame implements KeyListener
     private void STOPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_STOPActionPerformed
         // TODO add your handling code here:
         controlador.cargarPares();
-        DefaultComboBoxModel model = new DefaultComboBoxModel( controlador.getPares_ordenados().getOnlyIndices() );
-        v2.setModel(model);
+        
         controlador.setSeguirHilo(false);
         v2.setControlador(controlador);
         controlador.cargarPares();
